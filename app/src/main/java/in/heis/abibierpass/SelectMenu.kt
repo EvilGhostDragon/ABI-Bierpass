@@ -63,7 +63,8 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
             }
 
             else -> {
-                HomeFragment()
+                //HomeFragment()
+                RegisterFragment()
             }
         }
 

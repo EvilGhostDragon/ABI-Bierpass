@@ -20,12 +20,15 @@
 
 	<string name="txt_login">Anmelden</string>
 	<string name="txt_register">Registrieren</string>
-	<string name="txt_mail">E-Mail</string>
+	<string name="txt_mail">E-Mail Adresse</string>
+	<string name="txt_mail2">E-Mail Adresse wiederholen</string>
 	<string name="txt_password">Passwort</string>
+	<string name="txt_password2">Passwort wiederholen</string>
 	<string name="txt_lname">Nachname</string>
 	<string name="txt_fname">Vorname</string>
-	<string name="txt_"></string>
-	<string name="txt_"></string>
+	<string name="txt_vulgo">Vulgo</string>
+	<string name="txt_resetPassword">Passwort vergessen?</string>
+	<string name="txt_toRegister">Jetzt registrieren</string>
 
 
 </resources>

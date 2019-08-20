@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class RegisterFragment : Fragment() {
@@ -18,6 +19,6 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //activity!!.nav_view.menu.findItem(R.id.nav_acc_register).isChecked = true
+        activity!!.nav_view.menu.findItem(R.id.nav_acc_register).isChecked = true
     }
 }
