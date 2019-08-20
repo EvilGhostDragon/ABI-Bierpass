@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:tools="http://schemas.android.com/tools"
+			  android:layout_width="match_parent"
+			  android:layout_height="match_parent"
+			  android:orientation="vertical"
+			  android:weightSum="10"
+			  tools:context=".LoginFragment">
+
+	<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="2">
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:text="Register"
+				android:textSize="34sp"/>
+
+	</RelativeLayout>
+
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:layout_height="0dp"
+			android:layout_weight="8"
+			android:weightSum="2">
+
+
+		<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_weight="1"
+				android:layout_height="wrap_content">
+
+			<EditText
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:inputType="textPersonName"
+					android:text="Name"
+					android:ems="10"/>
+			<EditText
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:inputType="textPersonName"
+					android:text="Name"
+					android:ems="10"/>
+
+		</LinearLayout>
+		<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_weight="1"
+				android:layout_height="wrap_content">
+			<EditText
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:inputType="textPersonName"
+					android:text="Name"
+					android:ems="10"/>
+
+			<EditText
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:inputType="textPersonName"
+					android:text="Name"
+					android:ems="10"/>
+
+		</LinearLayout>
+	</LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,31 @@
+<resources>
+
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+	<string name="navigation_drawer_close">Close navigation drawer</string>
+
+	<string name="app_name">ABI Bierpass</string>
+	<string name="nav_header_title">Willkommen</string>
+	<string name="nav_header_subtitle">bitte anmelden</string>
+
+	<string name="menu_home">Home</string>
+	<string name="menu_acc">Account</string>
+	<string name="menu_acc_login">Anmelden</string>
+	<string name="menu_acc_register">Registrieren</string>
+	<string name="menu_acc_profile">Profil</string>
+	<string name="menu_acc_logout">Abmelden</string>
+	<string name="menu_help">Hilfe</string>
+	<string name="menu_help_register">Registieren</string>
+	<string name="menu_help_buy">Kaufen</string>
+	<string name="menu_help_pay">Bezahlen</string>
+
+	<string name="txt_login">Anmelden</string>
+	<string name="txt_register">Registrieren</string>
+	<string name="txt_mail">E-Mail</string>
+	<string name="txt_password">Passwort</string>
+	<string name="txt_lname">Nachname</string>
+	<string name="txt_fname">Vorname</string>
+	<string name="txt_"></string>
+	<string name="txt_"></string>
+
+
+</resources>
