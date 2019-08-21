@@ -2,6 +2,7 @@ package `in`.heis.abibierpass
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Debug
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,10 +27,11 @@ class RegisterFragment : Fragment() {
         btn_acc_register.setOnClickListener {
             // Toast.makeText(context, editText_fname.text, Toast.LENGTH_SHORT).show()
             btn_acc_register.isEnabled = false
-            if (isFormOk()) {
+           // if (isFormOk()) {
                 Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show()
-
-            }
+                register(editText_fname.text.toString(),editText_lname.text.toString(),editText_vulgo.text.toString(),editText_mail.text.toString(),editText_pswd.text.hashCode().toString())
+            println("hey")
+            //}
             btn_acc_register.isEnabled = true
         }
     }
@@ -88,5 +90,19 @@ class RegisterFragment : Fragment() {
             //if(editText_fname.text == null)Toast.makeText(context, editText_fname.text, Toast.LENGTH_SHORT).show()
         }
         //return state
+    }
+
+
+    fun register(fNamea: String, lName: String, vulgo: String, mail: String, password: String){
+        //Toast.makeText(context, password, Toast.LENGTH_SHORT).show()
+
+        //val connectionProps = Properties()
+        val username = "firetoast"
+        val pw = "firetoast"
+        val url = "jdbc:" + "mysql" + "://" + "db4free.net" + ":" + "3306" + "/androiddev" + ""
+
+
+
+
     }
 }
