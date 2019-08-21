@@ -2,7 +2,6 @@ package `in`.heis.abibierpass
 
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Debug
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_register.*
-
+import java.sql.Connection
+import java.sql.DriverManager
+import java.sql.SQLException
+import java.util.*
 
 class RegisterFragment : Fragment() {
 
@@ -27,9 +29,15 @@ class RegisterFragment : Fragment() {
         btn_acc_register.setOnClickListener {
             // Toast.makeText(context, editText_fname.text, Toast.LENGTH_SHORT).show()
             btn_acc_register.isEnabled = false
-           // if (isFormOk()) {
-                Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show()
-                register(editText_fname.text.toString(),editText_lname.text.toString(),editText_vulgo.text.toString(),editText_mail.text.toString(),editText_pswd.text.hashCode().toString())
+            // if (isFormOk()) {
+            Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show()
+            register(
+                editText_fname.text.toString(),
+                editText_lname.text.toString(),
+                editText_vulgo.text.toString(),
+                editText_mail.text.toString(),
+                editText_pswd.text.hashCode().toString()
+            )
             println("hey")
             //}
             btn_acc_register.isEnabled = true
@@ -93,16 +101,48 @@ class RegisterFragment : Fragment() {
     }
 
 
-    fun register(fNamea: String, lName: String, vulgo: String, mail: String, password: String){
+    fun register(fNamea: String, lName: String, vulgo: String, mail: String, password: String) {
         //Toast.makeText(context, password, Toast.LENGTH_SHORT).show()
 
         //val connectionProps = Properties()
         val username = "firetoast"
         val pw = "firetoast"
         val url = "jdbc:" + "mysql" + "://" + "db4free.net" + ":" + "3306" + "/androiddev" + ""
+        var conn: Connection? = null
+        var count = 0
+
+        val connectionProps = Properties()
+        connectionProps.put("user", username)
+        connectionProps.put("password", pw)
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance()
+            conn = DriverManager.getConnection(url, connectionProps)
 
 
+            try {
 
+                var sql = "SELECT id,name FROM table_stock"
+                val prest = conn?.prepareStatement(sql)
+
+                var rs = prest!!.executeQuery()
+                while (rs.next()) {
+                    var hiduke = rs.getString(2)
+                    var price = rs.getInt(1)
+                    count++
+                    println(hiduke + "\t" + "- " + price)
+                }
+                System.out.println("Number of records: " + count);
+                prest.close();
+                conn.close();
+            } catch (ex: SQLException) {
+                // handle any errors
+                ex.printStackTrace()
+            }
+        } catch (ex: Exception) {
+            // handle any errors
+            ex.printStackTrace()
+        }
 
     }
 }
