@@ -9,10 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_register.*
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.SQLException
-import java.util.*
+import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class RegisterFragment : Fragment() {
 
@@ -100,6 +102,9 @@ class RegisterFragment : Fragment() {
         //return state
     }
 
+    object test1 : IntIdTable() {
+        val name = varchar("name", 25) // Column<String>
+    }
 
     fun register(fNamea: String, lName: String, vulgo: String, mail: String, password: String) {
         //Toast.makeText(context, password, Toast.LENGTH_SHORT).show()
@@ -108,41 +113,24 @@ class RegisterFragment : Fragment() {
         val username = "firetoast"
         val pw = "firetoast"
         val url = "jdbc:" + "mysql" + "://" + "db4free.net" + ":" + "3306" + "/androiddev" + ""
-        var conn: Connection? = null
+
         var count = 0
 
-        val connectionProps = Properties()
-        connectionProps.put("user", username)
-        connectionProps.put("password", pw)
+        Database.connect(
+            "jdbc:mysql://db4free.net:3306/androiddev", driver = "com.mysql.jdbc.Driver",
+            user = "firetoast", password = "firetoast"
+        )
+        transaction {
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance()
-            conn = DriverManager.getConnection(url, connectionProps)
-
-
-            try {
-
-                var sql = "SELECT id,name FROM table_stock"
-                val prest = conn?.prepareStatement(sql)
-
-                var rs = prest!!.executeQuery()
-                while (rs.next()) {
-                    var hiduke = rs.getString(2)
-                    var price = rs.getInt(1)
-                    count++
-                    println(hiduke + "\t" + "- " + price)
-                }
-                System.out.println("Number of records: " + count);
-                prest.close();
-                conn.close();
-            } catch (ex: SQLException) {
-                // handle any errors
-                ex.printStackTrace()
-            }
-        } catch (ex: Exception) {
-            // handle any errors
-            ex.printStackTrace()
+            SchemaUtils.create(test1)
+            test1.insert { it[name] = "tesst" }
         }
+
+        val list = transaction {
+            test1.select { test1.id eq 1 }.toList()
+        }
+        println(list)
+
 
     }
 }
