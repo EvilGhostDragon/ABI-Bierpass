@@ -39,7 +39,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
-    implementation 'org.jetbrains.exposed:exposed:0.16.1'
-    implementation 'mysql:mysql-connector-java:5.1.46'
+    implementation("com.squareup.okhttp3:okhttp:4.1.0")
 
 }
