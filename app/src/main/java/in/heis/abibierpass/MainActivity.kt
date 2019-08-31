@@ -1,5 +1,8 @@
 package `in`.heis.abibierpass
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -35,6 +38,53 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         SelectMenu(-1, drawer_layout, this@MainActivity).change()
 
 
+
+        handleIntent(intent)
+
+
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        val appLinkAction = intent.action
+        val appLinkData: Uri? = intent.data
+        if (Intent.ACTION_VIEW == appLinkAction) {
+            appLinkData?.lastPathSegment?.also { linkId ->
+                Uri.parse("content://in.heis.abibierpass")
+                    .buildUpon()
+                    .appendPath(linkId)
+                    .build().also { appData ->
+                        handleLink(appData.toString())
+                    }
+
+            }
+        }
+    }
+
+    private fun handleLink(appData: String) {
+        if (appData.contains("abibierpass/failed")) {
+            AlertDialog.Builder(this)
+                .setTitle("Fehler")
+                .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: 1000")
+                .setPositiveButton("OK") { dialog, which ->
+
+                }
+                .show()
+        } else if (appData.contains("abibierpass/success")) {
+            AlertDialog.Builder(this)
+                .setTitle("Info")
+                .setMessage("Deine E-Mail Adresse wurde erfolgreich bestätigt. \nDu wirst benachrichtigt, sobald deine Daten überprüft wruden")
+                .setPositiveButton("OK") { dialog, which ->
+
+                }
+                .show()
+        } else if (appData.contains("abibierpass/open")) {
+
+        }
     }
 
     override fun onBackPressed() {
