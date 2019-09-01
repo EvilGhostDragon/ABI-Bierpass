@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.json.JSONObject
+
 
 class LoginFragment : Fragment() {
     override fun onCreateView(
@@ -24,6 +26,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_login).isChecked = true
+
+        val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
         btn_acc_login.setOnClickListener {
             if (isFormOk()) {
                 val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -48,27 +52,51 @@ class LoginFragment : Fragment() {
 
                         return@HttpTask
                     }
-                    if (it.contains("\"result\":\"0\"")) {
+                    println(it)
+                    val itJson = JsonParser().parse(it).asJsonObject
+                    if (itJson.get("result").asInt == 0) {
                         AlertDialog.Builder(context)
                             .setTitle("Fehler")
                             .setMessage("Zu viel Bier oder doch nur vertippt.\nÜberprüfe deine Eingabe")
                             .setPositiveButton("OK") { dialog, which ->
-                                SelectMenu(-1, drawer_layout, activity).change()
+                                //btn_acc_login.isEnabled = true
+                                //progressbar.visibility = View.INVISIBLE
                             }
                             .show()
-                    } else if (it.contains("\"result\":\"1\"")) {
+
+                        //return@HttpTask
+                    } else if ((itJson.get("result").asInt == 1) and (itJson.get("permission").asInt >= 2)) {
+                        val editor = token.edit()
+                        with(editor) {
+                            putBoolean("loggedin", true)
+                            putString("fName", itJson.get("fName").asString)
+                            putString("lName", itJson.get("lName").asString)
+                            putString("mail", itJson.get("mail").asString)
+                            putString("vulgo", itJson.get("vulgo").asString)
+                            putString("payId", itJson.get("payId").asString)
+                            putInt("permission", itJson.get("permission").asInt)
+                        }.apply()
+
+
+
+                        activity!!.finish()
+                        startActivity(activity!!.intent)
+
+
+                    } else if ((itJson.get("result").asInt == 1) and (itJson.get("permission").asInt == 0)) {
                         AlertDialog.Builder(context)
                             .setTitle("Info")
-                            .setMessage("Erfolgreich angemeldet")
+                            .setMessage("Deine E-Mail Adresse wurde noch nicht bestätigt.\nÜberprüfe deinen Posteingang und auch Spam-Ordner")
                             .setPositiveButton("OK") { dialog, which ->
                                 SelectMenu(-1, drawer_layout, activity).change()
                             }
                             .show()
-                    } else if (it.contains("\"result\":\"2\"")) {
+                    } else {
                         AlertDialog.Builder(context)
                             .setTitle("Info")
                             .setMessage("Du wurdest noch nicht freigeschalten. Du erhältst eine E-Mail sobald es soweit ist.")
                             .setPositiveButton("OK") { dialog, which ->
+
                                 SelectMenu(-1, drawer_layout, activity).change()
                             }
                             .show()
@@ -79,7 +107,7 @@ class LoginFragment : Fragment() {
                     progressbar.visibility = View.INVISIBLE
 
 
-                }.execute("POST", "https://heis.in/api/abibierpass/db_checkuser.php", json.toString())
+                }.execute("POST", "https://abidigital.tk/api/db_checkpw.php", json.toString())
             }
         }
     }

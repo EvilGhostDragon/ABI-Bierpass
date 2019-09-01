@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.json.JSONObject
@@ -56,12 +57,13 @@ class RegisterFragment : Fragment() {
 
                         return@HttpTask
                     }
-                    println(it)
+                    val itJson = JsonParser().parse(it).asJsonObject
+                    println(itJson)
 
                     btn_acc_register.isEnabled = true
                     progressbar.visibility = View.INVISIBLE
 
-                    if (it.contains("\"result\":1")) {
+                    if (itJson.get("result").asInt == 1) {
                         editText_mail.setTextColor(Color.RED)
                         editText_mail.error = "Diese E-Mail Adresse wird bereits verwendet"
 
@@ -82,8 +84,8 @@ class RegisterFragment : Fragment() {
 
                             return@HttpTask
                         }
-                        println(it)
-
+                        val itJson = JsonParser().parse(it).asJsonObject
+                        println(itJson)
                         btn_acc_register.isEnabled = true
                         progressbar.visibility = View.INVISIBLE
 

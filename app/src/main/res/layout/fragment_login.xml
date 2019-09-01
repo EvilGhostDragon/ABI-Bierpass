@@ -74,6 +74,34 @@
 					android:layout_height="wrap_content" android:id="@+id/btn_acc_login"
 					android:textSize="20dp"
 					style="@style/Widget.MaterialComponents.Button"/>
+			<Space android:layout_width="match_parent" android:layout_height="10dp"/>
+			<LinearLayout
+					android:orientation="horizontal"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:weightSum="2"
+
+
+			>
+				<TextView
+						android:text="Passwort vergessen"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						android:gravity="center"
+						android:padding="5dp"
+						android:clickable="true"
+				/>
+				<TextView
+						android:text="Keine E-Mail erhalten?"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						android:gravity="center"
+						android:padding="5dp"
+						android:clickable="true"
+				/>
+			</LinearLayout>
 
 
 		</LinearLayout>

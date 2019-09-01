@@ -1,6 +1,7 @@
 package `in`.heis.abibierpass
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,11 +15,15 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
+val key = "userdata"
+
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
+    //    val user_data = getSharedPreferences("user.data", Context.MODE_PRIVATE)
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        val token = getSharedPreferences(`in`.heis.abibierpass.key, Context.MODE_PRIVATE)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -35,14 +40,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-        SelectMenu(-1, drawer_layout, this@MainActivity).change()
 
+        if (token.getBoolean("loggedin", true)) {
+            println("LOGGED IN")
+            SelectMenu(-1, drawer_layout, this@MainActivity).makeNewLayout(2)
+            //getString(R.id.nav_header_subtitel)
+
+
+        } else {
+
+            SelectMenu(-1, drawer_layout, this@MainActivity).change()
+        }
+        println(token.all)
+
+
+        //var test2 = Hawk.get(KEY,JSONObject())
 
 
         handleIntent(intent)
 
 
     }
+
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -103,16 +122,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
+
+        SelectMenu(item.itemId, null, this@MainActivity).action()
+        return true
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_logout) {
+            SelectMenu(item.itemId, null, this@MainActivity).action()
+        }
 
         SelectMenu(item.itemId, drawer_layout, this@MainActivity).change()
 
@@ -120,4 +138,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
+
 }

@@ -1,53 +1,57 @@
 package `in`.heis.abibierpass
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.system.exitProcess
 
 
 class SelectMenu(val itemId: Int?, override val containerView: View?, val activity: Activity?) : LayoutContainer {
+
+    val token = activity?.getSharedPreferences(`in`.heis.abibierpass.key, Context.MODE_PRIVATE)
+
     init {
         //   val activity: AppCompatActivity = getActivity(containerView?.context,) as AppCompatActivity
     }
 
-    companion object {
-        var view: View? = null
-        var act: Activity? = null
-    }
 
-
-    /*fun action() {
+    fun action() {
 
         when (itemId) {
             R.id.action_exit -> {
                 exitProcess(-1)
             }
             R.id.action_about -> {
-                val message =
-                    "Diplomarbeit 2018/19\nAutor: Simon Heis\nMitarbeiter: Simon L. Elias K. \nE-Mail: school@heis.in \n\nProjekt im Sinne einer Diplomarbeit an der HTL Anichstraße "
-                CreateAlertdialog(containerView?.context!!, message, "About").custom_titel()
+                println("about")
             }
-            R.id.nav_connection_disc -> {
-                BluetoothConnection(containerView?.context!!).disconnect()
+            R.id.action_logout -> {
 
-                activity!!.nav_view.menu.findItem(R.id.nav_connection_disc).isEnabled = false
-                activity.nav_view.menu.findItem(R.id.nav_connection_con).isEnabled = true
+                AlertDialog.Builder(activity)
+                    .setTitle("Info")
+                    .setMessage("Wirklich abmelden?")
+                    .setPositiveButton("Ja") { dialog, which ->
+                        activity!!.recreate()
+                        token!!.edit().putBoolean("loggedin", false).apply()
+                    }
+                    .setNegativeButton("Nein") { dialog, which ->
 
-                activity.nav_view.menu.findItem(R.id.nav_control).isEnabled = false
+                    }
+                    .show()
 
-                text_nav_selecteddev.text = "Zurzeit keine aktive Verbindung"
-
-                change()
 
             }
+
             else -> {
-                change()
+                println("Action ERROR")
             }
 
 
         }
-    }*/
+    }
 
     fun change(): Boolean {
         //activity!!.nav_view.menu.findItem(R.id.nav_home).isChecked = true
@@ -61,10 +65,12 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
             R.id.nav_acc_register -> {
                 RegisterFragment()
             }
+            R.id.nav_acc_profile -> {
+                ProfileFragment()
+            }
 
             else -> {
                 HomeFragment()
-                //RegisterFragment()
             }
         }
 
@@ -84,34 +90,32 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
      *                  (2) Aktivierung und Deaktivierung der genannten Menus
      *                  (3) Weiterleiung auf das Homefragment
      */
-    /*fun makeNewLayout() {
+    fun makeNewLayout(permission: Int) {
+        with(nav_view.menu) {
+            findItem(R.id.nav_acc_register).isVisible = false
+            findItem(R.id.nav_acc_register).isEnabled = false
+            findItem(R.id.nav_acc_login).isVisible = false
+            findItem(R.id.nav_acc_login).isEnabled = false
 
 
-        var selectedDivText: String =
-            "Mit ${ConnectionFragment.selectedDevice} verbunden\n${ConnectionFragment.selectedAdress}"
-        //println(BluetoothConnection.m_isConnected.toString())
-
-        if (!BluetoothConnection.m_isConnected) CreateAlertdialog(
-            view?.context!!,
-            "Verbindung konnte nicht aufgebaut werden. Überprüfe deine Einstellungen und ob dein Roboter in Reichweite steht. \n\nWeitere Hilfe findest du im Hilfebereich."
-            , null
-        ).error()
-        else {
-            act!!.nav_view.menu.findItem(R.id.nav_control).isEnabled = true
-            act!!.nav_view.menu.findItem(R.id.nav_connection_disc).isEnabled = true
-            act!!.nav_view.menu.findItem(R.id.nav_connection_con).isEnabled = false
-
-            act!!.text_nav_selecteddev.text = selectedDivText
-
-            CreateAlertdialog(
-                view?.context!!,
-                "Verbindungsaufbau war erfolgreich\nSteuerung jetzt aktiv",
-                null
-            ).info()
-            SelectMenu(R.id.nav_home, drawer_layout, act!!).change()
+            //}
+            //val see = with(nav_view.menu){
+            findItem(R.id.nav_acc_profile).isVisible = true
+            findItem(R.id.nav_acc_profile).isEnabled = true
+            findItem(R.id.action_logout).isVisible = true
+            findItem(R.id.action_logout).isEnabled = true
         }
 
-        //edit Activ
-        //activity!!.nav_view.menu.findItem(R.id.nav_home).isChecked=true
-    }*/
+
+
+
+        if (permission == 10) {
+            TODO("see confirmed order - list: time, name, vulgo")
+        }
+        if (permission == 100) {
+            TODO("full admin - list of all users, money, usw")
+        }
+        change()
+
+    }
 }
