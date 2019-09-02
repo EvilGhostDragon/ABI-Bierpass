@@ -11,7 +11,7 @@ val TIMEOUT = 10 * 1000
 class HttpTask(callback: (String?) -> Unit) : AsyncTask<String, Unit, String>() {
 
     companion object {
-        var msgError = "0001"
+        var msgError = "0000"
     }
 
     var callback = callback

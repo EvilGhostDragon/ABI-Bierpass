@@ -43,6 +43,7 @@ class RegisterFragment : Fragment() {
                 json.put("vulgo", editText_vulgo.text)
                 json.put("mail", editText_mail.text)
                 json.put("password", editText_pswd.text)
+                json.put("action", "checkuser")
 
                 HttpTask {
                     if (it == null) {
@@ -57,6 +58,7 @@ class RegisterFragment : Fragment() {
 
                         return@HttpTask
                     }
+                    println(it)
                     val itJson = JsonParser().parse(it).asJsonObject
                     println(itJson)
 
@@ -70,6 +72,7 @@ class RegisterFragment : Fragment() {
                         return@HttpTask
                     }
 
+                    json.put("action", "adduser")
 
                     HttpTask { it2 ->
                         if (it2 == null) {
@@ -91,16 +94,32 @@ class RegisterFragment : Fragment() {
                         if (itJson2.get("result").asInt == 1) {
                             AlertDialog.Builder(context)
                                 .setTitle("Info")
-                                .setMessage("Deine Daten wurden erfolgreich übermittelt und werden in kürze überprüft. \nDu erhältst eine E-Mail sobald du dich anmelden kannst.")
+                                .setMessage("Deine Daten wurden erfolgreich übermittelt. \nDu erhältst in kürze eine E-Mail mit einem Link zum bestätigen deiner E-Mail Adresse. Überprüfe auch deinen Spam Ordner.")
                                 .setPositiveButton("OK") { dialog, which ->
                                     SelectMenu(-1, drawer_layout, activity).change()
                                 }
                                 .show()
+                        } else {
+                            AlertDialog.Builder(context)
+                                .setTitle("Fehler")
+                                .setMessage(
+                                    "Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + itJson2.get(
+                                        "errorcode"
+                                    ).asInt
+                                )
+                                .setPositiveButton("OK") { dialog, which ->
+                                    SelectMenu(
+                                        R.id.nav_acc_register,
+                                        drawer_layout,
+                                        activity
+                                    ).change()
+                                }
+                                .show()
                         }
-                    }.execute("POST", "https://abidigital.tk/api/db_adduser.php", json.toString())
+                    }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
 
 
-                }.execute("POST", "https://abidigital.tk/api/db_checkuser.php", json.toString())
+                }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
 
 
             }

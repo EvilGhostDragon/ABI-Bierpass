@@ -9,21 +9,6 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [ProfileFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class ProfileFragment : Fragment() {
 
     override fun onCreateView(
@@ -41,7 +26,7 @@ class ProfileFragment : Fragment() {
         activity!!.nav_view.menu.findItem(R.id.nav_acc_profile).isChecked = true
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
 
-        txt_profile_fName.text = "fname" + token.getString("fName", "")
+        txt_profile_fName.text = "fname: " + token.getString("fName", "")
         txt_profile_lName.text = "lname: " + token.getString("lName", "")
         txt_profile_vulgo.text = "vulgo: " + token.getString("vulgo", "")
         txt_profile_mail.text = "mail: " + token.getString("mail", "")

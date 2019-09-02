@@ -38,6 +38,7 @@ class LoginFragment : Fragment() {
                 val json = JSONObject()
                 json.put("mail", editText_mail.text)
                 json.put("password", editText_pswd.text)
+                json.put("action", "login")
 
                 HttpTask {
                     if (it == null) {
@@ -59,8 +60,7 @@ class LoginFragment : Fragment() {
                             .setTitle("Fehler")
                             .setMessage("Zu viel Bier oder doch nur vertippt.\nÜberprüfe deine Eingabe")
                             .setPositiveButton("OK") { dialog, which ->
-                                //btn_acc_login.isEnabled = true
-                                //progressbar.visibility = View.INVISIBLE
+                                editText_pswd.text.clear()
                             }
                             .show()
 
@@ -107,7 +107,7 @@ class LoginFragment : Fragment() {
                     progressbar.visibility = View.INVISIBLE
 
 
-                }.execute("POST", "https://abidigital.tk/api/db_checkpw.php", json.toString())
+                }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
             }
         }
     }

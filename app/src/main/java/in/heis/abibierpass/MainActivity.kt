@@ -1,6 +1,8 @@
 package `in`.heis.abibierpass
 
+import android.app.AlarmManager
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -15,7 +17,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
-val key = "userdata"
+
+const val key = "userdata"
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -73,6 +76,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun handleIntent(intent: Intent) {
+
         val appLinkAction = intent.action
         val appLinkData: Uri? = intent.data
         if (Intent.ACTION_VIEW == appLinkAction) {
@@ -85,28 +89,42 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
 
             }
+
         }
+
     }
 
     private fun handleLink(appData: String) {
-        if (appData.contains("abibierpass/failed")) {
-            AlertDialog.Builder(this)
+        val mStartActivity = Intent(this@MainActivity, MainActivity::class.java)
+        val mPendingIntentId = 123456
+        val mPendingIntent = PendingIntent.getActivity(
+            this@MainActivity,
+            mPendingIntentId,
+            mStartActivity,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+        val mgr = this@MainActivity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        when {
+            appData.contains("abibierpass/failed") -> AlertDialog.Builder(this)
                 .setTitle("Fehler")
                 .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: 1000")
                 .setPositiveButton("OK") { dialog, which ->
-
+                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent)
+                    System.exit(0)
                 }
                 .show()
-        } else if (appData.contains("abibierpass/success")) {
-            AlertDialog.Builder(this)
+            appData.contains("abibierpass/success") -> AlertDialog.Builder(this)
                 .setTitle("Info")
-                .setMessage("Deine E-Mail Adresse wurde erfolgreich bestätigt. \nDu wirst benachrichtigt, sobald deine Daten überprüft wruden")
+                .setMessage("Deine E-Mail Adresse wurde erfolgreich bestätigt. \nDu wirst benachrichtigt, sobald deine Daten überprüft wurden")
                 .setPositiveButton("OK") { dialog, which ->
 
+                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent)
+                    System.exit(0)
                 }
                 .show()
-        } else if (appData.contains("abibierpass/open")) {
+            appData.contains("abibierpass/open") -> {
 
+            }
         }
     }
 
