@@ -74,7 +74,7 @@ class LoginFragment : Fragment() {
                             putString("mail", itJson.get("mail").asString)
                             putString("vulgo", itJson.get("vulgo").asString)
                             putString("payId", itJson.get("payId").asString)
-                            putInt("permission", itJson.get("permission").asInt)
+                            putString("permission", itJson.get("permission").asString)
                         }.apply()
 
 

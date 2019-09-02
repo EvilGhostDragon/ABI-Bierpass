@@ -41,9 +41,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
 
-        if (token.getBoolean("loggedin", true)) {
+        if (token.getBoolean("loggedin", true) && (token.getString("mail", "") != "")) {
             println("LOGGED IN")
-            SelectMenu(-1, drawer_layout, this@MainActivity).makeNewLayout(2)
+            SelectMenu(
+                -1,
+                drawer_layout,
+                this@MainActivity
+            ).makeNewLayout(token.getString("permission", "")!!.toInt())
             //getString(R.id.nav_header_subtitel)
 
 

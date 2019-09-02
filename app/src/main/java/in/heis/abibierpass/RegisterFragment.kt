@@ -71,8 +71,8 @@ class RegisterFragment : Fragment() {
                     }
 
 
-                    HttpTask {
-                        if (it == null) {
+                    HttpTask { it2 ->
+                        if (it2 == null) {
                             println("connection error - adduser")
                             AlertDialog.Builder(context)
                                 .setTitle("Fehler")
@@ -84,19 +84,19 @@ class RegisterFragment : Fragment() {
 
                             return@HttpTask
                         }
-                        val itJson = JsonParser().parse(it).asJsonObject
-                        println(itJson)
+                        val itJson2 = JsonParser().parse(it2).asJsonObject
+                        println(itJson2)
                         btn_acc_register.isEnabled = true
                         progressbar.visibility = View.INVISIBLE
-
-                        AlertDialog.Builder(context)
-                            .setTitle("Info")
-                            .setMessage("Deine Daten wurden erfolgreich übermittelt und werden in kürze überprüft. \nDu erhältst eine E-Mail sobald du dich anmelden kannst.")
-                            .setPositiveButton("OK") { dialog, which ->
-                                SelectMenu(-1, drawer_layout, activity).change()
-                            }
-                            .show()
-
+                        if (itJson2.get("result").asInt == 1) {
+                            AlertDialog.Builder(context)
+                                .setTitle("Info")
+                                .setMessage("Deine Daten wurden erfolgreich übermittelt und werden in kürze überprüft. \nDu erhältst eine E-Mail sobald du dich anmelden kannst.")
+                                .setPositiveButton("OK") { dialog, which ->
+                                    SelectMenu(-1, drawer_layout, activity).change()
+                                }
+                                .show()
+                        }
                     }.execute("POST", "https://abidigital.tk/api/db_adduser.php", json.toString())
 
 

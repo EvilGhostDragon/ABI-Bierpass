@@ -46,7 +46,8 @@ class ProfileFragment : Fragment() {
         txt_profile_vulgo.text = "vulgo: " + token.getString("vulgo", "")
         txt_profile_mail.text = "mail: " + token.getString("mail", "")
         txt_profile_payId.text = "payId: " + token.getString("payId", "")
-        txt_profile_permission.text = "permission: " + permissionToString(token.getInt("permission", 0))
+        txt_profile_permission.text =
+            "permission: " + permissionToString(token.getString("permission", "")!!.toInt())
     }
 
     fun permissionToString(p: Int): String {
@@ -62,6 +63,12 @@ class ProfileFragment : Fragment() {
             }
             10 -> {
                 return "Fuchs"
+            }
+            20 -> {
+                return "Bierwart"
+            }
+            30 -> {
+                return "Admin"
             }
             100 -> {
                 return "Zer0"
