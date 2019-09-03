@@ -26,13 +26,15 @@ class ProfileFragment : Fragment() {
         activity!!.nav_view.menu.findItem(R.id.nav_acc_profile).isChecked = true
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
 
-        txt_profile_fName.text = "fname: " + token.getString("fName", "")
-        txt_profile_lName.text = "lname: " + token.getString("lName", "")
-        txt_profile_vulgo.text = "vulgo: " + token.getString("vulgo", "")
-        txt_profile_mail.text = "mail: " + token.getString("mail", "")
-        txt_profile_payId.text = "payId: " + token.getString("payId", "")
+        txt_profile_fName.text = token.getString("fName", "")
+        txt_profile_lName.text = token.getString("lName", "")
+        txt_profile_vulgo.text = token.getString("vulgo", "")
+        txt_profile_mail.text = token.getString("mail", "")
+        txt_profile_payId.text = token.getString("payId", "")
         txt_profile_permission.text =
-            "permission: " + permissionToString(token.getString("permission", "")!!.toInt())
+            permissionToString(token.getString("permission", "")!!.toInt())
+
+
     }
 
     fun permissionToString(p: Int): String {
@@ -44,13 +46,13 @@ class ProfileFragment : Fragment() {
                 return "No permission! require data check"
             }
             2 -> {
-                return "Normal User"
+                return "Keine. Normaler Benutzer"
             }
             10 -> {
-                return "Fuchs"
+                return "Fuchs. Berechtigt letzten 10 Zahlungen zu sehen"
             }
             20 -> {
-                return "Bierwart"
+                return "Bierwart. Berechtigt Guthaben zu verteilen"
             }
             30 -> {
                 return "Admin"
