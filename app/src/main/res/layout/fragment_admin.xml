@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:weightSum="10"
 		tools:context=".AdminFragment">
 
-	<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+	<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			android:weightSum="10">
+
 
 		<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="0dp"
-				android:layout_weight="2">
+				android:layout_weight="1">
 
 			<TextView
 					android:layout_width="wrap_content"
@@ -24,6 +27,108 @@
 
 		</RelativeLayout>
 
-	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+		<ScrollView
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_weight="2">
 
-</LinearLayout>
+			<androidx.gridlayout.widget.GridLayout
+					android:layout_width="match_parent"
+					android:layout_height="0dp"
+					android:foregroundGravity="center"
+					android:padding="25dp"
+					app:columnCount="6"
+					app:rowCount="3">
+
+
+				<Switch
+						android:id="@+id/switch_showall"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:padding="10dp"
+						android:text="Alles anzeigen"
+						android:textSize="15sp"
+						app:layout_columnSpan="3"
+						app:layout_columnWeight="3"
+						app:layout_rowSpan="1"
+						app:layout_rowWeight="1" />
+
+				<Switch
+						android:id="@+id/switch_shownew"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:padding="10dp"
+						android:text="Neuanmeldungen"
+						android:textSize="15sp"
+						app:layout_columnSpan="3"
+						app:layout_columnWeight="3"
+						app:layout_rowSpan="1"
+						app:layout_rowWeight="1" />
+
+				<Switch
+						android:id="@+id/switch_shownormal"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:padding="10dp"
+						android:text="Normale Benutzer"
+						android:textSize="15sp"
+						app:layout_columnSpan="3"
+						app:layout_columnWeight="3"
+						app:layout_rowSpan="1"
+						app:layout_rowWeight="1" />
+
+				<Switch
+						android:id="@+id/switch_showfox"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:padding="10dp"
+						android:text="Füchse"
+						android:textSize="15sp"
+						app:layout_columnSpan="3"
+						app:layout_columnWeight="3"
+						app:layout_rowSpan="1"
+						app:layout_rowWeight="1" />
+
+				<EditText
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:hint="Suche (Name, Vulgo, ID)"
+						android:textSize="15sp"
+						app:layout_columnSpan="5"
+						app:layout_columnWeight="5"
+						app:layout_rowSpan="1"
+						app:layout_rowWeight="1" />
+
+				<Button
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:padding="10dp"
+						android:text="Suchen"
+						app:layout_columnSpan="1"
+						app:layout_columnWeight="1"
+						app:layout_rowSpan="1"
+						app:layout_rowWeight="1" />
+
+
+			</androidx.gridlayout.widget.GridLayout>
+		</ScrollView>
+
+		<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/grey" />
+
+		<ScrollView
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_weight="7">
+
+
+			<ListView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" />
+		</ScrollView>
+
+
+	</LinearLayout>
+</RelativeLayout>
