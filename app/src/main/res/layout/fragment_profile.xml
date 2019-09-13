@@ -1,260 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
-		android:id="@+id/refresh_profile"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-
-	<LinearLayout
+		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="vertical"
-		android:padding="10dp"
-		android:weightSum="10"
 		tools:context=".ProfileFragment">
 
-	<RelativeLayout
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1">
+	<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
 
-		<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerInParent="true"
-				android:text="@string/txt_profile"
-				android:textSize="34sp" />
+		<LinearLayout
 
-	</RelativeLayout>
-	<!-- TODO: Update blank fragment layout -->
-	<ScrollView
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:layout_weight="8">
-
-		<androidx.gridlayout.widget.GridLayout
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:layout_centerHorizontal="true"
-				android:foregroundGravity="center"
-				android:padding="25dp"
-				app:columnCount="10">
+				android:orientation="vertical"
+				android:padding="10dp"
+				android:weightSum="10">
 
 
-			<TextView
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:text="@string/txt_fname"
-					android:textSize="15sp"
-					app:layout_columnWeight="10" />
-
-			<Space
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-					android:id="@+id/txt_profile_fName"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:textSize="22sp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-
-			<Space
-					android:layout_height="15dp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:text="@string/txt_lname"
-					android:textSize="15sp"
-					app:layout_columnWeight="10" />
-
-			<Space
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-					android:id="@+id/txt_profile_lName"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:textSize="22sp"
-					app:layout_columnSpan="5"
-					app:layout_columnWeight="5" />
-
-			<TextView
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:gravity="center"
-					android:text="v/o"
-					android:textSize="20sp"
-					app:layout_columnSpan="2"
-					app:layout_columnWeight="2" />
-
-			<TextView
-					android:id="@+id/txt_profile_vulgo"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:textSize="22sp"
-					app:layout_columnSpan="3"
-					app:layout_columnWeight="3" />
-
-			<Space
-					android:layout_height="30dp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:text="@string/txt_mail"
-					android:textSize="15sp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<Space
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-					android:id="@+id/txt_profile_mail"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:textSize="22sp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<Space
-					android:layout_height="15dp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-					android:id="@+id/profile_changemail"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:text="@string/txt_changeMail"
-					android:textColor="@color/colorPrimaryDark"
-					android:textSize="15sp"
-					app:layout_columnSpan="4"
-					app:layout_columnWeight="4" />
-
-			<TextView
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:text="@string/txt_changePW"
-					android:textColor="@color/colorPrimaryDark"
-					android:textSize="15sp"
-					app:layout_columnSpan="4"
-					app:layout_columnWeight="4" />
-
-			<Space
-					android:layout_height="15dp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<EditText
-					android:id="@+id/editText_mail"
-					android:layout_width="0dp"
+			<RelativeLayout
+					android:layout_width="match_parent"
 					android:layout_height="0dp"
-					android:hint="@string/txt_newMail"
-					android:inputType="textEmailAddress"
-					android:visibility="invisible"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
+					android:layout_weight="1">
 
-			<View
-					android:layout_width="0dp"
-					android:layout_height="1dp"
-					android:background="@android:color/holo_red_dark"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_centerInParent="true"
+						android:text="@string/txt_profile"
+						android:textSize="34sp" />
 
-			<Space
-					android:layout_height="45dp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
+			</RelativeLayout>
 
-			<TextView
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:text="@string/txt_payId"
-					android:textSize="15sp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<Space
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-					android:id="@+id/txt_profile_payId"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:textSize="22sp"
-					app:layout_columnSpan="9"
-					app:layout_columnWeight="9" />
-
-			<Button
-					android:id="@+id/button"
-					android:layout_width="0dp"
-					android:layout_height="22sp"
-					android:background="@color/colorPrimaryDark"
-					app:layout_columnWeight="1" />
-
-			<Space
-					android:layout_height="15dp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:text="@string/txt_permission"
-					android:textSize="15sp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-					android:id="@+id/txt_profile_permission"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:textSize="22sp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
+			<ScrollView
+					android:layout_width="match_parent"
+					android:layout_height="0dp"
+					android:layout_weight="9">
 
 
-			<Space
-					android:layout_height="15dp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:text="@string/txt_coins"
-					android:textSize="15sp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
-
-			<TextView
-					android:id="@+id/txt_profile_coins"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:textSize="22sp"
-					app:layout_columnSpan="10"
-					app:layout_columnWeight="10" />
+				<androidx.gridlayout.widget.GridLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:foregroundGravity="center"
+						android:padding="25dp"
+						app:columnCount="10">
 
 
-		</androidx.gridlayout.widget.GridLayout>
+					<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:text="@string/txt_payId"
+							android:textSize="15sp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
 
-	</ScrollView>
-</LinearLayout>
+					<Space
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+					<TextView
+							android:id="@+id/txt_profile_payId"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:textSize="22sp"
+							app:layout_columnSpan="9"
+							app:layout_columnWeight="9" />
+
+					<Button
+							android:id="@+id/button"
+							android:layout_width="0dp"
+							android:layout_height="22sp"
+							android:background="@color/colorPrimaryDark"
+							app:layout_columnWeight="1" />
+
+					<Space
+							android:layout_height="15dp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:text="@string/txt_permission"
+							android:textSize="15sp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<TextView
+							android:id="@+id/txt_profile_permission"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:textSize="22sp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<Space
+							android:layout_height="15dp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<View
+							android:layout_width="0dp"
+							android:layout_height="1dp"
+							android:background="@color/grey"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<Space
+							android:layout_height="45dp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:text="@string/txt_fname"
+							android:textSize="15sp"
+							app:layout_columnWeight="10" />
+
+					<Space
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<TextView
+							android:id="@+id/txt_profile_fName"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:textSize="22sp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+
+					<Space
+							android:layout_height="15dp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<TextView
+
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:text="@string/txt_lname"
+							android:textSize="15sp"
+							app:layout_columnWeight="10" />
+
+					<Space
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<TextView
+							android:id="@+id/txt_profile_lName"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:textSize="22sp"
+							app:layout_columnSpan="5"
+							app:layout_columnWeight="5" />
+
+					<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:gravity="center"
+							android:text="v/o"
+							android:textSize="20sp"
+							app:layout_columnSpan="2"
+							app:layout_columnWeight="2" />
+
+					<TextView
+							android:id="@+id/txt_profile_vulgo"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:textSize="22sp"
+							app:layout_columnSpan="3"
+							app:layout_columnWeight="3" />
+
+					<Space
+							android:layout_height="30dp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:text="@string/txt_mail"
+							android:textSize="15sp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<Space
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<TextView
+							android:id="@+id/txt_profile_mail"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:textSize="22sp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<Space
+							android:layout_height="45dp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<View
+							android:layout_width="0dp"
+							android:layout_height="1dp"
+							android:background="@color/grey"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<Space
+							android:layout_height="15dp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<TextView
+							android:id="@+id/profile_changemail"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:text="@string/txt_changeMail"
+							android:textColor="@color/colorPrimaryDark"
+							android:textSize="15sp"
+							app:layout_columnSpan="4"
+							app:layout_columnWeight="4" />
+
+					<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:text="@string/txt_changePW"
+							android:textColor="@color/colorPrimaryDark"
+							android:textSize="15sp"
+							app:layout_columnSpan="4"
+							app:layout_columnWeight="4" />
+
+					<Space
+							android:layout_height="15dp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+
+				</androidx.gridlayout.widget.GridLayout>
+
+			</ScrollView>
+		</LinearLayout>
+
+	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</RelativeLayout>
