@@ -35,6 +35,11 @@ class ProfileFragment : Fragment() {
             permissionToString(token.getString("permission", "")!!.toInt())
 
 
+        //refresh_profile.setColorSchemeColors(Color.RED, Color.BLUE)
+
+        
+
+
     }
 
     fun permissionToString(p: Int): String {

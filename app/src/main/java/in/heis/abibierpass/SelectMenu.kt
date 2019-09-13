@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.activity_main.*
@@ -68,6 +69,9 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
             R.id.nav_acc_profile -> {
                 ProfileFragment()
             }
+            R.id.nav_acc_admin -> {
+                AdminFragment()
+            }
 
             else -> {
                 HomeFragment()
@@ -104,16 +108,19 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
             findItem(R.id.nav_acc_profile).isEnabled = true
             findItem(R.id.action_logout).isVisible = true
             findItem(R.id.action_logout).isEnabled = true
-        }
 
 
 
 
-        if (permission == 10) {
-            TODO("see confirmed order - list: time, name, vulgo")
-        }
-        if (permission == 100) {
-            TODO("full admin - list of all users, money, usw")
+
+            if (permission >= 10) {
+                Toast.makeText(activity, "asdf", Toast.LENGTH_LONG)
+            }
+            if (permission == 100) {
+
+                findItem(R.id.nav_acc_admin).isVisible = true
+                findItem(R.id.nav_acc_admin).isEnabled = true
+            }
         }
         change()
 
