@@ -32,7 +32,8 @@ class ProfileFragment : Fragment() {
         txt_profile_mail.text = token.getString("mail", "")
         txt_profile_payId.text = token.getString("payId", "")
         txt_profile_permission.text =
-            permissionToString(token.getString("permission", "")!!.toInt())
+            CustomConvert().permissionToString(token.getString("permission", "")!!.toInt())
+
 
 
         //refresh_profile.setColorSchemeColors(Color.RED, Color.BLUE)
@@ -70,6 +71,8 @@ class ProfileFragment : Fragment() {
             }
         }
     }
+
+    companion object
 
 
 }
