@@ -18,7 +18,7 @@ class CustomConvert {
             20 -> {
                 return "Bierwart. Berechtigt Guthaben zu verteilen"
             }
-            30 -> {
+            50 -> {
                 return "Admin"
             }
             100 -> {

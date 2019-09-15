@@ -1,10 +1,12 @@
 package `in`.heis.abibierpass
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.gson.JsonArray
@@ -26,6 +28,7 @@ class AdminFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_admin).isChecked = true
+        val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
 
         switch_showall.setOnClickListener {
             if (switch_showall.isChecked) {
@@ -55,6 +58,7 @@ class AdminFragment : Fragment() {
                 switch_showall.isChecked = false
             } else switch_showall.isChecked = true
         }
+
 
 
         btn_show.setOnClickListener {
@@ -98,6 +102,77 @@ class AdminFragment : Fragment() {
                         val userData = itJson["data"].asJsonArray
                         val adapter = UserAdapter(context!!, userData)
                         listview_user.adapter = adapter
+                        listview_user.onItemClickListener =
+                            AdapterView.OnItemClickListener { adapterView, view, i, l ->
+                                val fName = userData[i].asJsonObject.get("fName").asString
+                                val lName = userData[i].asJsonObject.get("lName").asString
+                                val vulgo = userData[i].asJsonObject.get("vulgo").asString
+                                val mail = userData[i].asJsonObject.get("mail").asString
+                                val permission = userData[i].asJsonObject.get("permission").asInt
+                                var message =
+                                    "Vorname: " + fName + "\nNachname: " + lName + "\nVulgo: " + vulgo + "\n\n\n"
+
+                                if (permission <= 1) {
+                                    if (permission == 0) message =
+                                        message + "Wichtig:\nDieser Benutzer hat seine E-Mail Adresse noch nicht bestätigt! Trotzdem freischalten?"
+                                    else message =
+                                        message + "Den ausgewählten Benutzer jetzt freischalten?"
+
+                                    AlertDialog.Builder(context)
+                                        .setTitle("Ausgewählter Benutzer")
+                                        .setMessage(message)
+
+                                        .setPositiveButton("Ja") { dialog, which ->
+                                            UpdateUser().permission(mail, 2)
+                                        }
+                                        .setNegativeButton("Nein") { dialog, which ->
+                                            //SelectMenu(-1, drawer_layout, activity).change()
+                                        }
+                                        .show()
+                                }
+                                if (permission < token.getString("permission", "")!!.toInt()) {
+                                    if (token.getString("permission", "")!!.toInt() >= 20)
+                                        AlertDialog.Builder(context)
+                                            .setTitle("Ausgewählter Benutzer")
+                                            .setMessage(message)
+
+                                            .setPositiveButton("Berechtigung Ändern") { dialog, which ->
+                                                if (token.getString(
+                                                        "permission",
+                                                        ""
+                                                    )!!.toInt() >= 20
+                                                ) {
+                                                    //zum Fuchs
+                                                    UpdateUser().permission(mail, 10)
+                                                }
+                                                if (token.getString(
+                                                        "permission",
+                                                        ""
+                                                    )!!.toInt() >= 50
+                                                ) {
+                                                    //zum Bierwart
+                                                    UpdateUser().permission(mail, 20)
+                                                }
+                                                if (token.getString(
+                                                        "permission",
+                                                        ""
+                                                    )!!.toInt() > 50
+                                                ) {
+                                                    //zum Admin
+                                                    UpdateUser().permission(mail, 50)
+                                                }
+
+                                            }
+                                            .setNegativeButton("Guthaben Aufladen") { dialog, which ->
+
+                                            }
+                                            .show()
+                                } else Toast.makeText(
+                                    context,
+                                    "Du bist nicht berechtigt Änderungen an diesem Nutzer vorzunehmen",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                     }
 
                 }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
@@ -105,5 +180,4 @@ class AdminFragment : Fragment() {
 
     }
 
-    inner class User(var fName: String?, var lName: String?, var vulgo: String?)
 }
