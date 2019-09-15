@@ -38,12 +38,10 @@ class UserAdapter(
         val fName = rowView.findViewById(R.id.txt_fName) as TextView
         val lName = rowView.findViewById(R.id.txt_lName) as TextView
         val vulgo = rowView.findViewById(R.id.txt_vulgo) as TextView
-        val coins = rowView.findViewById(R.id.txt_coins) as TextView
         val permission = rowView.findViewById(R.id.txt_permission) as TextView
         fName.text = dataSource[position].asJsonObject.get("fName").asString
         lName.text = dataSource[position].asJsonObject.get("lName").asString
         vulgo.text = dataSource[position].asJsonObject.get("vulgo").asString
-        //coins.text = dataSource[position].asJsonObject.get("coins").asString
         permission.text =
             CustomConvert().permissionToString(dataSource[position].asJsonObject.get("permission").asInt)
 

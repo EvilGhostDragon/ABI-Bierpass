@@ -11,7 +11,7 @@
 			android:id="@+id/txt_fName"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="20"
+			android:layout_weight="25"
 			android:textSize="17sp"
 			android:text="@string/txt_fname" />
 
@@ -19,7 +19,7 @@
 			android:id="@+id/txt_lName"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="20"
+			android:layout_weight="25"
 			android:textSize="17sp"
 			android:text="@string/txt_lname" />
 
@@ -27,23 +27,16 @@
 			android:id="@+id/txt_vulgo"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="20"
+			android:layout_weight="25"
 			android:textSize="17sp"
 			android:text="@string/txt_vulgo" />
 
-	<TextView
-			android:id="@+id/txt_coins"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="20"
-			android:textSize="17sp"
-			android:text="@string/txt_coins" />
 
 	<TextView
 			android:id="@+id/txt_permission"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="20"
+			android:layout_weight="25"
 			android:textSize="17sp"
 			android:text="@string/txt_permission" />
 </LinearLayout>

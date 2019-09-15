@@ -4,25 +4,28 @@ class CustomConvert {
     fun permissionToString(p: Int): String {
         when (p) {
             0 -> {
-                return "No permission! require email confirmation"
+                return "Gesperrter Nutzer oder mit unbestätigter E-Mail Adresse"
             }
             1 -> {
-                return "No permission! require data check"
+                return "Nutzer muss manuell freigeschalten werden"
             }
             2 -> {
-                return "Keine. Normaler Benutzer"
+                return "Normaler Benutzer"
+            }
+            2 -> {
+                return "Normaler Benutzer *hust*"
             }
             10 -> {
-                return "Fuchs. Berechtigt letzten 10 Zahlungen zu sehen"
+                return "Fuchs"
             }
             20 -> {
-                return "Bierwart. Berechtigt Guthaben zu verteilen"
+                return "Bierwart"
             }
             50 -> {
                 return "Admin"
             }
             100 -> {
-                return "Zer0"
+                return "Entwickler"
             }
             else -> {
                 return "Hacker?"

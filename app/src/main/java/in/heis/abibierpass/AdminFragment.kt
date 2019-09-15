@@ -74,108 +74,162 @@ class AdminFragment : Fragment() {
             } else {
                 json.put("input", editText_search.text.toString())
             }
-                HttpTask {
-                    if (it == null) {
-                        println("connection error")
-                        AlertDialog.Builder(context)
-                            .setTitle("Fehler")
-                            .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
-                            .setPositiveButton("OK") { dialog, which ->
-                                SelectMenu(-1, drawer_layout, activity).change()
+            HttpTask {
+                if (it == null) {
+                    println("connection error")
+                    AlertDialog.Builder(context)
+                        .setTitle("Fehler")
+                        .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
+                        .setPositiveButton("OK") { dialog, which ->
+                            SelectMenu(-1, drawer_layout, activity).change()
+                        }
+                        .show()
+
+                    return@HttpTask
+                }
+                //println(it)
+                val itJson = JsonParser().parse(it).asJsonObject
+                if (itJson.get("result").asInt == 0) {
+                    Toast.makeText(
+                        context!!,
+                        "Keine Benutzer mit diesen Kriterien gefunden",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    val adapter = UserAdapter(context!!, JsonArray())
+                    listview_user.adapter = adapter
+                    return@HttpTask
+                } else if (itJson.get("result").asInt == 1) {
+                    val userData = itJson["data"].asJsonArray
+                    val adapter = UserAdapter(context!!, userData)
+                    listview_user.adapter = adapter
+                    listview_user.onItemClickListener =
+                        AdapterView.OnItemClickListener { adapterView, view, i, l ->
+                            val fName = userData[i].asJsonObject.get("fName").asString
+                            val lName = userData[i].asJsonObject.get("lName").asString
+                            val vulgo = userData[i].asJsonObject.get("vulgo").asString
+                            val mail = userData[i].asJsonObject.get("mail").asString
+                            val permission = userData[i].asJsonObject.get("permission").asInt
+                            var message =
+                                "Vorname: " + fName + "\nNachname: " + lName + "\nVulgo: " + vulgo + "\n\n\n"
+
+                            if (permission <= 1) {
+                                if (permission == 0) message =
+                                    message + "Wichtig:\nDieser Benutzer hat seine E-Mail Adresse noch nicht bestätigt oder wurde gesperrt! Trotzdem freischalten?"
+                                else message =
+                                    message + "Den ausgewählten Benutzer jetzt freischalten?"
+
+                                AlertDialog.Builder(context)
+                                    .setTitle("Ausgewählter Benutzer")
+                                    .setMessage(message)
+
+                                    .setPositiveButton("Ja") { dialog, which ->
+                                        UpdateUser().permission(mail, 2)
+                                    }
+                                    .setNegativeButton("Nein") { dialog, which ->
+                                        //SelectMenu(-1, drawer_layout, activity).change()
+                                    }
+                                    .show()
+                            } else if (token.getString("permission", "")!!.toInt() >= 20) {
+                                AlertDialog.Builder(context)
+                                    .setTitle("Ausgewählter Benutzer")
+                                    .setMessage(message)
+
+                                    .setPositiveButton("Berechtigung Ändern") { dialog, which ->
+                                        if (permission < token.getString(
+                                                "permission",
+                                                ""
+                                            )!!.toInt()
+                                        ) {
+                                            AlertDialog.Builder(context)
+                                                .setTitle("Ausgewählter Benutzer")
+                                                .setMessage(
+                                                    message + "Berechtigungshierarchie: \n\t- " +
+                                                            CustomConvert().permissionToString(0) + " \n\t- " +
+                                                            CustomConvert().permissionToString(1) + " \n\t- " +
+                                                            CustomConvert().permissionToString(2) + " \n\t- " +
+                                                            CustomConvert().permissionToString(
+                                                                10
+                                                            ) + " \n\t- " +
+                                                            CustomConvert().permissionToString(
+                                                                20
+                                                            ) + " \n\t- " +
+                                                            CustomConvert().permissionToString(
+                                                                50
+                                                            ) + " \n\t- " +
+                                                            CustomConvert().permissionToString(
+                                                                100
+                                                            )
+                                                )
+                                                .setNegativeButton("Berechtigung Erhöhen") { dialog, which ->
+                                                    if ((token.getString(
+                                                            "permission",
+                                                            ""
+                                                        )!!.toInt() >= 20) and (permission < 10)
+                                                    ) {
+                                                        //zum Fuchs
+                                                        UpdateUser().permission(mail, 10)
+                                                    } else if ((token.getString(
+                                                            "permission",
+                                                            ""
+                                                        )!!.toInt() >= 50) and (permission < 20)
+                                                    ) {
+                                                        //zum Bierwart
+                                                        UpdateUser().permission(mail, 20)
+                                                    } else if ((token.getString(
+                                                            "permission",
+                                                            ""
+                                                        )!!.toInt() > 50) and (permission < 50)
+                                                    ) {
+                                                        //zum Admin
+                                                        UpdateUser().permission(mail, 50)
+                                                    }
+                                                }
+
+                                                .setPositiveButton("Berechtigung Vermindern") { dialog, which ->
+                                                    if ((permission >= 50) and (token.getString(
+                                                            "permission",
+                                                            ""
+                                                        )!!.toInt() > 50)
+                                                    ) {
+                                                        UpdateUser().permission(mail, 20)
+                                                    } else if ((permission >= 20) and (token.getString(
+                                                            "permission",
+                                                            ""
+                                                        )!!.toInt() > 20)
+                                                    ) {
+                                                        UpdateUser().permission(mail, 10)
+                                                    } else if ((permission >= 10) and (token.getString(
+                                                            "permission",
+                                                            ""
+                                                        )!!.toInt() >= 20)
+                                                    ) {
+                                                        UpdateUser().permission(mail, 2)
+                                                    } else if ((permission >= 2) and (token.getString(
+                                                            "permission",
+                                                            ""
+                                                        )!!.toInt() >= 50)
+                                                    ) {
+                                                        UpdateUser().permission(mail, 0)
+                                                    }
+                                                }
+                                                .show()
+
+
+                                        } else Toast.makeText(
+                                            context,
+                                            "Du bist nicht berechtigt Änderungen an diesem Nutzer vorzunehmen",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                    .setNegativeButton("Guthaben Aufladen") { dialog, which ->
+
+                                    }
+                                    .show()
                             }
-                            .show()
+                        }
+                }
 
-                        return@HttpTask
-                    }
-                    //println(it)
-                    val itJson = JsonParser().parse(it).asJsonObject
-                    if (itJson.get("result").asInt == 0) {
-                        Toast.makeText(
-                            context!!,
-                            "Keine Benutzer mit diesen Kriterien gefunden",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        val adapter = UserAdapter(context!!, JsonArray())
-                        listview_user.adapter = adapter
-                        return@HttpTask
-                    } else if (itJson.get("result").asInt == 1) {
-                        val userData = itJson["data"].asJsonArray
-                        val adapter = UserAdapter(context!!, userData)
-                        listview_user.adapter = adapter
-                        listview_user.onItemClickListener =
-                            AdapterView.OnItemClickListener { adapterView, view, i, l ->
-                                val fName = userData[i].asJsonObject.get("fName").asString
-                                val lName = userData[i].asJsonObject.get("lName").asString
-                                val vulgo = userData[i].asJsonObject.get("vulgo").asString
-                                val mail = userData[i].asJsonObject.get("mail").asString
-                                val permission = userData[i].asJsonObject.get("permission").asInt
-                                var message =
-                                    "Vorname: " + fName + "\nNachname: " + lName + "\nVulgo: " + vulgo + "\n\n\n"
-
-                                if (permission <= 1) {
-                                    if (permission == 0) message =
-                                        message + "Wichtig:\nDieser Benutzer hat seine E-Mail Adresse noch nicht bestätigt! Trotzdem freischalten?"
-                                    else message =
-                                        message + "Den ausgewählten Benutzer jetzt freischalten?"
-
-                                    AlertDialog.Builder(context)
-                                        .setTitle("Ausgewählter Benutzer")
-                                        .setMessage(message)
-
-                                        .setPositiveButton("Ja") { dialog, which ->
-                                            UpdateUser().permission(mail, 2)
-                                        }
-                                        .setNegativeButton("Nein") { dialog, which ->
-                                            //SelectMenu(-1, drawer_layout, activity).change()
-                                        }
-                                        .show()
-                                }
-                                if (permission < token.getString("permission", "")!!.toInt()) {
-                                    if (token.getString("permission", "")!!.toInt() >= 20)
-                                        AlertDialog.Builder(context)
-                                            .setTitle("Ausgewählter Benutzer")
-                                            .setMessage(message)
-
-                                            .setPositiveButton("Berechtigung Ändern") { dialog, which ->
-                                                if (token.getString(
-                                                        "permission",
-                                                        ""
-                                                    )!!.toInt() >= 20
-                                                ) {
-                                                    //zum Fuchs
-                                                    UpdateUser().permission(mail, 10)
-                                                }
-                                                if (token.getString(
-                                                        "permission",
-                                                        ""
-                                                    )!!.toInt() >= 50
-                                                ) {
-                                                    //zum Bierwart
-                                                    UpdateUser().permission(mail, 20)
-                                                }
-                                                if (token.getString(
-                                                        "permission",
-                                                        ""
-                                                    )!!.toInt() > 50
-                                                ) {
-                                                    //zum Admin
-                                                    UpdateUser().permission(mail, 50)
-                                                }
-
-                                            }
-                                            .setNegativeButton("Guthaben Aufladen") { dialog, which ->
-
-                                            }
-                                            .show()
-                                } else Toast.makeText(
-                                    context,
-                                    "Du bist nicht berechtigt Änderungen an diesem Nutzer vorzunehmen",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                    }
-
-                }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
+            }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
         }
 
     }
