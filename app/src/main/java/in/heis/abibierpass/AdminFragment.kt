@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.gson.JsonObject
+import com.google.gson.JsonArray
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_admin.*
 import org.json.JSONObject
-import java.util.*
 
 class AdminFragment : Fragment() {
 
@@ -27,12 +26,50 @@ class AdminFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_admin).isChecked = true
-        btn_show.setOnClickListener {
-            if (switch_showall.isChecked and editText_search.text.isEmpty()) {
-                val json = JSONObject()
-                json.put("action", "getuserinformation")
-                json.put("input", "geteverything")
 
+        switch_showall.setOnClickListener {
+            if (switch_showall.isChecked) {
+                switch_showfox.isChecked = false
+                switch_shownew.isChecked = false
+                switch_shownormal.isChecked = false
+            } else switch_showall.isChecked = true
+        }
+        switch_showfox.setOnClickListener {
+            if (switch_showfox.isChecked) {
+                switch_showall.isChecked = false
+                switch_shownew.isChecked = false
+                switch_shownormal.isChecked = false
+            } else switch_showall.isChecked = true
+        }
+        switch_shownew.setOnClickListener {
+            if (switch_shownew.isChecked) {
+                switch_showfox.isChecked = false
+                switch_showall.isChecked = false
+                switch_shownormal.isChecked = false
+            } else switch_showall.isChecked = true
+        }
+        switch_shownormal.setOnClickListener {
+            if (switch_shownormal.isChecked) {
+                switch_showfox.isChecked = false
+                switch_shownew.isChecked = false
+                switch_showall.isChecked = false
+            } else switch_showall.isChecked = true
+        }
+
+
+        btn_show.setOnClickListener {
+            val json = JSONObject()
+            json.put("action", "getuserinformation")
+            if (switch_showfox.isChecked) json.put("permission", 10)
+            if (switch_shownew.isChecked) json.put("permission", 1)
+            if (switch_shownormal.isChecked) json.put("permission", 2)
+
+
+            if (editText_search.text.isEmpty()) {
+                json.put("input", "geteverything")
+            } else {
+                json.put("input", editText_search.text.toString())
+            }
                 HttpTask {
                     if (it == null) {
                         println("connection error")
@@ -48,34 +85,22 @@ class AdminFragment : Fragment() {
                     }
                     //println(it)
                     val itJson = JsonParser().parse(it).asJsonObject
-                    //println(itJson)
-                    //println(itJson["data"])
-                    val userData = itJson["data"].asJsonArray
-                    println(userData[1].asJsonObject.get("fName"))
-
-
-                    val listItems = arrayOfNulls<JsonObject>(5)
-
-
-                    for (i in 0 until 5) {
-                        val user = userData[i].asJsonObject
-                        listItems[i] = user
+                    if (itJson.get("result").asInt == 0) {
+                        Toast.makeText(
+                            context!!,
+                            "Keine Benutzer mit diesen Kriterien gefunden",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        val adapter = UserAdapter(context!!, JsonArray())
+                        listview_user.adapter = adapter
+                        return@HttpTask
+                    } else if (itJson.get("result").asInt == 1) {
+                        val userData = itJson["data"].asJsonArray
+                        val adapter = UserAdapter(context!!, userData)
+                        listview_user.adapter = adapter
                     }
-                    println(Arrays.toString(listItems))
-
-
-                    val adapter = ArrayAdapter(
-                        context!!,
-                        android.R.layout.simple_list_item_multiple_choice,
-                        listItems
-                    )
-                    val ad = UserAdapter(context!!, userData)
-
-
-                    listview_user.adapter = ad
 
                 }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
-            }
         }
 
     }
