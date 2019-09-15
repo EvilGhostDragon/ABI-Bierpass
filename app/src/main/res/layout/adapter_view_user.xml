@@ -3,6 +3,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="horizontal"
+		android:gravity="center"
+		android:padding="5dp"
 		android:weightSum="100">
 
 	<TextView
@@ -10,6 +12,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="20"
+			android:textSize="17sp"
 			android:text="@string/txt_fname" />
 
 	<TextView
@@ -17,6 +20,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="20"
+			android:textSize="17sp"
 			android:text="@string/txt_lname" />
 
 	<TextView
@@ -24,6 +28,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="20"
+			android:textSize="17sp"
 			android:text="@string/txt_vulgo" />
 
 	<TextView
@@ -31,6 +36,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="20"
+			android:textSize="17sp"
 			android:text="@string/txt_coins" />
 
 	<TextView
@@ -38,5 +44,6 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="20"
+			android:textSize="17sp"
 			android:text="@string/txt_permission" />
 </LinearLayout>

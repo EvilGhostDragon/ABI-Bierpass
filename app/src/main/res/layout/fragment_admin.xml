@@ -10,6 +10,9 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="vertical"
+			android:paddingLeft="20dp"
+			android:paddingRight="20dp"
+			android:paddingBottom="10dp"
 			android:weightSum="10">
 
 
@@ -30,21 +33,22 @@
 		<ScrollView
 				android:layout_width="match_parent"
 				android:layout_height="0dp"
-				android:layout_weight="2">
+				android:layout_weight="1.5">
 
 			<androidx.gridlayout.widget.GridLayout
 					android:layout_width="match_parent"
 					android:layout_height="0dp"
 					android:foregroundGravity="center"
-					android:padding="25dp"
+					android:paddingTop="25dp"
 					app:columnCount="6"
-					app:rowCount="3">
+					app:rowCount="2">
 
 
 				<Switch
 						android:id="@+id/switch_showall"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
+						android:checked="true"
 						android:padding="10dp"
 						android:text="Alles anzeigen"
 						android:textSize="15sp"
@@ -89,29 +93,37 @@
 						app:layout_rowSpan="1"
 						app:layout_rowWeight="1" />
 
-				<EditText
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:hint="Suche (Name, Vulgo, ID)"
-						android:textSize="15sp"
-						app:layout_columnSpan="5"
-						app:layout_columnWeight="5"
-						app:layout_rowSpan="1"
-						app:layout_rowWeight="1" />
 
-				<Button
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:padding="10dp"
-						android:text="Suchen"
-						app:layout_columnSpan="1"
-						app:layout_columnWeight="1"
-						app:layout_rowSpan="1"
-						app:layout_rowWeight="1" />
 
 
 			</androidx.gridlayout.widget.GridLayout>
 		</ScrollView>
+
+		<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_weight="1.0"
+				android:gravity="center"
+				android:orientation="horizontal"
+				android:weightSum="3">
+
+			<EditText
+					android:id="@+id/editText_search"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="2"
+					android:hint="Suche (Name, Vulgo, ID)"
+					android:textSize="15sp" />
+
+			<Button
+					android:id="@+id/btn_show"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:padding="10dp"
+					android:text="Suchen" />
+
+		</LinearLayout>
 
 		<View
 				android:layout_width="match_parent"
@@ -121,7 +133,7 @@
 		<ScrollView
 				android:layout_width="match_parent"
 				android:layout_height="0dp"
-				android:layout_weight="7"
+				android:layout_weight="7.5"
 				android:fillViewport="true">
 
 

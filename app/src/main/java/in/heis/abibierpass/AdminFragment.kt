@@ -27,53 +27,56 @@ class AdminFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_admin).isChecked = true
+        btn_show.setOnClickListener {
+            if (switch_showall.isChecked and editText_search.text.isEmpty()) {
+                val json = JSONObject()
+                json.put("action", "getuserinformation")
+                json.put("input", "geteverything")
 
-        val json = JSONObject()
-        json.put("action", "getuserinformation")
-        json.put("input", "geteverything")
+                HttpTask {
+                    if (it == null) {
+                        println("connection error")
+                        AlertDialog.Builder(context)
+                            .setTitle("Fehler")
+                            .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
+                            .setPositiveButton("OK") { dialog, which ->
+                                SelectMenu(-1, drawer_layout, activity).change()
+                            }
+                            .show()
 
-        HttpTask {
-            if (it == null) {
-                println("connection error")
-                AlertDialog.Builder(context)
-                    .setTitle("Fehler")
-                    .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
-                    .setPositiveButton("OK") { dialog, which ->
-                        SelectMenu(-1, drawer_layout, activity).change()
+                        return@HttpTask
                     }
-                    .show()
+                    //println(it)
+                    val itJson = JsonParser().parse(it).asJsonObject
+                    //println(itJson)
+                    //println(itJson["data"])
+                    val userData = itJson["data"].asJsonArray
+                    println(userData[1].asJsonObject.get("fName"))
 
-                return@HttpTask
+
+                    val listItems = arrayOfNulls<JsonObject>(5)
+
+
+                    for (i in 0 until 5) {
+                        val user = userData[i].asJsonObject
+                        listItems[i] = user
+                    }
+                    println(Arrays.toString(listItems))
+
+
+                    val adapter = ArrayAdapter(
+                        context!!,
+                        android.R.layout.simple_list_item_multiple_choice,
+                        listItems
+                    )
+                    val ad = UserAdapter(context!!, userData)
+
+
+                    listview_user.adapter = ad
+
+                }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
             }
-            //println(it)
-            val itJson = JsonParser().parse(it).asJsonObject
-            //println(itJson)
-            //println(itJson["data"])
-            val userData = itJson["data"].asJsonArray
-            println(userData[1].asJsonObject.get("fName"))
-
-
-            val listItems = arrayOfNulls<JsonObject>(5)
-
-
-            for (i in 0 until 5) {
-                val user = userData[i].asJsonObject
-                listItems[i] = user
-            }
-            println(Arrays.toString(listItems))
-
-
-            val adapter = ArrayAdapter(
-                context!!,
-                android.R.layout.simple_list_item_multiple_choice,
-                listItems
-            )
-            val ad = UserAdapter(context!!, userData)
-
-
-            listview_user.adapter = ad
-
-        }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
+        }
 
     }
 
