@@ -37,11 +37,11 @@ class ProfileFragment : Fragment() {
 
         btn_profile_changepw.setOnClickListener {
             Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
-            TODO("able to change pw")
+            //TODO("able to change pw")
         }
         btn_profile_changemail.setOnClickListener {
             Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
-            TODO("able to change mail")
+            //TODO("able to change mail")
         }
 
 

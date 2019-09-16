@@ -30,11 +30,12 @@ class LoginFragment : Fragment() {
 
         btn_profile_resendmail.setOnClickListener {
             Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
-            TODO("able to resend mail")
+            //TODO("able to resend mail")
         }
         btn_profile_resetpw.setOnClickListener {
             Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
-            TODO("able to reset pw")
+            //TODO("able to reset pw")
+
         }
 
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
