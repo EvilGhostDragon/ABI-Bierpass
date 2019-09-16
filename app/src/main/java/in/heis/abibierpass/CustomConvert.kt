@@ -32,4 +32,22 @@ class CustomConvert {
             }
         }
     }
+
+    fun transStateToString(s: Int, p: Int): String {
+        return when (s) {
+            0 -> {
+                if (p >= 10) "Auftrag annehmen"
+                else "Nein"
+            }
+            1 -> {
+                "Wird bearbeitet"
+            }
+            2 -> {
+                "Ja"
+            }
+            else -> {
+                "Hacker?"
+            }
+        }
+    }
 }

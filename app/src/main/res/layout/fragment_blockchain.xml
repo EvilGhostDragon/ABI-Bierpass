@@ -42,7 +42,7 @@
 
 
 			<ListView
-					android:id="@+id/listview_user"
+					android:id="@+id/listview_block"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
 		</ScrollView>
