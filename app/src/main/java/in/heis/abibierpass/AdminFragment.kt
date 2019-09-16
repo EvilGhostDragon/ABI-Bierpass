@@ -108,6 +108,7 @@ class AdminFragment : Fragment() {
                             val lName = userData[i].asJsonObject.get("lName").asString
                             val vulgo = userData[i].asJsonObject.get("vulgo").asString
                             val mail = userData[i].asJsonObject.get("mail").asString
+                            val payId = userData[i].asJsonObject.get("payId").asString
                             val permission = userData[i].asJsonObject.get("permission").asInt
                             var message =
                                 "Vorname: " + fName + "\nNachname: " + lName + "\nVulgo: " + vulgo + "\n\n\n"
@@ -222,7 +223,128 @@ class AdminFragment : Fragment() {
                                         ).show()
                                     }
                                     .setNegativeButton("Guthaben Aufladen") { dialog, which ->
+                                        val json = JSONObject()
+                                        json.put("action", "newblock")
+                                        json.put("payId", payId)
+                                        json.put("payId_from", token.getString("payId", ""))
 
+                                        AlertDialog.Builder(context)
+                                            .setTitle("Bier-Coins aufladen")
+                                            .setMessage("Jede deiner durchgeführeten positiven Transaktion, wird mit deiner Benutzer-ID markiert. Dies wird benötigt um Fehler leichter finden zu können und um Missbrauch zu mindern.\n\n\n Nun da das geklärt ist, wie viele Coins möchtest du gutschreiben?")
+
+                                            .setPositiveButton("Schwacher Abend: 1 Coin") { dialog, which ->
+                                                json.put("amount", 1)
+                                                HttpTask {
+                                                    if (it == null) {
+                                                        println("connection error")
+                                                        AlertDialog.Builder(context)
+                                                            .setTitle("Fehler")
+                                                            .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
+                                                            .setPositiveButton("OK") { dialog, which ->
+                                                                SelectMenu(
+                                                                    -1,
+                                                                    drawer_layout,
+                                                                    activity
+                                                                ).change()
+                                                            }
+                                                            .show()
+
+                                                        return@HttpTask
+                                                    }
+                                                    val itJson = JsonParser().parse(it).asJsonObject
+                                                    if (itJson.get("result").asInt == 1) {
+                                                        Toast.makeText(
+                                                            context!!,
+                                                            "Transaktion wurde erfolgreich durchgeführt. Hoch die Gläser",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                    } else Toast.makeText(
+                                                        context!!,
+                                                        "Etwas ist schief gelaufen. War da ein Fuchs am Werk o_O",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+                                                }.execute(
+                                                    "POST",
+                                                    "https://abidigital.tk/api/db_use.php",
+                                                    json.toString()
+                                                )
+
+                                            }
+                                            .setNegativeButton("Angemessener Abend: 5 Coins") { dialog, which ->
+                                                json.put("amount", 5)
+                                                HttpTask {
+                                                    if (it == null) {
+                                                        println("connection error")
+                                                        AlertDialog.Builder(context)
+                                                            .setTitle("Fehler")
+                                                            .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
+                                                            .setPositiveButton("OK") { dialog, which ->
+                                                                SelectMenu(
+                                                                    -1,
+                                                                    drawer_layout,
+                                                                    activity
+                                                                ).change()
+                                                            }
+                                                            .show()
+
+                                                        return@HttpTask
+                                                    }
+                                                    val itJson = JsonParser().parse(it).asJsonObject
+                                                    if (itJson.get("result").asInt == 1) {
+                                                        Toast.makeText(
+                                                            context!!,
+                                                            "Transaktion wurde erfolgreich durchgeführt. Hoch die Gläser",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                    } else Toast.makeText(
+                                                        context!!,
+                                                        "Etwas ist schief gelaufen. War da ein Fuchs am Werk o_O",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+                                                }.execute(
+                                                    "POST",
+                                                    "https://abidigital.tk/api/db_use.php",
+                                                    json.toString()
+                                                )
+                                            }
+                                            .setNeutralButton("Guter Abend: 10 Coins") { dialog, which ->
+                                                json.put("amount", 10)
+                                                HttpTask {
+                                                    if (it == null) {
+                                                        println("connection error")
+                                                        AlertDialog.Builder(context)
+                                                            .setTitle("Fehler")
+                                                            .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
+                                                            .setPositiveButton("OK") { dialog, which ->
+                                                                SelectMenu(
+                                                                    -1,
+                                                                    drawer_layout,
+                                                                    activity
+                                                                ).change()
+                                                            }
+                                                            .show()
+
+                                                        return@HttpTask
+                                                    }
+                                                    val itJson = JsonParser().parse(it).asJsonObject
+                                                    if (itJson.get("result").asInt == 1) {
+                                                        Toast.makeText(
+                                                            context!!,
+                                                            "Transaktion wurde erfolgreich durchgeführt. Hoch die Gläser",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                    } else Toast.makeText(
+                                                        context!!,
+                                                        "Etwas ist schief gelaufen. War da ein Fuchs am Werk o_O",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+                                                }.execute(
+                                                    "POST",
+                                                    "https://abidigital.tk/api/db_use.php",
+                                                    json.toString()
+                                                )
+                                            }
+                                            .show()
                                     }
                                     .show()
                             }

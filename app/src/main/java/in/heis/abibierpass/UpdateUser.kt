@@ -4,9 +4,6 @@ import com.google.gson.JsonParser
 import org.json.JSONObject
 
 class UpdateUser {
-    companion object {
-        var result = 0
-    }
 
     val json = JSONObject().put("action", "updateuser")
 
@@ -19,7 +16,7 @@ class UpdateUser {
                 return@HttpTask
             }
             val itJson = JsonParser().parse(it).asJsonObject
-            UpdateUser.result = itJson.get("result").asInt
         }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
     }
+
 }
