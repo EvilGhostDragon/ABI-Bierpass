@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,6 +27,15 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_login).isChecked = true
+
+        btn_profile_resendmail.setOnClickListener {
+            Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
+            TODO("able to resend mail")
+        }
+        btn_profile_resetpw.setOnClickListener {
+            Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
+            TODO("able to reset pw")
+        }
 
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
         btn_acc_login.setOnClickListener {

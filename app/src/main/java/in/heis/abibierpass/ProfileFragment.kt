@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -33,6 +34,15 @@ class ProfileFragment : Fragment() {
         txt_profile_payId.text = token.getString("payId", "")
         txt_profile_permission.text =
             CustomConvert().permissionToString(token.getString("permission", "")!!.toInt())
+
+        btn_profile_changepw.setOnClickListener {
+            Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
+            TODO("able to change pw")
+        }
+        btn_profile_changemail.setOnClickListener {
+            Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
+            TODO("able to change mail")
+        }
 
 
 

@@ -83,7 +83,11 @@
 
 
 			>
-				<TextView
+
+				<Button
+						android:id="@+id/btn_profile_resetpw"
+						style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+						android:textSize="15sp"
 						android:text="Passwort vergessen"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
@@ -92,8 +96,12 @@
 						android:padding="5dp"
 						android:clickable="true"
 				/>
-				<TextView
+
+				<Button
+						android:id="@+id/btn_profile_resendmail"
 						android:text="Keine E-Mail erhalten?"
+						style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+						android:textSize="15sp"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
 						android:layout_weight="1"

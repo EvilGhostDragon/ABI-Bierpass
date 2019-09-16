@@ -65,15 +65,8 @@
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:textSize="22sp"
-							app:layout_columnSpan="9"
-							app:layout_columnWeight="9" />
-
-					<Button
-							android:id="@+id/button"
-							android:layout_width="0dp"
-							android:layout_height="22sp"
-							android:background="@color/colorPrimaryDark"
-							app:layout_columnWeight="1" />
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
 
 					<Space
 							android:layout_height="15dp"
@@ -217,29 +210,29 @@
 							app:layout_columnSpan="10"
 							app:layout_columnWeight="10" />
 
-					<TextView
-							android:id="@+id/profile_changemail"
+					<Button
+							android:id="@+id/btn_profile_changemail"
+							style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+							android:gravity="start"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:text="@string/txt_changeMail"
 							android:textColor="@color/colorPrimaryDark"
 							android:textSize="15sp"
-							app:layout_columnSpan="4"
-							app:layout_columnWeight="4" />
+							app:layout_columnSpan="2"
+							app:layout_columnWeight="2" />
 
-					<TextView
+					<Button
+							android:id="@+id/btn_profile_changepw"
+							style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+							android:gravity="start"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:text="@string/txt_changePW"
 							android:textColor="@color/colorPrimaryDark"
 							android:textSize="15sp"
-							app:layout_columnSpan="4"
-							app:layout_columnWeight="4" />
-
-					<Space
-							android:layout_height="15dp"
-							app:layout_columnSpan="10"
-							app:layout_columnWeight="10" />
+							app:layout_columnSpan="8"
+							app:layout_columnWeight="8" />
 
 
 				</androidx.gridlayout.widget.GridLayout>
