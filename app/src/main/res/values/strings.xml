@@ -1,12 +1,13 @@
 <resources>
 
-	<string name="navigation_drawer_open">Open navigation drawer</string>
-	<string name="navigation_drawer_close">Close navigation drawer</string>
-
+	<!-- Std App Strings -->
 	<string name="app_name">ABI Bierpass</string>
 	<string name="nav_header_title">Willkommen</string>
 	<string name="nav_header_subtitle">der digitale Weg zum Bier</string>
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+	<string name="navigation_drawer_close">Close navigation drawer</string>
 
+	<!-- Menüpunkte und Überschriften von Fragmente -->
 	<string name="menu_home">Home</string>
 	<string name="menu_acc">Account</string>
 	<string name="menu_acc_login">Anmelden</string>
@@ -24,6 +25,7 @@
 	<string name="menu_exit">App beenden</string>
 	<string name="menu_about">Über</string>
 
+	<!-- Jede Art von Textfelder -->
 	<string name="txt_login">Anmelden</string>
 	<string name="txt_register">Registrieren</string>
 	<string name="txt_mail">E-Mail Adresse</string>
@@ -43,6 +45,12 @@
 	<string name="txt_permission">APP Berechtigung</string>
 	<string name="txt_newMail">Neue E-Mail Adresse</string>
 	<string name="txt_coins">Bier Coins</string>
+
+	<!-- Text im Code - Known Json.put (acton), Alertdialog, Toasts, usw -->
+	<string name="code_json_action_getuserinformation">getuserinformation</string>
+	<string name="code_json_input_geteverything">geteverything</string>
+	<string name="code_alertdia_msg_error">Ups Bier verschüttet. Fehler können passieren.\n\nFehlercode: </string>
+
 
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>

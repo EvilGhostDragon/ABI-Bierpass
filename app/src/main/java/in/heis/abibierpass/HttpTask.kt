@@ -6,15 +6,13 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-val TIMEOUT = 10 * 1000
+const val TIMEOUT = 10 * 1000
 
-class HttpTask(callback: (String?) -> Unit) : AsyncTask<String, Unit, String>() {
+class HttpTask(var callback: (String?) -> Unit) : AsyncTask<String, Unit, String>() {
 
     companion object {
-        var msgError = "0000"
+        var msgError = "1906"
     }
-
-    var callback = callback
 
     override fun doInBackground(vararg params: String): String? {
         val url = URL(params[1])
@@ -43,8 +41,7 @@ class HttpTask(callback: (String?) -> Unit) : AsyncTask<String, Unit, String>() 
             }
             if (httpClient.responseCode == HttpURLConnection.HTTP_OK) {
                 val stream = BufferedInputStream(httpClient.inputStream)
-                val data: String = readStream(inputStream = stream)
-                return data
+                return readStream(inputStream = stream)
             } else {
                 println("ERROR ${httpClient.responseCode}")
                 msgError = "${httpClient.responseCode}"
@@ -58,7 +55,7 @@ class HttpTask(callback: (String?) -> Unit) : AsyncTask<String, Unit, String>() 
         return null
     }
 
-    fun readStream(inputStream: BufferedInputStream): String {
+    private fun readStream(inputStream: BufferedInputStream): String {
         val bufferedReader = BufferedReader(InputStreamReader(inputStream))
         val stringBuilder = StringBuilder()
         bufferedReader.forEachLine { stringBuilder.append(it) }
