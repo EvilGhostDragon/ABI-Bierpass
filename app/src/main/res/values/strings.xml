@@ -13,6 +13,7 @@
 	<string name="menu_acc_register">Registrieren</string>
 	<string name="menu_acc_admin">Admin Bereich</string>
 	<string name="menu_transactions">Transaktionen</string>
+	<string name="menu_orderbeer">Bier bestellen</string>
 	<string name="menu_acc_profile">Profil</string>
 	<string name="menu_acc_logout">Abmelden</string>
 	<string name="menu_help">Hilfe</string>
@@ -42,6 +43,9 @@
 	<string name="txt_permission">APP Berechtigung</string>
 	<string name="txt_newMail">Neue E-Mail Adresse</string>
 	<string name="txt_coins">Bier Coins</string>
+
+	<!-- TODO: Remove or change this placeholder text -->
+	<string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

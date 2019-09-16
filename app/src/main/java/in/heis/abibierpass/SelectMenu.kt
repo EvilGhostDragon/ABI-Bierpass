@@ -74,7 +74,9 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
             R.id.nav_transactions -> {
                 BlockchainFragment()
             }
-
+            R.id.nav_orderbeer -> {
+                OrderBeerFragment()
+            }
             else -> {
                 HomeFragment()
             }
@@ -110,6 +112,8 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
             findItem(R.id.nav_acc_profile).isEnabled = true
             findItem(R.id.action_logout).isVisible = true
             findItem(R.id.action_logout).isEnabled = true
+            findItem(R.id.nav_orderbeer).isVisible = true
+            findItem(R.id.nav_orderbeer).isEnabled = true
 
             if (permission >= 10) {
                 findItem(R.id.nav_transactions).isVisible = true
