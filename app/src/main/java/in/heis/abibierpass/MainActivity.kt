@@ -50,31 +50,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.setNavigationItemSelectedListener(this)
 
         if (user != null) {
-            if (user.isEmailVerified) println("LOGGED IN GOOGle and auth")
-            println("LOGGED IN GOOGle")
-            db.collection("Nutzer").document(user.uid)
-                .get()
-                .addOnSuccessListener {
-                    val data = it.data
-                    if ((data != null) and (data!!["Berechtigung"] != null)) {
-                        println(it.data!!["Berechtigung"])
-                        SelectMenu(
-                            -1,
-                            drawer_layout,
-                            this
-                        ).makeNewLayout(data["Berechtigung"] as Long)
-                    } else {
-                        AlertDialog.Builder(this)
-                            .setTitle("Info")
-                            .setMessage("Du wurdest noch nicht freigeschalten. Du erhältst eine E-Mail sobald es soweit ist.")
-                            .setPositiveButton("OK") { _, _ ->
+            if (user.isEmailVerified) {
+                val userRef = db.collection("Nutzer").document(user.uid)
+                userRef
+                    .get()
+                    .addOnSuccessListener {
+                        val data = it.data
+                        if ((data != null) and (data!!["Berechtigung"] != 0)) {
+                            println(it.data!!["Berechtigung"])
+                            SelectMenu(
+                                -1,
+                                drawer_layout,
+                                this
+                            ).makeNewLayout(data["Berechtigung"] as Long)
+                        } else {
+                            AlertDialog.Builder(this)
+                                .setTitle("Info")
+                                .setMessage("Du wurdest noch nicht freigeschalten. Du erhältst eine E-Mail sobald es soweit ist.")
+                                .setPositiveButton("OK") { _, _ ->
 
-                                SelectMenu(-1, drawer_layout, this).change()
-                            }
-                            .show()
+                                    SelectMenu(-1, drawer_layout, this).change()
+                                }
+                                .show()
+                        }
                     }
-                }
-
+            }
         } else {
             SelectMenu(-1, drawer_layout, this@MainActivity).change()
         }

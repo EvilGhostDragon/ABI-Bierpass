@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.google.gson.JsonArray
 
 class UserAdapter(
     private val context: Context,
-    private val dataSource: JsonArray
+    private val dataSource: ArrayList<AdminFragment.User>
+
+    //private val dataSource: JsonArray
 ) : BaseAdapter() {
 
     private val inflater: LayoutInflater =
@@ -18,7 +19,7 @@ class UserAdapter(
 
     //1
     override fun getCount(): Int {
-        return dataSource.size()
+        return dataSource.size
     }
 
     //2
@@ -39,12 +40,16 @@ class UserAdapter(
         val lName = rowView.findViewById(R.id.txt_lName) as TextView
         val vulgo = rowView.findViewById(R.id.txt_vulgo) as TextView
         val permission = rowView.findViewById(R.id.txt_permission) as TextView
-        fName.text = dataSource[position].asJsonObject.get("fName").asString
+        /*fName.text = dataSource[position].asJsonObject.get("fName").asString
         lName.text = dataSource[position].asJsonObject.get("lName").asString
         vulgo.text = dataSource[position].asJsonObject.get("vulgo").asString
         permission.text =
             CustomConvert().permissionToString(dataSource[position].asJsonObject.get("permission").asInt)
-
+*/
+        fName.text = dataSource[position].fName
+        lName.text = dataSource[position].lName
+        vulgo.text = dataSource[position].vulgo
+        permission.text = CustomConvert().permissionToString(dataSource[position].permission)
 
 
         return rowView

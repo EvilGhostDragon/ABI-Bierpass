@@ -26,22 +26,32 @@ class ProfileFragment : Fragment() {
 
         activity!!.nav_view.menu.findItem(R.id.nav_acc_profile).isChecked = true
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
+        val user = auth.currentUser
+        db.collection("Nutzer").document(user!!.uid).get().addOnSuccessListener {
+            val fName = it.data!!["Vorname"].toString()
+            val lName = it.data!!["Nachname"].toString()
+            val vulgo = it.data!!["Vulgo"].toString()
+            val permission =
+                CustomConvert().permissionToString(it.data!!["Berechtigung"].toString().toInt())
+            txt_profile_fName.text = fName
+            txt_profile_lName.text = lName
+            txt_profile_vulgo.text = vulgo
+            txt_profile_mail.text = user.email
+            txt_profile_uid.text = user.uid
+            txt_profile_permission.text = permission
+        }
 
-        txt_profile_fName.text = token.getString("fName", "")
-        txt_profile_lName.text = token.getString("lName", "")
-        txt_profile_vulgo.text = token.getString("vulgo", "")
-        txt_profile_mail.text = token.getString("mail", "")
-        txt_profile_payId.text = token.getString("payId", "")
-        txt_profile_permission.text =
-            CustomConvert().permissionToString(token.getString("permission", "")!!.toInt())
+
 
         btn_profile_changepw.setOnClickListener {
             Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
             //TODO("able to change pw")
+            //user.updateEmail()
         }
         btn_profile_changemail.setOnClickListener {
             Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
             //TODO("able to change mail")
+            //user.updateP
         }
 
 
@@ -52,37 +62,4 @@ class ProfileFragment : Fragment() {
 
 
     }
-
-    fun permissionToString(p: Int): String {
-        when (p) {
-            0 -> {
-                return "No permission! require email confirmation"
-            }
-            1 -> {
-                return "No permission! require data check"
-            }
-            2 -> {
-                return "Keine. Normaler Benutzer"
-            }
-            10 -> {
-                return "Fuchs. Berechtigt letzten 10 Zahlungen zu sehen"
-            }
-            20 -> {
-                return "Bierwart. Berechtigt Guthaben zu verteilen"
-            }
-            30 -> {
-                return "Admin"
-            }
-            100 -> {
-                return "Zer0"
-            }
-            else -> {
-                return "Hacker?"
-            }
-        }
-    }
-
-    companion object
-
-
 }

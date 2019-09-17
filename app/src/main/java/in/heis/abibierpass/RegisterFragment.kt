@@ -68,7 +68,8 @@ class RegisterFragment : Fragment() {
                             val userData = hashMapOf<String, Any>(
                                 "Vorname" to fName,
                                 "Nachname" to lName,
-                                "Vulgo" to vulgo
+                                "Vulgo" to vulgo,
+                                "Berechtigung" to 0
                             )
                             println(user)
                             println(user.uid)

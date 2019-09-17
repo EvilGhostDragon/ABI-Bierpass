@@ -61,7 +61,7 @@
 							app:layout_columnWeight="10" />
 
 					<TextView
-							android:id="@+id/txt_profile_payId"
+							android:id="@+id/txt_profile_uid"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:textSize="22sp"

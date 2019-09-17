@@ -33,8 +33,8 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
                     .setTitle("Info")
                     .setMessage("Wirklich abmelden?")
                     .setPositiveButton("Ja") { dialog, which ->
+                        auth.signOut()
                         activity!!.recreate()
-                        token!!.edit().putBoolean("loggedin", false).apply()
                     }
                     .setNegativeButton("Nein") { dialog, which ->
 

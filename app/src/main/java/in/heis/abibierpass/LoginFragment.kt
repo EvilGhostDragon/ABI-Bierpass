@@ -47,13 +47,7 @@ class LoginFragment : Fragment() {
                         val user = auth.currentUser
                         val mailconfirmed = user!!.isEmailVerified
                         if (mailconfirmed) {
-                            //if(true)
-                            /*val editor = token.edit()
-                            with(editor) {
-                                putBoolean("loggedin", true)
-                                putString("mail", user!!.email)
-                                putString("uid", user!!.uid)
-                            }.apply()*/
+
                             activity!!.finish()
                             startActivity(activity!!.intent)
                         } else {
@@ -64,6 +58,7 @@ class LoginFragment : Fragment() {
                                     SelectMenu(-1, drawer_layout, activity).change()
                                 }
                                 .show()
+                            auth.signOut()
                         }
                     } else {
                         println(task.exception!!.message)
