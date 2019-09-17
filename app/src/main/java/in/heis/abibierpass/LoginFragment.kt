@@ -27,6 +27,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_login).isChecked = true
+        val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
 
         btn_profile_resendmail.setOnClickListener {
             Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
@@ -37,8 +38,59 @@ class LoginFragment : Fragment() {
             //TODO("able to reset pw")
 
         }
+        btn_acc_login_google.setOnClickListener {
+            val mail = editText_mail.text.toString()
+            val password = editText_pswd.text.toString()
+            auth.signInWithEmailAndPassword(mail, password)
+                .addOnCompleteListener(activity!!) { task ->
+                    if (task.isSuccessful) {
+                        val user = auth.currentUser
+                        val mailconfirmed = user!!.isEmailVerified
+                        if (mailconfirmed) {
+                            //if(true)
+                            /*val editor = token.edit()
+                            with(editor) {
+                                putBoolean("loggedin", true)
+                                putString("mail", user!!.email)
+                                putString("uid", user!!.uid)
+                            }.apply()*/
+                            activity!!.finish()
+                            startActivity(activity!!.intent)
+                        } else {
+                            AlertDialog.Builder(context)
+                                .setTitle("Info")
+                                .setMessage("Deine E-Mail Adresse wurde noch nicht bestätigt.\nÜberprüfe deinen Posteingang und auch Spam-Ordner")
+                                .setPositiveButton("OK") { dialog, which ->
+                                    SelectMenu(-1, drawer_layout, activity).change()
+                                }
+                                .show()
+                        }
+                    } else {
+                        println(task.exception!!.message)
+                        if (task.exception!!.message!!.contains("password is invalid") or task.exception!!.message!!.contains(
+                                "There is no user record"
+                            )
+                        ) {
+                            AlertDialog.Builder(context)
+                                .setTitle("Fehler")
+                                .setMessage("Zu viel Bier oder doch nur vertippt.\nÜberprüfe deine Eingabe")
+                                .setPositiveButton("OK") { dialog, which ->
+                                    editText_pswd.text.clear()
+                                }
+                                .show()
+                        } else {
+                            AlertDialog.Builder(context)
+                                .setTitle("Fehler")
+                                .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
+                                .setPositiveButton("OK") { dialog, which ->
+                                    SelectMenu(-1, drawer_layout, activity).change()
+                                }
+                                .show()
+                        }
+                    }
+                }
+        }
 
-        val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
         btn_acc_login.setOnClickListener {
             if (isFormOk()) {
                 val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

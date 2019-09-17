@@ -146,6 +146,16 @@
 					app:layout_columnSpan="7"
 					app:layout_columnWeight="7"/>
 
+			<Button
+					android:id="@+id/btn_acc_register_google"
+					style="@style/Widget.MaterialComponents.Button"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:text="GOOGLE"
+					android:textSize="20dp"
+					app:layout_columnSpan="7"
+					app:layout_columnWeight="7" />
+
 		</androidx.gridlayout.widget.GridLayout>
 
 	</ScrollView>

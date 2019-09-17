@@ -101,7 +101,8 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
      *                  (+) Abh#ngig der Berechtigung werden weitere Menüpunkte freigegeben
      *                  (+) Anschließende Weiterleiung auf das Homefragment
      */
-    fun makeNewLayout(permission: Int) {
+    fun makeNewLayout(permission: Long) {
+        if (permission < 2) return
         with(nav_view.menu) {
             findItem(R.id.nav_acc_register).isVisible = false
             findItem(R.id.nav_acc_register).isEnabled = false

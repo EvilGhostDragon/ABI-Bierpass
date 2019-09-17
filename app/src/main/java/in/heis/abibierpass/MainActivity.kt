@@ -15,10 +15,14 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 const val key = "userdata"
+val auth = FirebaseAuth.getInstance()
+val db = FirebaseFirestore.getInstance()
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -27,6 +31,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val token = getSharedPreferences(`in`.heis.abibierpass.key, Context.MODE_PRIVATE)
+        val user = auth.currentUser
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -44,13 +49,42 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
 
+        if (user != null) {
+            if (user.isEmailVerified) println("LOGGED IN GOOGle and auth")
+            println("LOGGED IN GOOGle")
+            db.collection("Nutzer").document(user.uid)
+                .get()
+                .addOnSuccessListener {
+                    val data = it.data
+                    if ((data != null) and (data!!["Berechtigung"] != null)) {
+                        println(it.data!!["Berechtigung"])
+                        SelectMenu(
+                            -1,
+                            drawer_layout,
+                            this
+                        ).makeNewLayout(data["Berechtigung"] as Long)
+                    } else {
+                        AlertDialog.Builder(this)
+                            .setTitle("Info")
+                            .setMessage("Du wurdest noch nicht freigeschalten. Du erhältst eine E-Mail sobald es soweit ist.")
+                            .setPositiveButton("OK") { _, _ ->
+
+                                SelectMenu(-1, drawer_layout, this).change()
+                            }
+                            .show()
+                    }
+                }
+
+        } else {
+            SelectMenu(-1, drawer_layout, this@MainActivity).change()
+        }
         if (token.getBoolean("loggedin", true) && (token.getString("mail", "") != "")) {
             println("LOGGED IN")
             SelectMenu(
                 -1,
                 drawer_layout,
                 this@MainActivity
-            ).makeNewLayout(token.getString("permission", "")!!.toInt())
+            ).makeNewLayout(token.getString("permission", "")!!.toLong())
             //getString(R.id.nav_header_subtitel)
 
 

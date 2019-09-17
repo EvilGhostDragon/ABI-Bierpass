@@ -20,5 +20,18 @@
 				android:text="WILLKOMMEN"
 				android:textSize="34sp"/>
 
+
 	</RelativeLayout>
+
+	<Button
+			android:id="@+id/btn_devtest1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Dev Button 1 [pls ignore]" />
+
+	<Button
+			android:id="@+id/btn_devtest2"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Dev Button 2 [pls ignore]" />
 </LinearLayout>

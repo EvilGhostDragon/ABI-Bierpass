@@ -74,6 +74,14 @@
 					android:layout_height="wrap_content" android:id="@+id/btn_acc_login"
 					android:textSize="20dp"
 					style="@style/Widget.MaterialComponents.Button"/>
+
+			<Button
+					android:id="@+id/btn_acc_login_google"
+					style="@style/Widget.MaterialComponents.Button"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="GOOGLE"
+					android:textSize="20dp" />
 			<Space android:layout_width="match_parent" android:layout_height="10dp"/>
 			<LinearLayout
 					android:orientation="horizontal"
