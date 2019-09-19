@@ -11,10 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_register.*
-import org.json.JSONObject
 
 
 class RegisterFragment : Fragment() {
@@ -30,7 +28,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_register).isChecked = true
 
-        btn_acc_register_google.setOnClickListener {
+        btn_acc_register.setOnClickListener {
             if (isFormOk()) {
                 val imm =
                     context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -94,7 +92,7 @@ class RegisterFragment : Fragment() {
             }
         }
 
-
+/*
         btn_acc_register.setOnClickListener {
 
             if (isFormOk()) {
@@ -190,6 +188,8 @@ class RegisterFragment : Fragment() {
 
             }
         }
+
+ */
 
     }
 

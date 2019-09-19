@@ -10,10 +10,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
-import org.json.JSONObject
 
 
 class LoginFragment : Fragment() {
@@ -38,54 +36,63 @@ class LoginFragment : Fragment() {
             //TODO("able to reset pw")
 
         }
-        btn_acc_login_google.setOnClickListener {
-            val mail = editText_mail.text.toString()
-            val password = editText_pswd.text.toString()
-            auth.signInWithEmailAndPassword(mail, password)
-                .addOnCompleteListener(activity!!) { task ->
-                    if (task.isSuccessful) {
-                        val user = auth.currentUser
-                        val mailconfirmed = user!!.isEmailVerified
-                        if (mailconfirmed) {
+        btn_acc_login.setOnClickListener {
+            if (isFormOk()) {
+                val imm =
+                    context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(activity!!.currentFocus!!.windowToken, 0)
+                btn_acc_login.isEnabled = false
+                progressbar.visibility = View.VISIBLE
+                val mail = editText_mail.text.toString()
+                val password = editText_pswd.text.toString()
+                auth.signInWithEmailAndPassword(mail, password)
+                    .addOnCompleteListener(activity!!) { task ->
+                        btn_acc_login.isEnabled = true
+                        progressbar.visibility = View.INVISIBLE
+                        if (task.isSuccessful) {
+                            val user = auth.currentUser
+                            val mailconfirmed = user!!.isEmailVerified
+                            if (mailconfirmed) {
 
-                            activity!!.finish()
-                            startActivity(activity!!.intent)
+                                activity!!.finish()
+                                startActivity(activity!!.intent)
+                            } else {
+                                AlertDialog.Builder(context)
+                                    .setTitle("Info")
+                                    .setMessage("Deine E-Mail Adresse wurde noch nicht bestätigt.\nÜberprüfe deinen Posteingang und auch Spam-Ordner")
+                                    .setPositiveButton("OK") { dialog, which ->
+                                        SelectMenu(-1, drawer_layout, activity).change()
+                                    }
+                                    .show()
+                                auth.signOut()
+                            }
                         } else {
-                            AlertDialog.Builder(context)
-                                .setTitle("Info")
-                                .setMessage("Deine E-Mail Adresse wurde noch nicht bestätigt.\nÜberprüfe deinen Posteingang und auch Spam-Ordner")
-                                .setPositiveButton("OK") { dialog, which ->
-                                    SelectMenu(-1, drawer_layout, activity).change()
-                                }
-                                .show()
-                            auth.signOut()
-                        }
-                    } else {
-                        println(task.exception!!.message)
-                        if (task.exception!!.message!!.contains("password is invalid") or task.exception!!.message!!.contains(
-                                "There is no user record"
-                            )
-                        ) {
-                            AlertDialog.Builder(context)
-                                .setTitle("Fehler")
-                                .setMessage("Zu viel Bier oder doch nur vertippt.\nÜberprüfe deine Eingabe")
-                                .setPositiveButton("OK") { dialog, which ->
-                                    editText_pswd.text.clear()
-                                }
-                                .show()
-                        } else {
-                            AlertDialog.Builder(context)
-                                .setTitle("Fehler")
-                                .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
-                                .setPositiveButton("OK") { dialog, which ->
-                                    SelectMenu(-1, drawer_layout, activity).change()
-                                }
-                                .show()
+                            println(task.exception!!.message)
+                            if (task.exception!!.message!!.contains("password is invalid") or task.exception!!.message!!.contains(
+                                    "There is no user record"
+                                )
+                            ) {
+                                AlertDialog.Builder(context)
+                                    .setTitle("Fehler")
+                                    .setMessage("Zu viel Bier oder doch nur vertippt.\nÜberprüfe deine Eingabe")
+                                    .setPositiveButton("OK") { dialog, which ->
+                                        editText_pswd.text.clear()
+                                    }
+                                    .show()
+                            } else {
+                                AlertDialog.Builder(context)
+                                    .setTitle("Fehler")
+                                    .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
+                                    .setPositiveButton("OK") { dialog, which ->
+                                        SelectMenu(-1, drawer_layout, activity).change()
+                                    }
+                                    .show()
+                            }
                         }
                     }
-                }
+            }
         }
-
+/*
         btn_acc_login.setOnClickListener {
             if (isFormOk()) {
                 val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -168,6 +175,8 @@ class LoginFragment : Fragment() {
                 }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
             }
         }
+
+ */
     }
 
 

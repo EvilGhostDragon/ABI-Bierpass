@@ -6,6 +6,18 @@
 		android:layout_height="match_parent"
 		tools:context=".AdminFragment">
 
+	<ProgressBar
+			android:id="@+id/progressbar"
+			style="?android:attr/progressBarStyleHorizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="-7dp"
+			android:backgroundTint="@color/white"
+			android:indeterminate="true"
+			android:indeterminateTint="#1a09d6"
+			android:max="100"
+			android:visibility="invisible" />
+
 	<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -20,6 +32,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="0dp"
 				android:layout_weight="1">
+
 
 			<TextView
 					android:layout_width="wrap_content"
@@ -125,15 +138,6 @@
 
 
 		</LinearLayout>
-
-		<Button
-				android:id="@+id/btn_show_goole"
-				style="@style/Widget.MaterialComponents.Button"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:padding="10dp"
-				android:text="Suchen"
-				android:textSize="15sp" />
 		<View
 				android:layout_width="match_parent"
 				android:layout_height="1dp"

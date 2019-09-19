@@ -1,16 +1,12 @@
 package `in`.heis.abibierpass
 
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_blockchain.*
 import org.json.JSONObject
 
 /**
@@ -32,7 +28,7 @@ class BlockchainFragment : Fragment() {
 
         val json = JSONObject()
         json.put("action", "getblockchain")
-
+/*
         HttpTask {
             if (it == null) {
                 println("connection error")
@@ -63,6 +59,8 @@ class BlockchainFragment : Fragment() {
                 listview_block.adapter = adapter
             }
         }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
+
+ */
     }
 
 }

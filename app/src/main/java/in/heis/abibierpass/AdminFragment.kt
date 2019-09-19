@@ -78,7 +78,9 @@ class AdminFragment : Fragment() {
          *                      (-) Nutzer sperren/freischalten
          *                      (-) Bier-Coins gutschreiben
          */
-        btn_show_goole.setOnClickListener {
+        btn_show.setOnClickListener {
+            progressbar.visibility = View.VISIBLE
+            btn_show.isEnabled = false
             var userRef = db.collection("Nutzer").get()
 
             //var userList = hashMapOf<String,Any>()
@@ -95,6 +97,10 @@ class AdminFragment : Fragment() {
                         .get()
             }
             userRef
+                .addOnCompleteListener {
+                    progressbar.visibility = View.INVISIBLE
+                    btn_show.isEnabled = true
+                }
                 .addOnSuccessListener { result ->
                     userList.clear()
                     for (user in result) {
@@ -299,6 +305,7 @@ class AdminFragment : Fragment() {
                             //SelectMenu(R.id.nav_acc_admin,drawer_layout,activity).change()
                         }
                 }
+
         }
 
 /*
