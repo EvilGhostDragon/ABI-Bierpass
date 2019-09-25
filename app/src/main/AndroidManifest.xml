@@ -21,17 +21,7 @@
 			<tools:validation testUrl="https://bierpass.abidigital.tk/success"/>
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
-
 				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
-			<intent-filter android:order="1">
-				<action android:name="android.intent.action.VIEW"/>
-				<category android:name="android.intent.category.DEFAULT"/>
-				<category android:name="android.intent.category.BROWSABLE"/>
-				<data
-						android:scheme="https"
-						android:host="bierpass.abidigital.tk"
-						android:pathPrefix="/failed"/>
 			</intent-filter>
 			<intent-filter android:order="0">
 				<action android:name="android.intent.action.VIEW"/>
@@ -39,17 +29,7 @@
 				<category android:name="android.intent.category.BROWSABLE"/>
 				<data
 						android:scheme="https"
-						android:host="bierpass.abidigital.tk"
-						android:pathPrefix="/open"/>
-			</intent-filter>
-			<intent-filter android:order="2">
-				<action android:name="android.intent.action.VIEW"/>
-				<category android:name="android.intent.category.DEFAULT"/>
-				<category android:name="android.intent.category.BROWSABLE"/>
-				<data
-						android:scheme="https"
-						android:host="bierpass.abidigital.tk"
-						android:pathPrefix="/success"/>
+						android:host="bierpass.abidigital.tk" />
 			</intent-filter>
 		</activity>
 	</application>

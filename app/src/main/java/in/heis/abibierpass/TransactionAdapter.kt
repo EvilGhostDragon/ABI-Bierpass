@@ -6,11 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.google.gson.JsonArray
 
 class TransactionAdapter(
     private val context: Context,
-    private val dataSource: JsonArray
+    private val dataSource: ArrayList<BlockchainFragment.Transaction>
 ) : BaseAdapter() {
 
     private val inflater: LayoutInflater =
@@ -18,7 +17,7 @@ class TransactionAdapter(
 
     //1
     override fun getCount(): Int {
-        return dataSource.size()
+        return dataSource.size
     }
 
     //2
@@ -36,17 +35,15 @@ class TransactionAdapter(
         val rowView = inflater.inflate(R.layout.adapter_view_transaction, parent, false)
         val token = context.getSharedPreferences(key, Context.MODE_PRIVATE)
 
-        val transId = rowView.findViewById(R.id.txt_transId) as TextView
-        val userId = rowView.findViewById(R.id.txt_userId) as TextView
+        val transDate = rowView.findViewById(R.id.txt_transDate) as TextView
+        val vulgo = rowView.findViewById(R.id.txt_vulgo) as TextView
         val amount = rowView.findViewById(R.id.txt_amount) as TextView
-        val state = rowView.findViewById(R.id.txt_status) as TextView
-        transId.text = dataSource[position].asJsonObject.get("id").asString
-        userId.text = dataSource[position].asJsonObject.get("payId").asString
-        amount.text = dataSource[position].asJsonObject.get("amount").asString
-        state.text = CustomConvert().transStateToString(
-            dataSource[position].asJsonObject.get("state").asInt,
-            token.getString("permission", "")!!.toInt()
-        )
+        val status = rowView.findViewById(R.id.txt_status) as TextView
+
+        transDate.text = dataSource[position].date
+        vulgo.text = dataSource[position].vulgo
+        amount.text = dataSource[position].amount
+        status.text = dataSource[position].status.toString()
 
         return rowView
     }

@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
+import kotlinx.android.synthetic.main.fragment_blockchain.*
 
 /**
  * A simple [Fragment] subclass.
@@ -22,45 +24,50 @@ class BlockchainFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_blockchain, container, false)
     }
 
+    class Transaction(
+        var date: String,
+        var vulgo: String,
+        var amount: String,
+        var status: Int
+    )
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_transactions).isChecked = true
+        val transList = mutableListOf<Transaction>()
 
-        val json = JSONObject()
-        json.put("action", "getblockchain")
-/*
-        HttpTask {
-            if (it == null) {
-                println("connection error")
-                AlertDialog.Builder(context)
-                    .setTitle("Fehler")
-                    .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
-                    .setPositiveButton("OK") { dialog, which ->
-                        SelectMenu(-1, drawer_layout, activity).change()
-                    }
-                    .show()
 
-                return@HttpTask
+        db.collection("Transaktionen").orderBy("Datum", Query.Direction.DESCENDING).get()
+            .addOnSuccessListener { result ->
+                transList.clear()
+                var transId = 0
+                for (transaction in result) {
+                    val amount = transaction.data["Betrag"].toString()
+                    val status = transaction.data["Status"].toString().toInt()
+                    if (status == 10) continue
+                    var vulgo: String = ""
+                    val vulgoRef = transaction.data["NutzerVon"] as DocumentReference
+
+                    vulgoRef.get()
+                        .addOnSuccessListener {
+                            vulgo = it.data!!["Vulgo"].toString()
+
+                            println("id" + transId.toString() + " amo " + amount + " st " + status + " vu " + vulgo)
+                            transList.add(
+                                Transaction(
+                                    transId++.toString(),
+                                    vulgo,
+                                    amount,
+                                    status
+                                )
+                            )
+                            val adapter = TransactionAdapter(context!!, ArrayList(transList))
+                            println("au")
+                            listview_block.adapter = adapter
+                        }
+                }
+
 
             }
-            //println(it)
-            val itJson = JsonParser().parse(it).asJsonObject
-            if (itJson.get("result").asInt == 0) {
-                Toast.makeText(
-                    context!!,
-                    "Keine neuen Transaktionen gefunden",
-                    Toast.LENGTH_LONG
-                ).show()
-
-                return@HttpTask
-            } else if (itJson.get("result").asInt == 1) {
-                val userData = itJson["data"].asJsonArray
-                val adapter = TransactionAdapter(context!!, userData)
-                listview_block.adapter = adapter
-            }
-        }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
-
- */
     }
 
 }

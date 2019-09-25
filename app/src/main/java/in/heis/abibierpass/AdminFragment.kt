@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_admin.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class AdminFragment : Fragment() {
@@ -34,7 +36,6 @@ class AdminFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_admin).isChecked = true
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
-
 
         /**
          * Beschreibung: Sicher stellen, dass nie zwei Switches gleichzeitig aktiviert sind
@@ -104,8 +105,6 @@ class AdminFragment : Fragment() {
                 .addOnSuccessListener { result ->
                     userList.clear()
                     for (user in result) {
-                        println(user.id)
-                        println(user.data)
                         val fName = user.data["Vorname"].toString()
                         val lName = user.data["Nachname"].toString()
                         val vulgo = user.data["Vulgo"].toString()
@@ -120,10 +119,6 @@ class AdminFragment : Fragment() {
                             )
                         )
                     }
-                    userList.forEach {
-                        println("NEW: " + it.fName + it.lName)
-                    }
-
 
                     val adapter = UserAdapter(context!!, ArrayList(userList))
                     listview_user.adapter = adapter
@@ -284,18 +279,47 @@ class AdminFragment : Fragment() {
                                                  *                  (+) Nutzer (20+) sind berechtigt andere Nutzer Bier-Coins gutzuschreiben
                                                  *                  (+) Auswahl zwischen 1,5,10
                                                  */
+                                                val current =
+                                                    Calendar.getInstance(Locale.ITALY).time
+
+                                                val transInfo = hashMapOf<String, Any>(
+                                                    "Status" to 10,
+                                                    "Datum" to current,
+                                                    "NutzerVon" to db.collection("Nutzer").document(
+                                                        auth.currentUser!!.uid
+                                                    ),
+                                                    "Nutzer" to db.collection("Nutzer").document(uid)
+                                                )
+                                                val newTrans =
+                                                    db.collection("Transaktionen").document()
                                                 AlertDialog.Builder(context)
                                                     .setTitle("Bier-Coins aufladen")
                                                     .setMessage("Jede deiner durchgeführeten positiven Transaktion, wird mit deiner Benutzer-ID markiert. Dies wird benötigt um Fehler leichter finden zu können und um Missbrauch zu mindern.\n\n\n Nun da das geklärt ist, wie viele Coins möchtest du gutschreiben?")
 
                                                     .setPositiveButton("Schwacher Abend: 1 Coin") { _, _ ->
-                                                        //TODO("Trans")
+                                                        transInfo["Betrag"] = 1
+                                                        newTrans
+                                                            .set(transInfo)
+                                                            .addOnCompleteListener { task ->
+                                                                if (!task.isSuccessful) return@addOnCompleteListener
+                                                            }
+
                                                     }
                                                     .setNegativeButton("Angemessener Abend: 5 Coins") { _, _ ->
-                                                        //TODO("Trans")
+                                                        transInfo["Betrag"] = 5
+                                                        newTrans
+                                                            .set(transInfo)
+                                                            .addOnCompleteListener { task ->
+                                                                if (!task.isSuccessful) return@addOnCompleteListener
+                                                            }
                                                     }
                                                     .setNeutralButton("Guter Abend: 10 Coins") { _, _ ->
-                                                        //TODO("Trans")
+                                                        transInfo["Betrag"] = 10
+                                                        newTrans
+                                                            .set(transInfo)
+                                                            .addOnCompleteListener { task ->
+                                                                if (!task.isSuccessful) return@addOnCompleteListener
+                                                            }
                                                     }
                                                     .show()
                                             }

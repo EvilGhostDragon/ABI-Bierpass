@@ -8,18 +8,18 @@
 		android:weightSum="100">
 
 	<TextView
-			android:id="@+id/txt_transId"
+			android:id="@+id/txt_transDate"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="10"
+			android:layout_weight="30"
 			android:text="1"
 			android:textSize="14sp" />
 
 	<TextView
-			android:id="@+id/txt_userId"
+			android:id="@+id/txt_vulgo"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="60"
+			android:layout_weight="40"
 			android:text="1"
 			android:textSize="14sp" />
 

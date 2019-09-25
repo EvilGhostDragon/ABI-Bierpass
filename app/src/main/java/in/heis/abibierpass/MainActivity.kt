@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -15,7 +16,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -31,6 +34,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val token = getSharedPreferences(`in`.heis.abibierpass.key, Context.MODE_PRIVATE)
+        val mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         val user = auth.currentUser
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,6 +52,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+        // Obtain the FirebaseAnalytics instance.
+
+
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                // Get deep link from result (may be null if no link is found)
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                    println(deepLink)
+                }
+            }
+            .addOnFailureListener(this) { e -> Log.w("fb", "getDynamicLink:onFailure", e) }
 
         if (user != null) {
             if (user.isEmailVerified) {
@@ -98,7 +116,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //var test2 = Hawk.get(KEY,JSONObject())
 
 
-        handleIntent(intent)
+        //handleIntent(intent)
 
 
     }
