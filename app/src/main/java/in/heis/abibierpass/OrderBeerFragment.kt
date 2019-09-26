@@ -3,13 +3,16 @@ package `in`.heis.abibierpass
 
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_selectbeer.view.*
 import kotlinx.android.synthetic.main.fragment_order_beer.*
 import java.util.*
 
@@ -38,8 +41,8 @@ class OrderBeerFragment : Fragment() {
             override fun onAnimationStart(animation: Animator) {}
             override fun onAnimationEnd(animation: Animator) {
                 progressbar.visibility = View.INVISIBLE
+                btn_orderbeer.isEnabled = true
             }
-
             override fun onAnimationCancel(animation: Animator) {}
             override fun onAnimationRepeat(animation: Animator) {}
         })
@@ -55,29 +58,17 @@ class OrderBeerFragment : Fragment() {
                     }
                 }
                 .addOnCompleteListener {
-                    if (readFrom == "NutzerVon") {
-                        //progressbar.visibility = View.INVISIBLE
-                    }
                     animator.setObjectValues(0, amount)
                     animator.addUpdateListener { animation ->
                         txt_coins.text = animation.animatedValue.toString()
                     }
                     animator.duration = 750 // here you set the duration of the anim
                     animator.start()
-
-                    // txt_coins.text = amount.toString()
                 }
 
         }
 
-
-
-
-
-
-
         btn_orderbeer.setOnClickListener {
-            btn_orderbeer.isEnabled = false
             if (amount > 0) {
                 val current = Calendar.getInstance(
                     Locale.ITALY
@@ -91,13 +82,116 @@ class OrderBeerFragment : Fragment() {
                     "Nutzer" to "Bierkasse",
                     "Betrag" to -1
                 )
-                db.collection("Transaktionen").document()
-                    .set(transInfo)
-                    .addOnCompleteListener { task ->
-                        if (!task.isSuccessful) return@addOnCompleteListener
-                        SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
-                    }
-            }
+                val mDialogView =
+                    LayoutInflater.from(context).inflate(R.layout.dialog_selectbeer, null)
+                val mAlertDialogBuilder = AlertDialog.Builder(context)
+                    .setView(mDialogView)
+                    .setTitle("Auswahl")
+                val mAlertDialog = mAlertDialogBuilder.show()
+
+
+                mDialogView.btn_beerhell.setOnClickListener {
+                    mAlertDialog.dismiss()
+                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
+                    transInfo["Auswahl"] = "hell"
+                    db.collection("Transaktionen").document()
+                        .set(transInfo)
+                        .addOnCompleteListener { task ->
+                            if (!task.isSuccessful) return@addOnCompleteListener
+                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
+                            Toast.makeText(
+                                context,
+                                "Bestellung wurde weiter gegeben",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                }
+                mDialogView.btn_beeredelstoff.setOnClickListener {
+                    mAlertDialog.dismiss()
+                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
+                    transInfo["Auswahl"] = "edelstoff"
+                    db.collection("Transaktionen").document()
+                        .set(transInfo)
+                        .addOnCompleteListener { task ->
+                            if (!task.isSuccessful) return@addOnCompleteListener
+                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
+                            Toast.makeText(
+                                context,
+                                "Bestellung wurde weiter gegeben",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                }
+                mDialogView.btn_beertoast.setOnClickListener {
+                    mAlertDialog.dismiss()
+                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
+                    transInfo["Auswahl"] = "toast"
+                    db.collection("Transaktionen").document()
+                        .set(transInfo)
+                        .addOnCompleteListener { task ->
+                            if (!task.isSuccessful) return@addOnCompleteListener
+                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
+                            Toast.makeText(
+                                context,
+                                "Bestellung wurde weiter gegeben",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                }
+                mDialogView.btn_beerweizen.setOnClickListener {
+                    mAlertDialog.dismiss()
+                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
+                    transInfo["Auswahl"] = "weizen"
+                    db.collection("Transaktionen").document()
+                        .set(transInfo)
+                        .addOnCompleteListener { task ->
+                            if (!task.isSuccessful) return@addOnCompleteListener
+                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
+                            Toast.makeText(
+                                context,
+                                "Bestellung wurde weiter gegeben",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                }
+                mDialogView.btn_beerblau.setOnClickListener {
+                    mAlertDialog.dismiss()
+                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
+                    transInfo["Auswahl"] = "blau"
+                    db.collection("Transaktionen").document()
+                        .set(transInfo)
+                        .addOnCompleteListener { task ->
+                            if (!task.isSuccessful) return@addOnCompleteListener
+                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
+                            Toast.makeText(
+                                context,
+                                "Bestellung wurde weiter gegeben",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                }
+                mDialogView.btn_beerradler.setOnClickListener {
+                    mAlertDialog.dismiss()
+                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
+                    transInfo["Auswahl"] = "radler"
+                    db.collection("Transaktionen").document()
+                        .set(transInfo)
+                        .addOnCompleteListener { task ->
+                            if (!task.isSuccessful) return@addOnCompleteListener
+                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
+                            Toast.makeText(
+                                context,
+                                "Bestellung wurde weiter gegeben",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                }
+            } else
+                Toast.makeText(
+                    context,
+                    "Leider kein Bier für dich. Kauf dir ein paar Bier Coins!",
+                    Toast.LENGTH_LONG
+                ).show()
         }
     }
 }

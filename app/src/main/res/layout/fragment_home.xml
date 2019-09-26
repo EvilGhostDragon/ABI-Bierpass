@@ -27,11 +27,21 @@
 			android:id="@+id/btn_devtest1"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="Dev Button 1 [pls ignore]" />
+			android:text="Dev Button 1 [pls ignore]"
+			android:visibility="invisible" />
 
 	<Button
 			android:id="@+id/btn_devtest2"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="Dev Button 2 [pls ignore]" />
+			android:text="Dev Button 2 [pls ignore]"
+			android:visibility="invisible" />
+
+	<Button
+			android:id="@+id/btn_quicklink1"
+			style="@style/Widget.MaterialComponents.Button"
+			android:layout_width="match_parent"
+			android:layout_height="200dp"
+			android:text="Quicklink: Sofort Bier bestellen"
+			android:textSize="20dp" />
 </LinearLayout>

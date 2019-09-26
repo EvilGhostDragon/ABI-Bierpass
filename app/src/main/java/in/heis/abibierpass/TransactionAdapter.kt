@@ -37,12 +37,14 @@ class TransactionAdapter(
 
         val transDate = rowView.findViewById(R.id.txt_transDate) as TextView
         val vulgo = rowView.findViewById(R.id.txt_vulgo) as TextView
-        val amount = rowView.findViewById(R.id.txt_amount) as TextView
+        //val amount = rowView.findViewById(R.id.txt_amount) as TextView
+        val kind = rowView.findViewById(R.id.txt_kind) as TextView
         val status = rowView.findViewById(R.id.txt_status) as TextView
 
         transDate.text = dataSource[position].date
         vulgo.text = dataSource[position].vulgo
-        amount.text = dataSource[position].amount
+        kind.text = dataSource[position].kind
+        //amount.text = dataSource[position].amount
         status.text = dataSource[position].status.toString()
 
         return rowView

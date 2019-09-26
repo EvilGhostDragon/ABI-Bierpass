@@ -53,7 +53,6 @@ class LoginFragment : Fragment() {
                             val user = auth.currentUser
                             val mailconfirmed = user!!.isEmailVerified
                             if (mailconfirmed) {
-
                                 activity!!.finish()
                                 startActivity(activity!!.intent)
                             } else {
@@ -82,7 +81,7 @@ class LoginFragment : Fragment() {
                             } else {
                                 AlertDialog.Builder(context)
                                     .setTitle("Fehler")
-                                    .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
+                                    .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: ")
                                     .setPositiveButton("OK") { dialog, which ->
                                         SelectMenu(-1, drawer_layout, activity).change()
                                     }

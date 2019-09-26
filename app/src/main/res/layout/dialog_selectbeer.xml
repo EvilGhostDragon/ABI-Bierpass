@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:padding="25dp"
+		android:weightSum="100">
+
+	<Switch
+			android:id="@+id/switch_confirmedbeer"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:text="Ich hol mir mein Bier selbst   "
+			android:textSize="20sp" />
+
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="50"
+			android:orientation="horizontal"
+			android:padding="10dp"
+			android:weightSum="100">
+
+		<ImageButton
+				android:id="@+id/btn_beerhell"
+				style="@android:style/Widget.Material.Light.ImageButton"
+				android:layout_width="0dp"
+				android:layout_height="200dp"
+				android:layout_weight="33"
+				android:background="@color/transperent"
+				android:scaleType="fitCenter"
+				android:src="@drawable/beer_hell" />
+
+		<ImageButton
+				android:id="@+id/btn_beeredelstoff"
+				style="@android:style/Widget.Material.Light.ImageButton"
+				android:layout_width="0dp"
+				android:layout_height="200dp"
+				android:layout_weight="33"
+				android:background="@color/transperent"
+				android:scaleType="fitCenter"
+				android:src="@drawable/beer_edelstoff" />
+
+		<ImageButton
+				android:id="@+id/btn_beertoast"
+				style="@android:style/Widget.Material.Light.ImageButton"
+				android:layout_width="0dp"
+				android:layout_height="200dp"
+				android:layout_weight="33"
+				android:background="@color/transperent"
+				android:scaleType="fitCenter"
+				android:src="@drawable/beer_toast" />
+	</LinearLayout>
+
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="50"
+			android:orientation="horizontal"
+			android:padding="10dp"
+			android:weightSum="100">
+
+		<ImageButton
+				android:id="@+id/btn_beerweizen"
+				style="@android:style/Widget.Material.Light.ImageButton"
+				android:layout_width="0dp"
+				android:layout_height="200dp"
+				android:layout_weight="33"
+				android:background="@color/transperent"
+				android:scaleType="fitCenter"
+				android:src="@drawable/beer_weizen" />
+
+		<ImageButton
+				android:id="@+id/btn_beerblau"
+				style="@android:style/Widget.Material.Light.ImageButton"
+				android:layout_width="0dp"
+				android:layout_height="200dp"
+				android:layout_weight="33"
+				android:background="@color/transperent"
+				android:scaleType="fitCenter"
+				android:src="@drawable/beer_blau" />
+
+		<ImageButton
+				android:id="@+id/btn_beerradler"
+				style="@android:style/Widget.Material.Light.ImageButton"
+				android:layout_width="0dp"
+				android:layout_height="200dp"
+				android:layout_weight="33"
+				android:background="@color/transperent"
+				android:scaleType="fitCenter"
+				android:src="@drawable/beer_radler" />
+	</LinearLayout>
+
+</LinearLayout>

@@ -1,12 +1,12 @@
 package `in`.heis.abibierpass
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,18 +33,13 @@ class HomeFragment : Fragment() {
         // db.firestoreSettings(db_settings)
 
         btn_devtest1.setOnClickListener {
-            var a: DocumentReference
-            db.collection("Transaktionen").document("jNMcdmH24yoFh0SnogYi").get()
-                .addOnSuccessListener {
-                    a = it.data!!["Nutzer"] as DocumentReference
-                    println(a.get().addOnSuccessListener {
-                        println(it.data)
-                    })
+            val mDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_selectbeer, null)
 
-                }
-
-
-
+            val mBuilder = AlertDialog.Builder(context)
+                .setView(mDialogView)
+                .setTitle("Auswahl")
+            //show dialog
+            val mAlertDialog = mBuilder.show()
         }
         btn_devtest2.setOnClickListener {
 

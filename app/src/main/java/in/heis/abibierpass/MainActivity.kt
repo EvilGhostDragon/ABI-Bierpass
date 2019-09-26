@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .get()
                     .addOnSuccessListener {
                         val data = it.data
-                        if ((data != null) and (data!!["Berechtigung"] != 0)) {
+                        if ((data != null) and (data!!["Berechtigung"].toString().toInt() != 0)) {
                             println(it.data!!["Berechtigung"])
                             SelectMenu(
                                 -1,
@@ -86,7 +86,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 .setTitle("Info")
                                 .setMessage("Du wurdest noch nicht freigeschalten. Du erhältst eine E-Mail sobald es soweit ist.")
                                 .setPositiveButton("OK") { _, _ ->
-
                                     SelectMenu(-1, drawer_layout, this).change()
                                 }
                                 .show()
@@ -111,13 +110,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             SelectMenu(-1, drawer_layout, this@MainActivity).change()
         }
         println(token.all)
-
-
-        //var test2 = Hawk.get(KEY,JSONObject())
-
-
-        //handleIntent(intent)
-
 
     }
 
