@@ -124,6 +124,10 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
                 findItem(R.id.nav_acc_admin).isVisible = true
                 findItem(R.id.nav_acc_admin).isEnabled = true
             }
+
+        }
+        if (permission >= 100) {
+
         }
         change()
 

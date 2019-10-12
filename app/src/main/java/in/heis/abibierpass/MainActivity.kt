@@ -10,22 +10,27 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 const val key = "userdata"
 val auth = FirebaseAuth.getInstance()
 val db = FirebaseFirestore.getInstance()
+lateinit var firebaseAnalytics: FirebaseAnalytics
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -34,7 +39,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val token = getSharedPreferences(`in`.heis.abibierpass.key, Context.MODE_PRIVATE)
-        val mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("msg", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+
+                // Log and toast
+                val msg = getString(R.string.msg_token_fmt, token)
+                Log.d("msg", msg)
+                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            })
+
+
+
+
         val user = auth.currentUser
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -75,6 +101,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .addOnSuccessListener {
                         val data = it.data
                         if ((data != null) and (data!!["Berechtigung"].toString().toInt() != 0)) {
+                            firebaseAnalytics.setUserProperty(
+                                "Berechtigung",
+                                it.data!!["Berechtigung"].toString()
+                            )
+                            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, null)
                             println(it.data!!["Berechtigung"])
                             SelectMenu(
                                 -1,

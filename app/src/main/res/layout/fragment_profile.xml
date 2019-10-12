@@ -7,9 +7,7 @@
 		android:layout_height="match_parent"
 		tools:context=".ProfileFragment">
 
-	<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content">
+
 
 		<LinearLayout
 
@@ -88,6 +86,28 @@
 							android:textSize="22sp"
 							app:layout_columnSpan="10"
 							app:layout_columnWeight="10" />
+
+
+					<Space
+							android:layout_height="15dp"
+							app:layout_columnSpan="10"
+							app:layout_columnWeight="10" />
+
+					<Button
+							android:id="@+id/btn_notnotification_order_sub"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:text="sub"
+							app:layout_columnSpan="4"
+							app:layout_columnWeight="4" />
+
+					<Button
+							android:id="@+id/btn_notnotification_order_unsub"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:text="unsub"
+							app:layout_columnSpan="4"
+							app:layout_columnWeight="4" />
 
 					<Space
 							android:layout_height="15dp"
@@ -240,5 +260,4 @@
 			</ScrollView>
 		</LinearLayout>
 
-	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

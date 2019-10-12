@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 
@@ -53,6 +54,9 @@ class LoginFragment : Fragment() {
                             val user = auth.currentUser
                             val mailconfirmed = user!!.isEmailVerified
                             if (mailconfirmed) {
+                                val bundle = Bundle()
+                                bundle.putString(FirebaseAnalytics.Param.METHOD, "mail")
+                                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
                                 activity!!.finish()
                                 startActivity(activity!!.intent)
                             } else {
