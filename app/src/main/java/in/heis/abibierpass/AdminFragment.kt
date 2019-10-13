@@ -142,8 +142,7 @@ class AdminFragment : Fragment() {
                                         "Vorname: $fName\nNachname: $lName\nVulgo: $vulgo\n$uid\n\n"
 
                                     if (permission <= 1) {
-                                        message += if (permission == 0) "Wichtig:\nDieser Benutzer hat seine E-Mail Adresse noch nicht bestätigt oder wurde gesperrt! Trotzdem freischalten?"
-                                        else "Den ausgewählten Benutzer jetzt freischalten?"
+                                        message += "Den ausgewählten Benutzer jetzt freischalten?"
                                         /**
                                          * AlerDialog:
                                          * Beschreibung: Nutzer freischalten
@@ -155,9 +154,20 @@ class AdminFragment : Fragment() {
                                             .setMessage(message)
 
                                             .setPositiveButton("Ja") { _, _ ->
-                                                //UpdateUser().permission(mail, 2)
+
                                                 db.collection("Nutzer").document(uid)
                                                     .update("Berechtigung", 2)
+                                                    .addOnCompleteListener {
+                                                        if (it.isSuccessful) {
+                                                            MainActivity().sendNotification(
+                                                                context!!,
+                                                                uid,
+                                                                "Konto update",
+                                                                "Dein Account wurde freigeschalten."
+                                                            )
+
+                                                        }
+                                                    }
                                             }
                                             .setNegativeButton("Nein") { _, _ ->
                                                 //SelectMenu(-1, drawer_layout, activity).change()

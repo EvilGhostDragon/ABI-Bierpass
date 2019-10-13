@@ -36,17 +36,17 @@ class RegisterFragment : Fragment() {
                 btn_acc_register.isEnabled = false
                 progressbar.visibility = View.VISIBLE
 
-                val fName = editText_fname.text.toString()
-                val lName = editText_lname.text.toString()
-                val mail = editText_mail.text.toString()
+                val fName = editText_fname.text.toString().trim()
+                val lName = editText_lname.text.toString().trim()
+                val mail = editText_mail.text.toString().trim()
                 val password = editText_pswd.text.toString()
-                val vulgo = editText_vulgo.text.toString()
+                val vulgo = editText_vulgo.text.toString().trim()
                 auth.createUserWithEmailAndPassword(mail, password)
                     .addOnCompleteListener(activity!!) { task ->
                         btn_acc_register.isEnabled = true
                         progressbar.visibility = View.INVISIBLE
                         if (!task.isSuccessful) {
-                            println(task.exception!!.message)
+                            Log.w("firebase", task.exception!!.message)
                             if (task.exception!!.message!!.contains("email address is already in use")) {
                                 editText_mail.setTextColor(Color.RED)
                                 editText_mail.error = "Diese E-Mail Adresse wird bereits verwendet"
@@ -59,8 +59,7 @@ class RegisterFragment : Fragment() {
                                 if (!it.isSuccessful) {
                                     return@addOnCompleteListener
                                 }
-                                println("email sent")
-                                println(task.result!!.user!!.uid)
+
 
                             }
                             val userData = hashMapOf<String, Any>(
@@ -69,8 +68,7 @@ class RegisterFragment : Fragment() {
                                 "Vulgo" to vulgo,
                                 "Berechtigung" to 0
                             )
-                            println(user)
-                            println(user.uid)
+
                             db.collection("Nutzer")
                                 //.document("g")
                                 .document(user.uid)
@@ -199,10 +197,10 @@ class RegisterFragment : Fragment() {
         var item = editText_fname
         while (true) {
             item.setTextColor(Color.BLACK)
-            if (item.text.contains(" ") or item.text.isEmpty()) {
-                if (item.text.contains(" ")) item.setTextColor(Color.RED)
+            if (item.text.isEmpty()) {
+                item.setTextColor(Color.RED)
                 state = false
-                item.error = "Felder dürfen nicht leer sein oder Leerzeichen beinhalten"
+                item.error = "Felder dürfen nicht leer sein"
             }
             if ((item == editText_mail) and item.text.isNotEmpty()) {
                 if (!item.text.contains("@") or !item.text.contains(".")) {

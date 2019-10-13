@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,7 @@ class LoginFragment : Fragment() {
                 imm.hideSoftInputFromWindow(activity!!.currentFocus!!.windowToken, 0)
                 btn_acc_login.isEnabled = false
                 progressbar.visibility = View.VISIBLE
-                val mail = editText_mail.text.toString()
+                val mail = editText_mail.text.toString().trim()
                 val password = editText_pswd.text.toString()
                 auth.signInWithEmailAndPassword(mail, password)
                     .addOnCompleteListener(activity!!) { task ->
@@ -70,7 +71,7 @@ class LoginFragment : Fragment() {
                                 auth.signOut()
                             }
                         } else {
-                            println(task.exception!!.message)
+                            Log.w("firebase", task.exception!!.message)
                             if (task.exception!!.message!!.contains("password is invalid") or task.exception!!.message!!.contains(
                                     "There is no user record"
                                 )
@@ -85,7 +86,7 @@ class LoginFragment : Fragment() {
                             } else {
                                 AlertDialog.Builder(context)
                                     .setTitle("Fehler")
-                                    .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: ")
+                                    .setMessage("Ups Bier verschüttet. Fehler können passieren.")
                                     .setPositiveButton("OK") { dialog, which ->
                                         SelectMenu(-1, drawer_layout, activity).change()
                                     }
@@ -188,10 +189,10 @@ class LoginFragment : Fragment() {
         var item = editText_mail
         while (true) {
             item.setTextColor(Color.BLACK)
-            if (item.text.contains(" ") or item.text.isEmpty()) {
-                if (item.text.contains(" ")) item.setTextColor(Color.RED)
+            if (item.text.isEmpty()) {
+                item.setTextColor(Color.RED)
                 state = false
-                item.error = "Felder dürfen nicht leer sein oder Leerzeichen beinhalten"
+                item.error = "Felder dürfen nicht leer sein"
             }
             if ((item == editText_mail) and item.text.isNotEmpty()) {
                 if (!item.text.contains("@") or !item.text.contains(".")) {

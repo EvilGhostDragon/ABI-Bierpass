@@ -1,10 +1,7 @@
 package `in`.heis.abibierpass
 
-import android.app.AlarmManager
 import android.app.AlertDialog
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -23,19 +24,24 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONException
+import org.json.JSONObject
 
 
 const val key = "userdata"
 val auth = FirebaseAuth.getInstance()
-val db = FirebaseFirestore.getInstance()
+val db: FirebaseFirestore
+    get() = FirebaseFirestore.getInstance()
 lateinit var firebaseAnalytics: FirebaseAnalytics
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-
-    //    val user_data = getSharedPreferences("user.data", Context.MODE_PRIVATE)
+    private val FCM_API = "https://fcm.googleapis.com/fcm/send"
+    private val serverKey =
+        "key=" + "AAAAbR_kQd0:APA91bHhaPx5Z3vzy_aKW9d8RCqcSAq-jOCsJv8N2SRPWNijrB3VBymhJTjfbXpYWhOkpAN54gVsxOXSxXovx_OgjyRS5UeOdjWub7rbTUwPKORaAlO9OvPxSeAsu3ul0_FwfQvxYFPT"
+    private val contentType = "application/json"
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val token = getSharedPreferences(`in`.heis.abibierpass.key, Context.MODE_PRIVATE)
@@ -45,21 +51,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    Log.w("msg", "getInstanceId failed", task.exception)
+                    Log.w("firebase", "getInstanceId failed", task.exception)
                     return@OnCompleteListener
                 }
-
-                // Get new Instance ID token
                 val token = task.result?.token
-
-                // Log and toast
                 val msg = getString(R.string.msg_token_fmt, token)
-                Log.d("msg", msg)
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                Log.d("firebase", msg)
             })
-
-
-
 
         val user = auth.currentUser
         super.onCreate(savedInstanceState)
@@ -78,20 +76,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-        // Obtain the FirebaseAnalytics instance.
-
 
         FirebaseDynamicLinks.getInstance()
             .getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
-                // Get deep link from result (may be null if no link is found)
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
                     println(deepLink)
                 }
             }
-            .addOnFailureListener(this) { e -> Log.w("fb", "getDynamicLink:onFailure", e) }
+            .addOnFailureListener(this) { e -> Log.w("firebase", "getDynamicLink:onFailure", e) }
 
         if (user != null) {
             if (user.isEmailVerified) {
@@ -101,33 +96,51 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .addOnSuccessListener {
                         val data = it.data
                         if ((data != null) and (data!!["Berechtigung"].toString().toInt() != 0)) {
-                            firebaseAnalytics.setUserProperty(
-                                "Berechtigung",
-                                it.data!!["Berechtigung"].toString()
-                            )
+                            firebaseAnalytics
+                                .setUserProperty("Berechtigung", data["Berechtigung"].toString())
                             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, null)
-                            println(it.data!!["Berechtigung"])
+                            token.edit()
+                                .putInt("permission", data["Berechtigung"].toString().toInt())
+                                .apply()
                             SelectMenu(
                                 -1,
                                 drawer_layout,
                                 this
                             ).makeNewLayout(data["Berechtigung"] as Long)
                         } else {
-                            AlertDialog.Builder(this)
-                                .setTitle("Info")
-                                .setMessage("Du wurdest noch nicht freigeschalten. Du erhältst eine E-Mail sobald es soweit ist.")
-                                .setPositiveButton("OK") { _, _ ->
-                                    SelectMenu(-1, drawer_layout, this).change()
-                                }
-                                .show()
+                            if (token.getBoolean("login.blocknotification", false)) Toast.makeText(
+                                this,
+                                "Du wirst benachrichtigt sobald du freigeschalten wurdest",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            else {
+                                AlertDialog.Builder(this)
+                                    .setTitle("Info")
+                                    .setMessage("Du wurdest noch nicht freigeschalten. Möchtest du benachrichtigt werden?")
+                                    .setPositiveButton("Ja") { _, _ ->
+                                        FirebaseMessaging.getInstance().subscribeToTopic(it.id)
+                                        token.edit().putBoolean("login.blocknotification", true)
+                                            .apply()
+                                        SelectMenu(-1, drawer_layout, this).change()
+                                    }
+                                    .setNegativeButton("Nein") { _, _ ->
+                                        SelectMenu(-1, drawer_layout, this).change()
+                                    }
+                                    .show()
+                            }
                         }
                     }
-            }
+            } else Toast.makeText(
+                this,
+                "Deine E-Mail Adresse wurde noch nicht bestätigt!",
+                Toast.LENGTH_LONG
+            ).show()
+
         } else {
             SelectMenu(-1, drawer_layout, this@MainActivity).change()
         }
         if (token.getBoolean("loggedin", true) && (token.getString("mail", "") != "")) {
-            println("LOGGED IN")
+            Log.w("account", "Logged in")
             SelectMenu(
                 -1,
                 drawer_layout,
@@ -145,62 +158,41 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        handleIntent(intent)
-    }
+    fun sendNotification(context: Context, topicName: String, title: String, message: String) {
+        val requestQueue: RequestQueue by lazy {
+            Volley.newRequestQueue(context)
+        }
+        val topic = "/topics/" + topicName
+        val notification = JSONObject()
+        val notifcationBody = JSONObject()
 
-    private fun handleIntent(intent: Intent) {
-
-        val appLinkAction = intent.action
-        val appLinkData: Uri? = intent.data
-        if (Intent.ACTION_VIEW == appLinkAction) {
-            appLinkData?.lastPathSegment?.also { linkId ->
-                Uri.parse("content://in.heis.abibierpass")
-                    .buildUpon()
-                    .appendPath(linkId)
-                    .build().also { appData ->
-                        handleLink(appData.toString())
-                    }
-
-            }
-
+        try {
+            notifcationBody.put("title", title)
+            notifcationBody.put("message", message)
+            notification.put("to", topic)
+            notification.put("data", notifcationBody)
+            Log.e("TAG", "try")
+        } catch (e: JSONException) {
+            Log.e("TAG", "onCreate: " + e.message)
         }
 
-    }
+        val jsonObjectRequest = object : JsonObjectRequest(FCM_API, notification,
+            Response.Listener<JSONObject> { response ->
+                Log.i("volley", "onResponse: $response")
 
-    private fun handleLink(appData: String) {
-        val mStartActivity = Intent(this@MainActivity, MainActivity::class.java)
-        val mPendingIntentId = 123456
-        val mPendingIntent = PendingIntent.getActivity(
-            this@MainActivity,
-            mPendingIntentId,
-            mStartActivity,
-            PendingIntent.FLAG_CANCEL_CURRENT
-        )
-        val mgr = this@MainActivity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        when {
-            appData.contains("abibierpass/failed") -> AlertDialog.Builder(this)
-                .setTitle("Fehler")
-                .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: 1000")
-                .setPositiveButton("OK") { dialog, which ->
-                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent)
-                    System.exit(0)
-                }
-                .show()
-            appData.contains("abibierpass/success") -> AlertDialog.Builder(this)
-                .setTitle("Info")
-                .setMessage("Deine E-Mail Adresse wurde erfolgreich bestätigt. \nDu wirst benachrichtigt, sobald deine Daten überprüft wurden")
-                .setPositiveButton("OK") { dialog, which ->
+            },
+            Response.ErrorListener {
+                Log.i("volley", "onErrorResponse: Didn't work")
+            }) {
 
-                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent)
-                    System.exit(0)
-                }
-                .show()
-            appData.contains("abibierpass/open") -> {
-
+            override fun getHeaders(): Map<String, String> {
+                val params = HashMap<String, String>()
+                params["Authorization"] = serverKey
+                params["Content-Type"] = contentType
+                return params
             }
         }
+        requestQueue.add(jsonObjectRequest)
     }
 
     override fun onBackPressed() {
@@ -231,6 +223,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         SelectMenu(item.itemId, drawer_layout, this@MainActivity).change()
 
+        println("nav " + nav_view.checkedItem)
+
+        nav_view.setCheckedItem(nav_view.checkedItem!!)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true

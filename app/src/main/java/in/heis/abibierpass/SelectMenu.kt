@@ -88,6 +88,7 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
         }
         (activity as FragmentActivity).supportFragmentManager
             .beginTransaction()
+            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
             .replace(R.id.ContentPlaceholder, fragment)
             .commit()
         return true
@@ -126,9 +127,7 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
             }
 
         }
-        if (permission >= 100) {
 
-        }
         change()
 
     }

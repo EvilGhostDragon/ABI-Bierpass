@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -16,7 +17,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_profile, container, false)
 
     }
@@ -26,6 +27,7 @@ class ProfileFragment : Fragment() {
 
         activity!!.nav_view.menu.findItem(R.id.nav_acc_profile).isChecked = true
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
+        switch_notification.isChecked = token.getBoolean("ordernotification", false)
         val user = auth.currentUser
         db.collection("Nutzer").document(user!!.uid).get().addOnSuccessListener {
             val fName = it.data!!["Vorname"].toString()
@@ -41,6 +43,28 @@ class ProfileFragment : Fragment() {
             txt_profile_permission.text = permission
         }
 
+        switch_notification.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                with(FirebaseMessaging.getInstance()) {
+                    if (token.getInt("permission", 0) >= 10) subscribeToTopic("Bestellungen")
+                    subscribeToTopic("Normal")
+                }
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) token.edit().putBoolean(
+                            "ordernotification",
+                            true
+                        ).apply()
+                    }
+            } else {
+                with(FirebaseMessaging.getInstance()) {
+                    unsubscribeFromTopic("Normal")
+                    unsubscribeFromTopic("Bestellungen")
+                }
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) token.edit().putBoolean("notification", false).apply()
+                    }
+            }
+        }
 
 
         btn_profile_changepw.setOnClickListener {
