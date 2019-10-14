@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -43,10 +44,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         "key=" + "AAAAbR_kQd0:APA91bHhaPx5Z3vzy_aKW9d8RCqcSAq-jOCsJv8N2SRPWNijrB3VBymhJTjfbXpYWhOkpAN54gVsxOXSxXovx_OgjyRS5UeOdjWub7rbTUwPKORaAlO9OvPxSeAsu3ul0_FwfQvxYFPT"
     private val contentType = "application/json"
     override fun onCreate(savedInstanceState: Bundle?) {
-
         val token = getSharedPreferences(`in`.heis.abibierpass.key, Context.MODE_PRIVATE)
-
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        (application as App).preferenceRepository
+            .nightModeLive.observe(this, Observer { nightMode ->
+            nightMode?.let { delegate.localNightMode = it }
+        })
 
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->

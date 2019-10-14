@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -35,12 +37,28 @@ class ProfileFragment : Fragment() {
             val vulgo = it.data!!["Vulgo"].toString()
             val permission =
                 CustomConvert().permissionToString(it.data!!["Berechtigung"].toString().toInt())
-            txt_profile_fName.text = fName
-            txt_profile_lName.text = lName
-            txt_profile_vulgo.text = vulgo
-            txt_profile_mail.text = user.email
-            txt_profile_uid.text = user.uid
-            txt_profile_permission.text = permission
+            txt_profile_fName.setText(fName)
+            txt_profile_lName.setText(lName)
+            txt_profile_vulgo.setText(vulgo)
+            txt_profile_mail.setText(user.email)
+            txt_profile_uid.setText(user.uid)
+            txt_profile_permission.setText(permission)
+        }
+
+        super.onViewCreated(view, savedInstanceState)
+        val darkThemeSwitch: SwitchMaterial = view.findViewById(R.id.switch_darktheme)
+        val preferenceRepository = (requireActivity().application as App).preferenceRepository
+
+        preferenceRepository.isDarkThemeLive.observe(this, Observer { isDarkTheme ->
+            isDarkTheme?.let { darkThemeSwitch.isChecked = it }
+        })
+
+        darkThemeSwitch.setOnCheckedChangeListener { _, checked ->
+            preferenceRepository.isDarkTheme = checked
+        }
+
+        darkThemeSwitch.setOnCheckedChangeListener { _, checked ->
+            preferenceRepository.isDarkTheme = checked
         }
 
         switch_notification.setOnCheckedChangeListener { _, isChecked ->
@@ -72,12 +90,6 @@ class ProfileFragment : Fragment() {
             //TODO("able to change pw")
             //user.updateEmail()
         }
-        btn_profile_changemail.setOnClickListener {
-            Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
-            //TODO("able to change mail")
-            //user.updateP
-        }
-
 
 
         //refresh_profile.setColorSchemeColors(Color.RED, Color.BLUE)

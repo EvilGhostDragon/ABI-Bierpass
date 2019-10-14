@@ -20,12 +20,12 @@
 	<!--The same color values are defined for dark theme, but with values more appropriate for -->
 	<!--low-luminance UIs. These colors will be used by night/themes.xml.-->
 
-	<color name="color_primary">#1976d2</color>
-	<color name="color_primary_variant">#004ba0</color>
-	<color name="color_secondary">#c62828</color>
-	<color name="color_secondary_variant">#8e0000</color>
+	<color name="color_primary">#90a4ae</color>
+	<color name="color_primary_variant">#62757f</color>
+	<color name="color_secondary">#757575</color>
+	<color name="color_secondary_variant">#494949</color>
 
-	<color name="color_background">#000000</color>
+	<color name="color_background">#161616</color>
 	<color name="color_surface">#121212</color>
 	<color name="color_error">#cf6679</color>
 

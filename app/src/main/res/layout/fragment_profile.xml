@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
@@ -9,274 +9,240 @@
 
 
 	<LinearLayout
-
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:focusable="true"
-			android:orientation="vertical"
-			android:padding="10dp"
-			android:weightSum="10">
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
 
-
-		<RelativeLayout
+		<com.google.android.material.card.MaterialCardView
 				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:layout_weight="1">
-
-			<TextView
-					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_centerInParent="true"
-					android:text="@string/txt_profile"
-					android:textSize="34sp" />
+				android:layout_margin="@dimen/keyline_5"
+				android:layout_marginStart="@dimen/keyline_4"
+				android:layout_marginTop="24dp"
+				android:layout_marginEnd="@dimen/keyline_4"
+				android:layout_marginBottom="@dimen/keyline_1">
 
-		</RelativeLayout>
-
-		<ScrollView
-				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:layout_weight="8">
-
-
-			<androidx.gridlayout.widget.GridLayout
+			<androidx.constraintlayout.widget.ConstraintLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:foregroundGravity="center"
-					android:padding="25dp"
-					app:columnCount="10">
+					android:padding="10dp">
 
+				<com.google.android.material.textfield.TextInputLayout
+						android:id="@+id/c_fName"
+						style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_margin="@dimen/keyline_1"
+						android:hint="@string/txt_fname"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toTopOf="parent">
 
-				<TextView
+					<com.google.android.material.textfield.TextInputEditText
+							android:id="@+id/txt_profile_fName"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:enabled="false"
+							android:focusable="false" />
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+						android:id="@+id/c_lName"
+						style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
-						android:text="@string/txt_payId"
-						android:textSize="15sp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
+						android:layout_margin="@dimen/keyline_1"
+						android:hint="@string/txt_lname"
+						app:layout_constraintEnd_toStartOf="@id/c_vulgo"
+						app:layout_constraintHorizontal_weight="60"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@+id/c_fName">
 
-				<Space
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
+					<com.google.android.material.textfield.TextInputEditText
+							android:id="@+id/txt_profile_lName"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:enabled="false"
+							android:focusable="false" />
+				</com.google.android.material.textfield.TextInputLayout>
 
-				<TextView
-						android:id="@+id/txt_profile_uid"
+
+				<com.google.android.material.textfield.TextInputLayout
+						android:id="@+id/c_vulgo"
+						style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
-						android:textSize="22sp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
+						android:layout_below="@id/c_lName"
+						android:layout_margin="@dimen/keyline_1"
+						android:hint="@string/txt_vulgo"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintHorizontal_weight="40"
+						app:layout_constraintStart_toEndOf="@+id/c_lName"
+						app:layout_constraintTop_toBottomOf="@+id/c_fName">
 
-				<Space
-						android:layout_height="15dp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
+					<com.google.android.material.textfield.TextInputEditText
+							android:id="@+id/txt_profile_vulgo"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:enabled="false"
+							android:focusable="false"
+							android:text="" />
+				</com.google.android.material.textfield.TextInputLayout>
 
-				<TextView
-						android:layout_width="0dp"
+				<com.google.android.material.textfield.TextInputLayout
+						android:id="@+id/c_mail"
+						style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:text="@string/txt_permission"
-						android:textSize="15sp"
-						app:layout_columnSpan="5"
-						app:layout_columnWeight="5" />
+						android:layout_below="@id/c_lName"
+						android:layout_margin="@dimen/keyline_1"
+						android:hint="@string/txt_mail"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@+id/c_lName">
 
-				<TextView
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:gravity="end"
-						android:text="@string/txt_notification"
-						android:textSize="15sp"
-						app:layout_columnSpan="5"
-						app:layout_columnWeight="5" />
+					<com.google.android.material.textfield.TextInputEditText
+							android:id="@+id/txt_profile_mail"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
 
-				<TextView
-						android:id="@+id/txt_profile_permission"
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:textSize="22sp"
-						app:layout_columnSpan="8"
-						app:layout_columnWeight="8" />
-
-				<Switch
-						android:id="@+id/switch_notification"
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:checked="true"
-						app:layout_columnSpan="2"
-						app:layout_columnWeight="2" />
-
-				<Space
-						android:layout_height="15dp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<View
-						android:layout_width="0dp"
-						android:layout_height="1dp"
-						android:background="@color/color_primary"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<Space
-						android:layout_height="45dp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<TextView
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:text="@string/txt_fname"
-						android:textSize="15sp"
-						app:layout_columnWeight="10" />
-
-				<Space
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<TextView
-						android:id="@+id/txt_profile_fName"
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:textSize="22sp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-
-				<Space
-						android:layout_height="15dp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<TextView
-
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:text="@string/txt_lname"
-						android:textSize="15sp"
-						app:layout_columnWeight="10" />
-
-				<Space
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<TextView
-						android:id="@+id/txt_profile_lName"
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:textSize="22sp"
-						app:layout_columnSpan="5"
-						app:layout_columnWeight="5" />
-
-				<TextView
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:gravity="center"
-						android:text="v/o"
-						android:textSize="20sp"
-						app:layout_columnSpan="2"
-						app:layout_columnWeight="2" />
-
-				<TextView
-						android:id="@+id/txt_profile_vulgo"
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:textSize="22sp"
-						app:layout_columnSpan="3"
-						app:layout_columnWeight="3" />
-
-				<Space
-						android:layout_height="30dp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<TextView
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:text="@string/txt_mail"
-						android:textSize="15sp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<Space
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<TextView
-						android:id="@+id/txt_profile_mail"
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:textSize="22sp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<Space
-						android:layout_height="45dp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<View
-						android:layout_width="0dp"
-						android:layout_height="1dp"
-						android:background="@color/color_primary"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<Space
-						android:layout_height="15dp"
-						app:layout_columnSpan="10"
-						app:layout_columnWeight="10" />
-
-				<Button
-						android:id="@+id/btn_profile_changemail"
-						style="@style/Widget.MaterialComponents.Button.TextButton"
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:gravity="start"
-						android:text="@string/txt_changeMail"
-						android:textSize="15sp"
-						app:layout_columnSpan="5"
-						app:layout_columnWeight="1" />
+							android:enabled="false"
+							android:focusable="false"
+							android:text="" />
+				</com.google.android.material.textfield.TextInputLayout>
 
 				<Button
 						android:id="@+id/btn_profile_changepw"
 						style="@style/Widget.MaterialComponents.Button.TextButton"
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:gravity="end"
-						android:text="@string/txt_changePW"
-						android:textSize="15sp"
-						app:layout_columnSpan="5"
-						app:layout_columnWeight="9" />
-			</androidx.gridlayout.widget.GridLayout>
-
-
-		</ScrollView>
-	</LinearLayout>
-
-	<com.google.android.material.card.MaterialCardView
-			style="@style/Widget.MaterialComponents.CardView"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-
-		<RelativeLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:padding="20dp">
-
-			<com.google.android.material.textfield.TextInputLayout
-					style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:hint="@string/txt_mail2">
-
-				<com.google.android.material.textfield.TextInputEditText
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
+						android:layout_margin="@dimen/keyline_1"
 						android:enabled="false"
-						android:focusable="false"
-						android:text="asfd" />
-			</com.google.android.material.textfield.TextInputLayout>
+						android:gravity="left"
+						android:text="@string/txt_changePW"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@+id/c_mail" />
 
-		</RelativeLayout>
+				<View
+						android:id="@+id/view2"
+						android:layout_width="0dp"
+						android:layout_height="1dp"
+						android:background="@color/color_primary"
+						app:layout_columnSpan="10"
+						app:layout_columnWeight="10"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@+id/btn_profile_changepw" />
 
-	</com.google.android.material.card.MaterialCardView>
-</RelativeLayout>
+				<Button
+						android:id="@+id/btn_profile_edit"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_margin="@dimen/keyline_1"
+						android:text="Bearbeiten"
+						app:layout_constraintEnd_toStartOf="@+id/btn_signout"
+						app:layout_constraintHorizontal_weight="50"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+				<Button
+						android:id="@+id/btn_signout"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_margin="@dimen/keyline_1"
+						android:text="@string/menu_acc_logout"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintHorizontal_weight="50"
+						app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
+
+		</com.google.android.material.card.MaterialCardView>
+
+		<com.google.android.material.card.MaterialCardView
+
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+				android:layout_margin="@dimen/keyline_5">
+
+			<androidx.constraintlayout.widget.ConstraintLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+					android:padding="10dp">
+
+				<com.google.android.material.textfield.TextInputLayout
+						android:id="@+id/c_uid"
+						style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_margin="@dimen/keyline_1"
+						android:hint="@string/txt_payId"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toTopOf="parent">
+
+					<com.google.android.material.textfield.TextInputEditText
+							android:id="@+id/txt_profile_uid"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:enabled="false"
+							android:focusable="false" />
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+						android:id="@+id/c_permission"
+						style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_margin="@dimen/keyline_1"
+						android:hint="@string/txt_permission"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@+id/c_uid">
+
+					<com.google.android.material.textfield.TextInputEditText
+							android:id="@+id/txt_profile_permission"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:enabled="false"
+							android:focusable="false" />
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<TextView
+						android:id="@+id/textView"
+						style="@style/TextAppearance.MyTheme.Subtitle2"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginStart="@dimen/keyline_1"
+						android:layout_marginTop="25dp"
+						android:layout_marginEnd="@dimen/keyline_1"
+						android:text="App Einstellungen:"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@+id/c_permission" />
+
+				<Switch
+						android:id="@+id/switch_notification"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="start"
+						android:padding="10dp"
+						android:text="@string/txt_notification"
+						app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+				<com.google.android.material.switchmaterial.SwitchMaterial
+						android:id="@+id/switch_darktheme"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="start"
+						android:padding="10dp"
+						android:text="@string/txt_changeTheme"
+						app:layout_constraintTop_toBottomOf="@+id/switch_notification" />
+
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
+
+		</com.google.android.material.card.MaterialCardView>
+	</LinearLayout>
+</ScrollView>

@@ -46,6 +46,7 @@
 	<string name="txt_newMail">Neue E-Mail Adresse</string>
 	<string name="txt_coins">Bier Coins</string>
 	<string name="txt_notification">Benachrichtigung</string>
+	<string name="txt_changeTheme">Darkthemet</string>
 
 	<!-- Text im Code - Known Json.put (acton), Alertdialog, Toasts, usw -->
 	<string name="code_json_action_getuserinformation">getuserinformation</string>
