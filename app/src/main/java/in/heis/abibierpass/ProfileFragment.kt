@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,6 +29,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity!!.nav_view.menu.findItem(R.id.nav_acc_profile).isChecked = true
+        activity!!.title = "Deine Daten"
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
         switch_notification.isChecked = token.getBoolean("ordernotification", false)
         val user = auth.currentUser
@@ -57,14 +59,13 @@ class ProfileFragment : Fragment() {
             preferenceRepository.isDarkTheme = checked
         }
 
-        darkThemeSwitch.setOnCheckedChangeListener { _, checked ->
-            preferenceRepository.isDarkTheme = checked
-        }
+
 
         switch_notification.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 with(FirebaseMessaging.getInstance()) {
                     if (token.getInt("permission", 0) >= 10) subscribeToTopic("Bestellungen")
+                    subscribeToTopic(auth.currentUser!!.uid)
                     subscribeToTopic("Normal")
                 }
                     .addOnCompleteListener {
@@ -76,6 +77,7 @@ class ProfileFragment : Fragment() {
             } else {
                 with(FirebaseMessaging.getInstance()) {
                     unsubscribeFromTopic("Normal")
+                    subscribeToTopic(auth.currentUser!!.uid)
                     unsubscribeFromTopic("Bestellungen")
                 }
                     .addOnCompleteListener {
@@ -90,12 +92,35 @@ class ProfileFragment : Fragment() {
             //TODO("able to change pw")
             //user.updateEmail()
         }
+        btn_profile_edit.setOnClickListener {
+            Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
+
+        }
+
+        btn_signout.setOnClickListener {
+            MaterialAlertDialogBuilder(activity)
+                .setTitle("Info")
+                .setMessage("Wirklich abmelden?")
+                .setPositiveButton("Ja") { dialog, which ->
+                    auth.signOut()
+                    activity!!.finish()
+                    startActivity(activity!!.intent)
+                }
+                .setNegativeButton("Nein") { dialog, which ->
+
+                }
+                .show()
+        }
 
 
         //refresh_profile.setColorSchemeColors(Color.RED, Color.BLUE)
 
         
 
+
+    }
+
+    private fun logout() {
 
     }
 }

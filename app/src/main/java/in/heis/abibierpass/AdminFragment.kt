@@ -35,6 +35,7 @@ class AdminFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_admin).isChecked = true
+        activity!!.title = "Nutzerübersicht und Einstellungen"
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
 
         /**

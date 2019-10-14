@@ -2,11 +2,12 @@
 <LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:background="@drawable/ic_abi_dark"
 		android:layout_width="match_parent"
 		android:layout_height="180dp"
-		android:background="@drawable/side_nav_bar"
-		android:padding="16dp"
-		android:theme="@style/ThemeOverlay.AppCompat.Dark"
+		android:paddingStart="16dp"
+		android:paddingEnd="16dp"
+		android:theme="@style/ThemeOverlay.MaterialComponents"
 		android:orientation="vertical"
 		android:gravity="bottom">
 
@@ -16,18 +17,26 @@
 			android:paddingTop="8dp"
 			app:srcCompat="@drawable/ic_launcher"
 			android:id="@+id/imageView"
-			android:layout_gravity="right"/>
+			android:gravity="end" />
 
 	<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/nav_header_title"
+			android:textStyle="bold"
 			android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 	<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:textStyle="bold"
 			android:text="@string/nav_header_subtitle"
 			android:id="@+id/header_subtitel"/>
+
+	<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="0dp"
+			android:background="@color/color_primary" />
 
 </LinearLayout>

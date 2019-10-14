@@ -27,6 +27,7 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_register).isChecked = true
+        activity!!.title = "Account erstellen"
 
         btn_acc_register.setOnClickListener {
             if (isFormOk()) {

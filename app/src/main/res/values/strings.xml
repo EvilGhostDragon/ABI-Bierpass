@@ -26,36 +26,24 @@
 	<string name="menu_about">Über</string>
 
 	<!-- Jede Art von Textfelder -->
-	<string name="txt_login">Anmelden</string>
 	<string name="txt_register">Registrieren</string>
 	<string name="txt_mail">E-Mail Adresse</string>
-	<string name="txt_mail2">E-Mail Adresse wiederholen</string>
 	<string name="txt_password">Passwort</string>
 	<string name="txt_password2">Passwort wiederholen</string>
 	<string name="txt_lname">Nachname</string>
 	<string name="txt_fname">Vorname</string>
 	<string name="txt_vulgo">Vulgo</string>
-	<string name="txt_resetPassword">Passwort vergessen?</string>
-	<string name="txt_toRegister">Jetzt registrieren</string>
 
-	<string name="txt_profile">Profil</string>
 	<string name="txt_changePW">Passwort ändern</string>
-	<string name="txt_changeMail">E-Mail Adresse ändern</string>
 	<string name="txt_payId">Benutzer ID</string>
 	<string name="txt_permission">APP Berechtigung</string>
-	<string name="txt_newMail">Neue E-Mail Adresse</string>
-	<string name="txt_coins">Bier Coins</string>
 	<string name="txt_notification">Benachrichtigung</string>
 	<string name="txt_changeTheme">Darkthemet</string>
 
 	<!-- Text im Code - Known Json.put (acton), Alertdialog, Toasts, usw -->
-	<string name="code_json_action_getuserinformation">getuserinformation</string>
-	<string name="code_json_input_geteverything">geteverything</string>
-	<string name="code_alertdia_msg_error">Ups Bier verschüttet. Fehler können passieren.\n\nFehlercode: </string>
 
 
 	<!-- TODO: Remove or change this placeholder text -->
-	<string name="hello_blank_fragment">Hello blank fragment</string>
 	<string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
 
 

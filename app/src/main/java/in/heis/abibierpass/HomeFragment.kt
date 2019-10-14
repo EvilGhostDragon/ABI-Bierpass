@@ -23,12 +23,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_home).isChecked = true
+        activity!!.title = "Home"
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
         val permission = token.getInt("permission", 0)
         if (permission == 100) {
             btn_devtest1.isVisible = true
             btn_devtest2.isVisible = true
         }
+        if (permission >= 2) btn_quicklink1.isVisible = true
 
         btn_quicklink1.setOnClickListener {
             val navView: NavigationView = activity!!.findViewById(R.id.nav_view)
@@ -39,7 +41,7 @@ class HomeFragment : Fragment() {
         }
 
         btn_devtest1.setOnClickListener {
-            MainActivity().sendNotification(context!!, "Normal", "test", "test")
+            activity!!.title = "aaaa"
 
         }
         btn_devtest2.setOnClickListener {

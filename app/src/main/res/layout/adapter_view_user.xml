@@ -4,14 +4,15 @@
 		android:layout_height="match_parent"
 		android:orientation="horizontal"
 		android:gravity="center"
-		android:padding="5dp"
+		android:layout_margin="@dimen/keyline_2"
+		android:padding="20dp"
 		android:weightSum="100">
 
 	<TextView
 			android:id="@+id/txt_fName"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="25"
+			android:layout_weight="30"
 			android:textSize="17sp"
 			android:text="@string/txt_fname" />
 
@@ -19,7 +20,7 @@
 			android:id="@+id/txt_lName"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="25"
+			android:layout_weight="30"
 			android:textSize="17sp"
 			android:text="@string/txt_lname" />
 
@@ -27,7 +28,7 @@
 			android:id="@+id/txt_vulgo"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="25"
+			android:layout_weight="20"
 			android:textSize="17sp"
 			android:text="@string/txt_vulgo" />
 
@@ -36,7 +37,7 @@
 			android:id="@+id/txt_permission"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="25"
+			android:layout_weight="20"
 			android:textSize="17sp"
 			android:text="@string/txt_permission" />
 </LinearLayout>

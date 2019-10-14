@@ -27,6 +27,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_login).isChecked = true
+        activity!!.title = "Login"
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
 
         btn_profile_resendmail.setOnClickListener {

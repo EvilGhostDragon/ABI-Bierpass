@@ -31,6 +31,7 @@ class OrderBeerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_orderbeer).isChecked = true
+        activity!!.title = "Bier bestellen"
         val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
         var amount = 0
         val userRef = db.collection("Nutzer").document(auth.currentUser!!.uid)
@@ -43,6 +44,7 @@ class OrderBeerFragment : Fragment() {
                 progressbar.visibility = View.INVISIBLE
                 btn_orderbeer.isEnabled = true
             }
+
             override fun onAnimationCancel(animation: Animator) {}
             override fun onAnimationRepeat(animation: Animator) {}
         })
@@ -67,34 +69,33 @@ class OrderBeerFragment : Fragment() {
                 }
 
         }
-        btn_devtest3.setOnClickListener {
+        btn_lastorder.setOnClickListener {
+            Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
 
         }
-        fab_chart.setOnClickListener {
-            Toast.makeText(context!!, "af", Toast.LENGTH_LONG).show()
-        }
+
 
         btn_orderbeer.setOnClickListener {
 
-                val current = Calendar.getInstance(
-                    Locale.ITALY
-                ).time
+            val current = Calendar.getInstance(
+                Locale.ITALY
+            ).time
             val vulgo = token.getString("vulgo", "")
-                val transInfo = hashMapOf<String, Any>(
-                    "Status" to 0,
-                    "Datum" to current,
-                    "NutzerVon" to db.collection("Nutzer").document(
-                        auth.currentUser!!.uid
-                    ),
-                    "Nutzer" to "Bierkasse",
-                    "Betrag" to -1
-                )
-                val mDialogView =
-                    LayoutInflater.from(context).inflate(R.layout.dialog_selectbeer, null)
+            val transInfo = hashMapOf<String, Any>(
+                "Status" to 0,
+                "Datum" to current,
+                "NutzerVon" to db.collection("Nutzer").document(
+                    auth.currentUser!!.uid
+                ),
+                "Nutzer" to "Bierkasse",
+                "Betrag" to -1
+            )
+            val mDialogView =
+                LayoutInflater.from(context).inflate(R.layout.dialog_selectbeer, null)
             val mAlertDialogBuilder = MaterialAlertDialogBuilder(context)
-                    .setView(mDialogView)
-                    .setTitle("Auswahl")
-                val mAlertDialog = mAlertDialogBuilder.show()
+                .setView(mDialogView)
+                .setTitle("Auswahl")
+            val mAlertDialog = mAlertDialogBuilder.show()
 
             fun manageOrder(beerType: String) {
                 mAlertDialog.dismiss()
@@ -110,106 +111,34 @@ class OrderBeerFragment : Fragment() {
                             "Bier erfolgrei bestellt.",
                             Toast.LENGTH_LONG
                         ).show()
+                        notifyFox(beerType, vulgo!!)
                     }
             }
 
-                mDialogView.btn_beerhell.setOnClickListener {
-                    mAlertDialog.dismiss()
-                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
-                    val type = "Augustiner: Hell"
-                    transInfo["Auswahl"] = type
-                    db.collection("Transaktionen").document()
-                        .set(transInfo)
-                        .addOnCompleteListener { task ->
-                            if (!task.isSuccessful) return@addOnCompleteListener
-                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
-                            Toast.makeText(
-                                context,
-                                "Bier erfolgrei bestellt.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                }
-                mDialogView.btn_beeredelstoff.setOnClickListener {
-                    mAlertDialog.dismiss()
-                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
-                    transInfo["Auswahl"] = "edelstoff"
-                    db.collection("Transaktionen").document()
-                        .set(transInfo)
-                        .addOnCompleteListener { task ->
-                            if (!task.isSuccessful) return@addOnCompleteListener
-                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
-                            Toast.makeText(
-                                context,
-                                "Bestellung wurde weiter gegeben",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                }
-                mDialogView.btn_beertoast.setOnClickListener {
-                    mAlertDialog.dismiss()
-                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
-                    transInfo["Auswahl"] = "toast"
-                    db.collection("Transaktionen").document()
-                        .set(transInfo)
-                        .addOnCompleteListener { task ->
-                            if (!task.isSuccessful) return@addOnCompleteListener
-                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
-                            Toast.makeText(
-                                context,
-                                "Bestellung wurde weiter gegeben",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                }
-                mDialogView.btn_beerweizen.setOnClickListener {
-                    mAlertDialog.dismiss()
-                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
-                    transInfo["Auswahl"] = "weizen"
-                    db.collection("Transaktionen").document()
-                        .set(transInfo)
-                        .addOnCompleteListener { task ->
-                            if (!task.isSuccessful) return@addOnCompleteListener
-                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
-                            Toast.makeText(
-                                context,
-                                "Bestellung wurde weiter gegeben",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                }
-                mDialogView.btn_beerblau.setOnClickListener {
-                    mAlertDialog.dismiss()
-                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
-                    transInfo["Auswahl"] = "blau"
-                    db.collection("Transaktionen").document()
-                        .set(transInfo)
-                        .addOnCompleteListener { task ->
-                            if (!task.isSuccessful) return@addOnCompleteListener
-                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
-                            Toast.makeText(
-                                context,
-                                "Bestellung wurde weiter gegeben",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                }
-                mDialogView.btn_beerradler.setOnClickListener {
-                    mAlertDialog.dismiss()
-                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
-                    transInfo["Auswahl"] = "radler"
-                    db.collection("Transaktionen").document()
-                        .set(transInfo)
-                        .addOnCompleteListener { task ->
-                            if (!task.isSuccessful) return@addOnCompleteListener
-                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
-                            Toast.makeText(
-                                context,
-                                "Bestellung wurde weiter gegeben",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                }
+            mDialogView.btn_beerhell.setOnClickListener {
+                val beerTyp = "Augustiner: Hell"
+                manageOrder(beerTyp)
+            }
+            mDialogView.btn_beeredelstoff.setOnClickListener {
+                val beerTyp = "Augustiner: Hell"
+                manageOrder(beerTyp)
+            }
+            mDialogView.btn_beertoast.setOnClickListener {
+                val beerTyp = "Budentoast"
+                manageOrder(beerTyp)
+            }
+            mDialogView.btn_beerweizen.setOnClickListener {
+                val beerTyp = "Franziskaner: Weissbier"
+                manageOrder(beerTyp)
+            }
+            mDialogView.btn_beerblau.setOnClickListener {
+                val beerTyp = "Franziskaner: Alkoholfrei"
+                manageOrder(beerTyp)
+            }
+            mDialogView.btn_beerradler.setOnClickListener {
+                val beerTyp = "Radler"
+                manageOrder(beerTyp)
+            }
 
 
         }

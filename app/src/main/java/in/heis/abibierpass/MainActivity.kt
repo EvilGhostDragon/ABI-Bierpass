@@ -24,6 +24,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_main.*
@@ -35,22 +36,22 @@ const val key = "userdata"
 val auth = FirebaseAuth.getInstance()
 val db: FirebaseFirestore
     get() = FirebaseFirestore.getInstance()
+val settings = FirebaseFirestoreSettings.Builder()
+    .setPersistenceEnabled(true)
+    .build()
 lateinit var firebaseAnalytics: FirebaseAnalytics
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
     private val FCM_API = "https://fcm.googleapis.com/fcm/send"
     private val serverKey =
         "key=" + "AAAAbR_kQd0:APA91bHhaPx5Z3vzy_aKW9d8RCqcSAq-jOCsJv8N2SRPWNijrB3VBymhJTjfbXpYWhOkpAN54gVsxOXSxXovx_OgjyRS5UeOdjWub7rbTUwPKORaAlO9OvPxSeAsu3ul0_FwfQvxYFPT"
     private val contentType = "application/json"
     override fun onCreate(savedInstanceState: Bundle?) {
         val token = getSharedPreferences(`in`.heis.abibierpass.key, Context.MODE_PRIVATE)
+        db.firestoreSettings = settings
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        (application as App).preferenceRepository
-            .nightModeLive.observe(this, Observer { nightMode ->
-            nightMode?.let { delegate.localNightMode = it }
-        })
-
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
@@ -97,6 +98,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 userRef
                     .get()
                     .addOnSuccessListener {
+                        (application as App).preferenceRepository
+                            .nightModeLive.observe(this, Observer { nightMode ->
+                            nightMode?.let { delegate.localNightMode = it }
+
+                            val navView: NavigationView = this.findViewById(R.id.nav_view)
+                            navView.setCheckedItem(navView.menu.findItem(R.id.nav_home))
+                            SelectMenu(R.id.nav_home, drawer_layout, this).change()
+                        })
                         val data = it.data
                         if ((data != null) and (data!!["Berechtigung"].toString().toInt() != 0)) {
                             firebaseAnalytics
@@ -107,6 +116,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 putString("vulgo", data["Vulgo"].toString())
                             }
                                 .apply()
+
                             SelectMenu(
                                 -1,
                                 drawer_layout,
@@ -142,6 +152,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ).show()
 
         } else {
+            token.edit().putString("permission", null).apply()
             SelectMenu(-1, drawer_layout, this@MainActivity).change()
         }
         println(token.all)
