@@ -12,7 +12,6 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="-7dp"
-			android:backgroundTint="@color/white"
 			android:indeterminate="true"
 			android:indeterminateTint="#1a09d6"
 			android:max="100"
@@ -128,7 +127,6 @@
 
 			<Button
 					android:id="@+id/btn_show"
-					style="@style/Widget.MaterialComponents.Button"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
@@ -141,7 +139,7 @@
 		<View
 				android:layout_width="match_parent"
 				android:layout_height="1dp"
-				android:background="@color/grey" />
+				android:background="@color/color_primary" />
 
 		<ScrollView
 				android:layout_width="match_parent"

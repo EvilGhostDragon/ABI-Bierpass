@@ -1,10 +1,10 @@
 package `in`.heis.abibierpass
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.system.exitProcess
@@ -28,8 +28,7 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
                 println("about")
             }
             R.id.action_logout -> {
-
-                AlertDialog.Builder(activity)
+                MaterialAlertDialogBuilder(activity)
                     .setTitle("Info")
                     .setMessage("Wirklich abmelden?")
                     .setPositiveButton("Ja") { dialog, which ->

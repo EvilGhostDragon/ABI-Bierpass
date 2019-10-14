@@ -3,7 +3,6 @@ package `in`.heis.abibierpass
 
 import android.animation.Animator
 import android.animation.ValueAnimator
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_selectbeer.view.*
 import kotlinx.android.synthetic.main.fragment_order_beer.*
@@ -67,12 +67,19 @@ class OrderBeerFragment : Fragment() {
                 }
 
         }
+        btn_devtest3.setOnClickListener {
+
+        }
+        fab_chart.setOnClickListener {
+            Toast.makeText(context!!, "af", Toast.LENGTH_LONG).show()
+        }
 
         btn_orderbeer.setOnClickListener {
-            if (amount > 0) {
+
                 val current = Calendar.getInstance(
                     Locale.ITALY
                 ).time
+            val vulgo = token.getString("vulgo", "")
                 val transInfo = hashMapOf<String, Any>(
                     "Status" to 0,
                     "Datum" to current,
@@ -84,16 +91,33 @@ class OrderBeerFragment : Fragment() {
                 )
                 val mDialogView =
                     LayoutInflater.from(context).inflate(R.layout.dialog_selectbeer, null)
-                val mAlertDialogBuilder = AlertDialog.Builder(context)
+            val mAlertDialogBuilder = MaterialAlertDialogBuilder(context)
                     .setView(mDialogView)
                     .setTitle("Auswahl")
                 val mAlertDialog = mAlertDialogBuilder.show()
 
+            fun manageOrder(beerType: String) {
+                mAlertDialog.dismiss()
+                if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
+                transInfo["Auswahl"] = beerType
+                db.collection("Transaktionen").document()
+                    .set(transInfo)
+                    .addOnCompleteListener { task ->
+                        if (!task.isSuccessful) return@addOnCompleteListener
+                        SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
+                        Toast.makeText(
+                            context,
+                            "Bier erfolgrei bestellt.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+            }
 
                 mDialogView.btn_beerhell.setOnClickListener {
                     mAlertDialog.dismiss()
                     if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
-                    transInfo["Auswahl"] = "hell"
+                    val type = "Augustiner: Hell"
+                    transInfo["Auswahl"] = type
                     db.collection("Transaktionen").document()
                         .set(transInfo)
                         .addOnCompleteListener { task ->
@@ -101,7 +125,7 @@ class OrderBeerFragment : Fragment() {
                             SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
                             Toast.makeText(
                                 context,
-                                "Bestellung wurde weiter gegeben",
+                                "Bier erfolgrei bestellt.",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -186,12 +210,19 @@ class OrderBeerFragment : Fragment() {
                             ).show()
                         }
                 }
-            } else
-                Toast.makeText(
-                    context,
-                    "Leider kein Bier für dich. Kauf dir ein paar Bier Coins!",
-                    Toast.LENGTH_LONG
-                ).show()
+
+
         }
+
+
+    }
+
+    private fun notifyFox(beer: String, vulgo: String) {
+        MainActivity().sendNotification(
+            context!!,
+            "Bestellungen",
+            "Neue Bestellung",
+            "$beer für $vulgo"
+        )
     }
 }

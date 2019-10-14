@@ -54,7 +54,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         //Set notification color to match your app color template
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            notificationBuilder.color = resources.getColor(R.color.primaryColor)
+            notificationBuilder.color = resources.getColor(R.color.color_primary)
         }
         notificationManager.notify(notificationID, notificationBuilder.build())
     }

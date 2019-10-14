@@ -14,19 +14,12 @@
 ~ limitations under the License.
 -->
 
-<resources>
-	<dimen name="keyline_0">2dp</dimen>
-	<dimen name="keyline_1">4dp</dimen>
-	<dimen name="keyline_2">8dp</dimen>
-	<dimen name="keyline_4">16dp</dimen>
-	<dimen name="keyline_5">24dp</dimen>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-	<dimen name="component_label_horizontal_margin">@dimen/keyline_4</dimen>
+	<!--Top level DayNight theme to be used in AndroidManifest.xml-->
+	<style name="MyTheme.DayNight" parent="Base.MyTheme">
+		<item name="android:windowLightStatusBar">false</item>
+		<item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+	</style>
 
-	<dimen name="elevation_default_top_app_bar">4dp</dimen>
-
-	<!--Emphasis modifiers for "on" colors-->
-	<dimen name="alpha_emphasis_high">@dimen/material_emphasis_high_type</dimen>
-	<dimen name="alpha_emphasis_medium">@dimen/material_emphasis_medium</dimen>
-	<dimen name="alpha_emphasis_disabled">@dimen/material_emphasis_disabled</dimen>
 </resources>

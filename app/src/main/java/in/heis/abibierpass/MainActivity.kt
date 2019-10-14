@@ -99,8 +99,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             firebaseAnalytics
                                 .setUserProperty("Berechtigung", data["Berechtigung"].toString())
                             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, null)
-                            token.edit()
-                                .putInt("permission", data["Berechtigung"].toString().toInt())
+                            with(token.edit()) {
+                                putInt("permission", data["Berechtigung"].toString().toInt())
+                                putString("vulgo", data["Vulgo"].toString())
+                            }
                                 .apply()
                             SelectMenu(
                                 -1,
@@ -137,20 +139,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ).show()
 
         } else {
-            SelectMenu(-1, drawer_layout, this@MainActivity).change()
-        }
-        if (token.getBoolean("loggedin", true) && (token.getString("mail", "") != "")) {
-            Log.w("account", "Logged in")
-            SelectMenu(
-                -1,
-                drawer_layout,
-                this@MainActivity
-            ).makeNewLayout(token.getString("permission", "")!!.toLong())
-            //getString(R.id.nav_header_subtitel)
-
-
-        } else {
-
             SelectMenu(-1, drawer_layout, this@MainActivity).change()
         }
         println(token.all)
