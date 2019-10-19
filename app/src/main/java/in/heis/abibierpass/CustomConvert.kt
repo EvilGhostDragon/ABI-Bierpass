@@ -34,20 +34,19 @@ class CustomConvert {
         }
     }
 
-    fun transStateToString(s: Int, p: Int): String {
+    fun transStateToString(s: Int): String {
         return when (s) {
             0 -> {
-                if (p >= 10) "Auftrag annehmen"
-                else "Nein"
+                "Bestellung übermittelt aber wird noch nicht bearbeitet"
             }
-            1 -> {
-                "Wird bearbeitet"
+            5 -> {
+                "Bestellung wird bearbeitet"
             }
-            2 -> {
-                "Ja"
+            10 -> {
+                "Bestellung wurde abgeschlossen"
             }
             else -> {
-                "Hacker?"
+                "Fehler"
             }
         }
     }

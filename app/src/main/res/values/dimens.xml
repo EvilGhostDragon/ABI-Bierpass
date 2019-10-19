@@ -24,4 +24,6 @@
 	<dimen name="alpha_emphasis_high">@dimen/material_emphasis_high_type</dimen>
 	<dimen name="alpha_emphasis_medium">@dimen/material_emphasis_medium</dimen>
 	<dimen name="alpha_emphasis_disabled">@dimen/material_emphasis_disabled</dimen>
+	<dimen name="list_item_spacing">16dp</dimen>
+	<dimen name="list_item_spacing_half">8dp</dimen>
 </resources>

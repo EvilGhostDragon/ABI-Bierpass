@@ -11,10 +11,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_selectbeer.view.*
 import kotlinx.android.synthetic.main.fragment_order_beer.*
-import java.util.*
 
 
 //TODO("CODE CLEANUP!!")
@@ -44,7 +45,6 @@ class OrderBeerFragment : Fragment() {
                 progressbar.visibility = View.INVISIBLE
                 btn_orderbeer.isEnabled = true
             }
-
             override fun onAnimationCancel(animation: Animator) {}
             override fun onAnimationRepeat(animation: Animator) {}
         })
@@ -70,20 +70,39 @@ class OrderBeerFragment : Fragment() {
 
         }
         btn_lastorder.setOnClickListener {
-            Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
+            db.collection("Transaktionen").whereLessThan("Betrag", 0).orderBy("Betrag")
+                .whereEqualTo("NutzerVon", userRef).orderBy("Datum", Query.Direction.DESCENDING)
+                .limit(1).get()
+                .addOnSuccessListener { result ->
+                    for (transaction in result) {
+                        val date = transaction.data["Datum"] as Timestamp
+                        val order = transaction.data["Auswahl"]
+                        val state = transaction.data["Status"].toString().toInt()
+                        BottomSheetFragment().show(
+                            requireFragmentManager(),
+                            BottomSheetFragment.FRAGMENT_TAG
+                        )
+                        BottomSheetFragment.sheet_body_txt =
+                            "Bestellung: " + order + "\nZeitpunkt: " + date.toDate() + "\nStatus: " + CustomConvert().transStateToString(
+                                state
+                            )
+                        BottomSheetFragment.sheet_head_txt = "Bestellbestätigung: Letzte Bestellung"
+                        BottomSheetFragment.sheet_qr_content = transaction.id
 
+                    }
+                }
         }
 
 
         btn_orderbeer.setOnClickListener {
 
-            val current = Calendar.getInstance(
+            /*val current = Calendar.getInstance(
                 Locale.ITALY
-            ).time
+            ).time*/
             val vulgo = token.getString("vulgo", "")
             val transInfo = hashMapOf<String, Any>(
                 "Status" to 0,
-                "Datum" to current,
+                "Datum" to Timestamp.now(),
                 "NutzerVon" to db.collection("Nutzer").document(
                     auth.currentUser!!.uid
                 ),
@@ -99,20 +118,24 @@ class OrderBeerFragment : Fragment() {
 
             fun manageOrder(beerType: String) {
                 mAlertDialog.dismiss()
-                if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
-                transInfo["Auswahl"] = beerType
-                db.collection("Transaktionen").document()
-                    .set(transInfo)
-                    .addOnCompleteListener { task ->
-                        if (!task.isSuccessful) return@addOnCompleteListener
-                        SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
-                        Toast.makeText(
-                            context,
-                            "Bier erfolgrei bestellt.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        notifyFox(beerType, vulgo!!)
-                    }
+                if (amount > 0) {
+                    if (mDialogView.switch_confirmedbeer.isChecked) transInfo["Status"] = 10
+                    transInfo["Auswahl"] = beerType
+                    db.collection("Transaktionen").document()
+                        .set(transInfo)
+                        .addOnCompleteListener { task ->
+                            if (!task.isSuccessful) return@addOnCompleteListener
+                            SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
+
+                            btn_lastorder.performClick()
+
+                            notifyFox(beerType, vulgo!!)
+                        }
+                } else Toast.makeText(
+                    context,
+                    "Du hast nicht genug Biercoins! Für weiterer Informationen wende dich an den Bierwart.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
 
             mDialogView.btn_beerhell.setOnClickListener {
@@ -120,7 +143,7 @@ class OrderBeerFragment : Fragment() {
                 manageOrder(beerTyp)
             }
             mDialogView.btn_beeredelstoff.setOnClickListener {
-                val beerTyp = "Augustiner: Hell"
+                val beerTyp = "Augustiner: Edelstoff"
                 manageOrder(beerTyp)
             }
             mDialogView.btn_beertoast.setOnClickListener {

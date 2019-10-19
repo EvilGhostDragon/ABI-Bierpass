@@ -50,7 +50,8 @@ class BlockchainFragment : Fragment() {
             SelectMenu(R.id.nav_transactions, drawer_layout, activity).change()
             refresh_transactions.isRefreshing = false
         }
-        db.collection("Transaktionen").orderBy("Datum", Query.Direction.DESCENDING).get()
+        db.collection("Transaktionen").whereLessThanOrEqualTo("Status", 5).orderBy("Status")
+            .orderBy("Datum", Query.Direction.ASCENDING).get()
             .addOnSuccessListener { result ->
                 transList.clear()
                 var transId = 0
