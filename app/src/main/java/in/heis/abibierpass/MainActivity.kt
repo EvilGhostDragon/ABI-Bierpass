@@ -1,6 +1,7 @@
 package `in`.heis.abibierpass
 
-import android.app.AlertDialog
+import `in`.heis.abibierpass.data.App
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -19,6 +20,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
@@ -44,12 +46,13 @@ lateinit var firebaseAnalytics: FirebaseAnalytics
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val FCM_API = "https://fcm.googleapis.com/fcm/send"
+    private val fcmAPI = "https://fcm.googleapis.com/fcm/send"
     private val serverKey =
         "key=" + "AAAAbR_kQd0:APA91bHhaPx5Z3vzy_aKW9d8RCqcSAq-jOCsJv8N2SRPWNijrB3VBymhJTjfbXpYWhOkpAN54gVsxOXSxXovx_OgjyRS5UeOdjWub7rbTUwPKORaAlO9OvPxSeAsu3ul0_FwfQvxYFPT"
     private val contentType = "application/json"
+    @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
-        val token = getSharedPreferences(`in`.heis.abibierpass.key, Context.MODE_PRIVATE)
+        val token = getSharedPreferences(key, Context.MODE_PRIVATE)
         db.firestoreSettings = settings
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         FirebaseInstanceId.getInstance().instanceId
@@ -58,7 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Log.w("firebase", "getInstanceId failed", task.exception)
                     return@OnCompleteListener
                 }
-                val token = task.result?.token
+                @Suppress("NAME_SHADOWING") val token = task.result?.token
                 val msg = getString(R.string.msg_token_fmt, token)
                 Log.d("firebase", msg)
             })
@@ -69,7 +72,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
@@ -78,13 +80,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
         navView.setNavigationItemSelectedListener(this)
 
         FirebaseDynamicLinks.getInstance()
             .getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
-                var deepLink: Uri? = null
+                val deepLink: Uri
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
                     println(deepLink)
@@ -97,12 +98,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val userRef = db.collection("Nutzer").document(user.uid)
                 userRef
                     .get()
-                    .addOnSuccessListener {
+                    .addOnSuccessListener { it ->
                         (application as App).preferenceRepository
                             .nightModeLive.observe(this, Observer { nightMode ->
                             nightMode?.let { delegate.localNightMode = it }
 
-                            val navView: NavigationView = this.findViewById(R.id.nav_view)
+                            @Suppress("NAME_SHADOWING") val navView: NavigationView =
+                                this.findViewById(R.id.nav_view)
                             navView.setCheckedItem(navView.menu.findItem(R.id.nav_home))
                             SelectMenu(R.id.nav_home, drawer_layout, this).change()
                         })
@@ -129,7 +131,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 Toast.LENGTH_LONG
                             ).show()
                             else {
-                                AlertDialog.Builder(this)
+                                MaterialAlertDialogBuilder(this)
                                     .setTitle("Info")
                                     .setMessage("Du wurdest noch nicht freigeschalten. Möchtest du benachrichtigt werden?")
                                     .setPositiveButton("Ja") { _, _ ->
@@ -155,16 +157,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             token.edit().putString("permission", null).apply()
             SelectMenu(-1, drawer_layout, this@MainActivity).change()
         }
-        println(token.all)
-
+        Log.i("stored", token.all.toString())
     }
-
 
     fun sendNotification(context: Context, topicName: String, title: String, message: String) {
         val requestQueue: RequestQueue by lazy {
             Volley.newRequestQueue(context)
         }
-        val topic = "/topics/" + topicName
+        val topic = "/topics/$topicName"
         val notification = JSONObject()
         val notifcationBody = JSONObject()
 
@@ -178,7 +178,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.e("TAG", "onCreate: " + e.message)
         }
 
-        val jsonObjectRequest = object : JsonObjectRequest(FCM_API, notification,
+        val jsonObjectRequest = object : JsonObjectRequest(
+            fcmAPI, notification,
             Response.Listener<JSONObject> { response ->
                 Log.i("volley", "onResponse: $response")
 
@@ -207,13 +208,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.manu_side, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         SelectMenu(item.itemId, null, this@MainActivity).action()
         return true
     }
@@ -225,13 +224,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         SelectMenu(item.itemId, drawer_layout, this@MainActivity).change()
 
-        println("nav " + nav_view.checkedItem)
-
         nav_view.setCheckedItem(nav_view.checkedItem!!)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
-
 }

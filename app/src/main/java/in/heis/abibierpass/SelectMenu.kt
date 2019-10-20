@@ -1,7 +1,6 @@
 package `in`.heis.abibierpass
 
 import android.app.Activity
-import android.content.Context
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -10,44 +9,49 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.system.exitProcess
 
 
-class SelectMenu(val itemId: Int?, override val containerView: View?, val activity: Activity?) : LayoutContainer {
-
-    val token = activity?.getSharedPreferences(`in`.heis.abibierpass.key, Context.MODE_PRIVATE)
+class SelectMenu(
+    private val itemId: Int?,
+    override val containerView: View?,
+    val activity: Activity?
+) : LayoutContainer {
     /**
      * Funktion: action
      * Input/Output: -
      * Beschreibung: Ausfüren von kleineren Aktionen, welche kein Fragment benötigen
      */
     fun action() {
-
         when (itemId) {
             R.id.action_exit -> {
                 exitProcess(-1)
             }
             R.id.action_about -> {
-                println("about")
+                MaterialAlertDialogBuilder(activity)
+                    .setTitle("Über")
+                    .setMessage(
+                        "Name: ABI Bierpass\n" +
+                                "Version: ${BuildConfig.VERSION_NAME} \nBeschreibung: Bargeldlose Bezahlmöglichkeit für Mitglieder der KÖStV Ambronia\n\nEntwicker: Simon Heis\n© 2019"
+                    )
+                    .setPositiveButton("Schließen") { _, _ ->
+
+                    }
+                    .show()
             }
             R.id.action_logout -> {
                 MaterialAlertDialogBuilder(activity)
                     .setTitle("Info")
                     .setMessage("Wirklich abmelden?")
-                    .setPositiveButton("Ja") { dialog, which ->
+                    .setPositiveButton("Ja") { _, _ ->
                         auth.signOut()
                         activity!!.recreate()
                     }
-                    .setNegativeButton("Nein") { dialog, which ->
+                    .setNegativeButton("Nein") { _, _ ->
 
                     }
                     .show()
-
-
             }
-
             else -> {
                 println("Action ERROR")
             }
-
-
         }
     }
 
@@ -124,10 +128,7 @@ class SelectMenu(val itemId: Int?, override val containerView: View?, val activi
                 findItem(R.id.nav_acc_admin).isVisible = true
                 findItem(R.id.nav_acc_admin).isEnabled = true
             }
-
         }
-
         change()
-
     }
 }

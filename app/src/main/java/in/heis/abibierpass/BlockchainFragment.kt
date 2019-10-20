@@ -1,6 +1,5 @@
 package `in`.heis.abibierpass
 
-
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,16 +14,12 @@ import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_blockchain.*
 
-/**
- * A simple [Fragment] subclass.
- */
 class BlockchainFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_blockchain, container, false)
     }
 
@@ -37,6 +32,7 @@ class BlockchainFragment : Fragment() {
         var kind: String,
         var status: Int
     )
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_transactions).isChecked = true
@@ -61,15 +57,14 @@ class BlockchainFragment : Fragment() {
                     val id = transaction.id
                     val status = transaction.data["Status"].toString().toInt()
                     if (status == 10) continue
-                    var vulgo: String = ""
+                    var vulgo: String
                     val vulgoRef = transaction.data["NutzerVon"] as DocumentReference
-                    var uid = ""
+                    var uid: String
 
                     vulgoRef.get()
                         .addOnSuccessListener {
                             vulgo = it.data!!["Vulgo"].toString()
                             uid = it.id
-                            // println("id$transId amo $amount st $status vu $vulgo")
                             transList.add(
                                 Transaction(
                                     uid,
@@ -85,9 +80,10 @@ class BlockchainFragment : Fragment() {
                             listview_block.adapter = adapter
                             listview_block.onItemClickListener =
                                 AdapterView.OnItemClickListener { _, _, i, _ ->
-                                    val id = transList[i].id
-                                    val status = transList[i].status
-                                    val uid = transList[i].uid
+                                    @Suppress("NAME_SHADOWING") val id = transList[i].id
+                                    @Suppress("NAME_SHADOWING") val status = transList[i].status
+                                    @Suppress("NAME_SHADOWING") val uid = transList[i].uid
+                                    @Suppress("NAME_SHADOWING") val amount = transList[i].amount
                                     if (status == 0) {
                                         MaterialAlertDialogBuilder(context)
                                             .setTitle("Info")
@@ -121,7 +117,6 @@ class BlockchainFragment : Fragment() {
                                                             activity
                                                         ).change()
                                                     }
-
                                             }
                                             .show()
                                     } else {
@@ -157,16 +152,12 @@ class BlockchainFragment : Fragment() {
                                                             activity
                                                         ).change()
                                                     }
-
                                             }
                                             .show()
                                     }
                                 }
                         }
                 }
-
-
             }
     }
-
 }

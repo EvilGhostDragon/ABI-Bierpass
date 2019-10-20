@@ -1,5 +1,6 @@
 package `in`.heis.abibierpass
 
+import `in`.heis.abibierpass.data.App
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,9 +21,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_profile, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,8 +58,6 @@ class ProfileFragment : Fragment() {
             preferenceRepository.isDarkTheme = checked
         }
 
-
-
         switch_notification.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 with(FirebaseMessaging.getInstance()) {
@@ -86,41 +83,26 @@ class ProfileFragment : Fragment() {
             }
         }
 
-
         btn_profile_changepw.setOnClickListener {
             Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
             //TODO("able to change pw")
-            //user.updateEmail()
         }
         btn_profile_edit.setOnClickListener {
             Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
-
         }
 
         btn_signout.setOnClickListener {
             MaterialAlertDialogBuilder(activity)
                 .setTitle("Info")
                 .setMessage("Wirklich abmelden?")
-                .setPositiveButton("Ja") { dialog, which ->
+                .setPositiveButton("Ja") { _, _ ->
                     auth.signOut()
                     activity!!.finish()
                     startActivity(activity!!.intent)
                 }
-                .setNegativeButton("Nein") { dialog, which ->
-
+                .setNegativeButton("Nein") { _, _ ->
                 }
                 .show()
         }
-
-
-        //refresh_profile.setColorSchemeColors(Color.RED, Color.BLUE)
-
-        
-
-
-    }
-
-    private fun logout() {
-
     }
 }

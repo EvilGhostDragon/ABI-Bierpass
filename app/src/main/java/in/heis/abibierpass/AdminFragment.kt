@@ -1,7 +1,5 @@
 package `in`.heis.abibierpass
 
-import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_admin.*
 import java.util.*
@@ -36,7 +35,6 @@ class AdminFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_admin).isChecked = true
         activity!!.title = "Nutzerübersicht und Einstellungen"
-        val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
 
         /**
          * Beschreibung: Sicher stellen, dass nie zwei Switches gleichzeitig aktiviert sind
@@ -85,7 +83,6 @@ class AdminFragment : Fragment() {
             btn_show.isEnabled = false
             var userRef = db.collection("Nutzer").get()
 
-            //var userList = hashMapOf<String,Any>()
             val userList = mutableListOf<User>()
             if (switch_showfox.isChecked) userRef =
                 db.collection("Nutzer").whereEqualTo("Berechtigung", 10).get()
@@ -130,17 +127,13 @@ class AdminFragment : Fragment() {
                             val vulgo = userList[i].vulgo
                             val uid = userList[i].uid
                             val permission = userList[i].permission
-                            var permissionOwn: Int = 0
+                            var permissionOwn: Int
                             db.collection("Nutzer").document(auth.currentUser!!.uid).get()
                                 .addOnSuccessListener {
                                     permissionOwn = it.data!!["Berechtigung"].toString().toInt()
-                                    println(permissionOwn)
 
-
-
-                                    println(permission + permissionOwn)
                                     var message =
-                                        "Vorname: $fName\nNachname: $lName\nVulgo: $vulgo\n$uid\n\n"
+                                        "Vorname: $fName\nNachname: $lName\nVulgo: $vulgo\n\n"
 
                                     if (permission <= 1) {
                                         message += "Den ausgewählten Benutzer jetzt freischalten?"
@@ -150,7 +143,7 @@ class AdminFragment : Fragment() {
                                          *                  (+) Gesperrte Nutzer oder welche deren E-Mail Adresse noch nicht bestätigt wurden freischalten (mit Hinweis auf dies)
                                          *                  (+) Nutzer einfach freischalten
                                          */
-                                        AlertDialog.Builder(context)
+                                        MaterialAlertDialogBuilder(context)
                                             .setTitle("Ausgewählter Benutzer")
                                             .setMessage(message)
 
@@ -158,8 +151,8 @@ class AdminFragment : Fragment() {
 
                                                 db.collection("Nutzer").document(uid)
                                                     .update("Berechtigung", 2)
-                                                    .addOnCompleteListener {
-                                                        if (it.isSuccessful) {
+                                                    .addOnCompleteListener { task ->
+                                                        if (task.isSuccessful) {
                                                             MainActivity().sendNotification(
                                                                 context!!,
                                                                 uid,
@@ -181,7 +174,7 @@ class AdminFragment : Fragment() {
                                          *                  (+) Berechtigung ändern: Anzeige eines weiteren AlertDialog
                                          *                  (+) Guthaben aufladen: Anzeige eines weiteren AlertDialog
                                          */
-                                        AlertDialog.Builder(context)
+                                        MaterialAlertDialogBuilder(context)
                                             .setTitle("Ausgewählter Benutzer")
                                             .setMessage(message)
 
@@ -194,10 +187,10 @@ class AdminFragment : Fragment() {
                                                      *                  (+) Nutzer (50+) sind berechtigt Nutzer zu Sperren
                                                      *                  (+) Nutzer ist es nicht möglich andere Nutzer, welche höher gestuft sind, Berechtiungen zu entziehne
                                                      */
-                                                    val userRef =
+                                                    @Suppress("NAME_SHADOWING") val userRef =
                                                         db.collection("Nutzer").document(uid)
 
-                                                    AlertDialog.Builder(context)
+                                                    MaterialAlertDialogBuilder(context)
                                                         .setTitle("Ausgewählter Benutzer")
                                                         .setMessage(
                                                             message + "Berechtigungshierarchie: \n\t- " +
@@ -303,7 +296,7 @@ class AdminFragment : Fragment() {
                                                 )
                                                 val newTrans =
                                                     db.collection("Transaktionen").document()
-                                                AlertDialog.Builder(context)
+                                                MaterialAlertDialogBuilder(context)
                                                     .setTitle("Bier-Coins aufladen")
                                                     .setMessage("Jede deiner durchgeführeten positiven Transaktion, wird mit deiner Benutzer-ID markiert. Dies wird benötigt um Fehler leichter finden zu können und um Missbrauch zu mindern.\n\n\n Nun da das geklärt ist, wie viele Coins möchtest du gutschreiben?")
 
@@ -337,11 +330,8 @@ class AdminFragment : Fragment() {
                                             .show()
                                     }
                                 }
-                            //SelectMenu(R.id.nav_acc_admin,drawer_layout,activity).change()
                         }
                 }
-
         }
     }
-
 }

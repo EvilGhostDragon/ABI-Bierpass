@@ -1,6 +1,5 @@
 package `in`.heis.abibierpass
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -11,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -28,7 +28,6 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_acc_login).isChecked = true
         activity!!.title = "Login"
-        val token = context!!.getSharedPreferences(key, Context.MODE_PRIVATE)
 
         btn_profile_resendmail.setOnClickListener {
             Toast.makeText(context, "Diese Aktion ist noch nicht möglich", Toast.LENGTH_LONG).show()
@@ -62,33 +61,34 @@ class LoginFragment : Fragment() {
                                 activity!!.finish()
                                 startActivity(activity!!.intent)
                             } else {
-                                AlertDialog.Builder(context)
+                                MaterialAlertDialogBuilder(context)
                                     .setTitle("Info")
                                     .setMessage("Deine E-Mail Adresse wurde noch nicht bestätigt.\nÜberprüfe deinen Posteingang und auch Spam-Ordner")
-                                    .setPositiveButton("OK") { dialog, which ->
+                                    .setPositiveButton("OK") { _, _ ->
                                         SelectMenu(-1, drawer_layout, activity).change()
                                     }
                                     .show()
                                 auth.signOut()
                             }
                         } else {
-                            Log.w("firebase", task.exception!!.message)
+                            @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+                            Log.i("firebase", task.exception!!.message)
                             if (task.exception!!.message!!.contains("password is invalid") or task.exception!!.message!!.contains(
                                     "There is no user record"
                                 )
                             ) {
-                                AlertDialog.Builder(context)
+                                MaterialAlertDialogBuilder(context)
                                     .setTitle("Fehler")
                                     .setMessage("Zu viel Bier oder doch nur vertippt.\nÜberprüfe deine Eingabe")
-                                    .setPositiveButton("OK") { dialog, which ->
+                                    .setPositiveButton("OK") { _, _ ->
                                         editText_pswd.text.clear()
                                     }
                                     .show()
                             } else {
-                                AlertDialog.Builder(context)
+                                MaterialAlertDialogBuilder(context)
                                     .setTitle("Fehler")
                                     .setMessage("Ups Bier verschüttet. Fehler können passieren.")
-                                    .setPositiveButton("OK") { dialog, which ->
+                                    .setPositiveButton("OK") { _, _ ->
                                         SelectMenu(-1, drawer_layout, activity).change()
                                     }
                                     .show()
@@ -97,91 +97,6 @@ class LoginFragment : Fragment() {
                     }
             }
         }
-/*
-        btn_acc_login.setOnClickListener {
-            if (isFormOk()) {
-                val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(activity!!.currentFocus!!.windowToken, 0)
-                btn_acc_login.isEnabled = false
-                progressbar.visibility = View.VISIBLE
-
-                val json = JSONObject()
-                json.put("mail", editText_mail.text)
-                json.put("password", editText_pswd.text)
-                json.put("action", "login")
-
-                HttpTask {
-                    if (it == null) {
-                        println("connection error")
-                        AlertDialog.Builder(context)
-                            .setTitle("Fehler")
-                            .setMessage("Ups Bier verschüttet. Fehler können passieren. \n\n Fehlercode: " + HttpTask.msgError)
-                            .setPositiveButton("OK") { dialog, which ->
-                                SelectMenu(-1, drawer_layout, activity).change()
-                            }
-                            .show()
-
-                        return@HttpTask
-                    }
-                    println(it)
-                    val itJson = JsonParser().parse(it).asJsonObject
-                    if (itJson.get("result").asInt == 0) {
-                        AlertDialog.Builder(context)
-                            .setTitle("Fehler")
-                            .setMessage("Zu viel Bier oder doch nur vertippt.\nÜberprüfe deine Eingabe")
-                            .setPositiveButton("OK") { dialog, which ->
-                                editText_pswd.text.clear()
-                            }
-                            .show()
-
-                        //return@HttpTask
-                    } else if ((itJson.get("result").asInt == 1) and (itJson.get("permission").asInt >= 2)) {
-                        val editor = token.edit()
-                        with(editor) {
-                            putBoolean("loggedin", true)
-                            putString("fName", itJson.get("fName").asString)
-                            putString("lName", itJson.get("lName").asString)
-                            putString("mail", itJson.get("mail").asString)
-                            putString("vulgo", itJson.get("vulgo").asString)
-                            putString("payId", itJson.get("payId").asString)
-                            putString("permission", itJson.get("permission").asString)
-                        }.apply()
-
-
-
-                        activity!!.finish()
-                        startActivity(activity!!.intent)
-
-
-                    } else if ((itJson.get("result").asInt == 1) and (itJson.get("permission").asInt == 0)) {
-                        AlertDialog.Builder(context)
-                            .setTitle("Info")
-                            .setMessage("Deine E-Mail Adresse wurde noch nicht bestätigt.\nÜberprüfe deinen Posteingang und auch Spam-Ordner")
-                            .setPositiveButton("OK") { dialog, which ->
-                                SelectMenu(-1, drawer_layout, activity).change()
-                            }
-                            .show()
-                    } else {
-                        AlertDialog.Builder(context)
-                            .setTitle("Info")
-                            .setMessage("Du wurdest noch nicht freigeschalten. Du erhältst eine E-Mail sobald es soweit ist.")
-                            .setPositiveButton("OK") { dialog, which ->
-
-                                SelectMenu(-1, drawer_layout, activity).change()
-                            }
-                            .show()
-                    }
-
-
-                    btn_acc_login.isEnabled = true
-                    progressbar.visibility = View.INVISIBLE
-
-
-                }.execute("POST", "https://abidigital.tk/api/db_use.php", json.toString())
-            }
-        }
-
- */
     }
 
 

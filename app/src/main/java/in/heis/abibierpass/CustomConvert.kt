@@ -2,7 +2,6 @@ package `in`.heis.abibierpass
 
 class CustomConvert {
     fun permissionToString(p: Any): String {
-        if (p == null) return "ERROR"
         when (p) {
             0 -> {
                 return "Gesperrter Nutzer oder mit unbestätigter E-Mail Adresse"
@@ -13,7 +12,7 @@ class CustomConvert {
             2 -> {
                 return "Normaler Benutzer"
             }
-            2 -> {
+            3 -> {
                 return "Normaler Benutzer *hust*"
             }
             10 -> {

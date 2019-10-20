@@ -1,14 +1,10 @@
 package `in`.heis.abibierpass.data
 
-
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-/**
- * A simple data repository for in-app settings.
- */
 class PreferenceRepository(private val sharedPreferences: SharedPreferences) {
 
     val nightMode: Int
@@ -46,10 +42,8 @@ class PreferenceRepository(private val sharedPreferences: SharedPreferences) {
         }
 
     init {
-        // Init preference LiveData objects.
         _nightModeLive.value = nightMode
         _isDarkThemeLive.value = isDarkTheme
-
         sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangedListener)
     }
 

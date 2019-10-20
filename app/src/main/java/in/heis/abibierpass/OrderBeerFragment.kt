@@ -3,6 +3,7 @@ package `in`.heis.abibierpass
 
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,18 +18,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_selectbeer.view.*
 import kotlinx.android.synthetic.main.fragment_order_beer.*
 
-
-//TODO("CODE CLEANUP!!")
 class OrderBeerFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_order_beer, container, false)
     }
 
+    @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.nav_view.menu.findItem(R.id.nav_orderbeer).isChecked = true
@@ -45,10 +44,10 @@ class OrderBeerFragment : Fragment() {
                 progressbar.visibility = View.INVISIBLE
                 btn_orderbeer.isEnabled = true
             }
+
             override fun onAnimationCancel(animation: Animator) {}
             override fun onAnimationRepeat(animation: Animator) {}
         })
-
 
         for (readFrom in arrayOf("Nutzer", "NutzerVon")) {
             db.collection("Transaktionen").whereEqualTo(readFrom, userRef).get()
@@ -64,10 +63,9 @@ class OrderBeerFragment : Fragment() {
                     animator.addUpdateListener { animation ->
                         txt_coins.text = animation.animatedValue.toString()
                     }
-                    animator.duration = 750 // here you set the duration of the anim
+                    animator.duration = 750
                     animator.start()
                 }
-
         }
         btn_lastorder.setOnClickListener {
             db.collection("Transaktionen").whereLessThan("Betrag", 0).orderBy("Betrag")
@@ -93,14 +91,9 @@ class OrderBeerFragment : Fragment() {
                 }
         }
 
-
         btn_orderbeer.setOnClickListener {
-
-            /*val current = Calendar.getInstance(
-                Locale.ITALY
-            ).time*/
             val vulgo = token.getString("vulgo", "")
-            val transInfo = hashMapOf<String, Any>(
+            val transInfo = hashMapOf(
                 "Status" to 0,
                 "Datum" to Timestamp.now(),
                 "NutzerVon" to db.collection("Nutzer").document(
@@ -162,11 +155,7 @@ class OrderBeerFragment : Fragment() {
                 val beerTyp = "Radler"
                 manageOrder(beerTyp)
             }
-
-
         }
-
-
     }
 
     private fun notifyFox(beer: String, vulgo: String) {

@@ -16,30 +16,12 @@ import com.google.zxing.common.BitMatrix
 import kotlinx.android.synthetic.main.fragment_bottom_sheet.*
 
 
-// TODO: Customize parameter argument names
-const val ARG_ITEM_COUNT = "item_count"
-
-/**
- *
- * A fragment that shows a list of items as a modal bottom sheet.
- *
- * You can show this modal bottom sheet from your activity like this:
- * <pre>
- *    lastOrderListDialogFragment.newInstance(30).show(supportFragmentManager, "dialog")
- * </pre>
- *
- * You activity (or fragment) needs to implement [lastOrderListDialogFragment.Listener].
- */
 class BottomSheetFragment : BottomSheetDialogFragment() {
-    private var mListener: Listener? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_bottom_sheet, container, false)
-
-
     }
 
     companion object {
@@ -77,7 +59,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
                 null
             )
         } catch (iae: IllegalArgumentException) {
-            // Unsupported format
+            sheet_qr.isVisible = false
             return null
         }
         val width = result.width
@@ -94,16 +76,4 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
         return bitmap
     }
-
-
-    override fun onDetach() {
-        mListener = null
-        super.onDetach()
-    }
-
-    interface Listener {
-        fun onlastOrderClicked(position: Int)
-    }
-
-
 }

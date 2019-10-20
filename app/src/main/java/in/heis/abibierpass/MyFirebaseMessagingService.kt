@@ -1,5 +1,6 @@
 package `in`.heis.abibierpass
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -18,8 +19,9 @@ import java.util.*
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-    private val ADMIN_CHANNEL_ID = "admin_channel"
+    private val adminChannelId = "admin_channel"
 
+    @SuppressLint("ObsoleteSdkInt")
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
@@ -43,11 +45,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         )
 
         val notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
+        val notificationBuilder = NotificationCompat.Builder(this, adminChannelId)
             .setSmallIcon(R.drawable.ic_launcher)
-            //.setLargeIcon(largeIcon)
-            .setContentTitle(remoteMessage.data.get("title"))
-            .setContentText(remoteMessage.data.get("message"))
+            .setLargeIcon(largeIcon)
+            .setContentTitle(remoteMessage.data["title"])
+            .setContentText(remoteMessage.data["message"])
             .setAutoCancel(true)
             .setSound(notificationSoundUri)
             .setContentIntent(pendingIntent)
@@ -57,8 +59,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             )
 
-        //Set notification color to match your app color template
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            @Suppress("DEPRECATION")
             notificationBuilder.color = resources.getColor(R.color.color_primary)
         }
         notificationManager.notify(notificationID, notificationBuilder.build())
@@ -71,7 +73,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val adminChannel: NotificationChannel
         adminChannel = NotificationChannel(
-            ADMIN_CHANNEL_ID,
+            adminChannelId,
             adminChannelName,
             NotificationManager.IMPORTANCE_HIGH
         )
@@ -80,10 +82,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         adminChannel.lightColor = Color.RED
         adminChannel.enableVibration(true)
         notificationManager?.createNotificationChannel(adminChannel)
-
-
     }
-
 
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
@@ -93,7 +92,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun sendRegistrationToServer(token: String?) {
         Log.d(TAG, "sendRegistrationTokenToServer($token)")
     }
-
 
     companion object {
         private const val TAG = "MyFirebaseMsgService"

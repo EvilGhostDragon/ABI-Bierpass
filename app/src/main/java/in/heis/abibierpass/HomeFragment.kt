@@ -34,26 +34,15 @@ class HomeFragment : Fragment() {
 
         btn_quicklink1.setOnClickListener {
             val navView: NavigationView = activity!!.findViewById(R.id.nav_view)
-
             navView.setCheckedItem(navView.menu.findItem(R.id.nav_orderbeer))
-            //activity!!.nav_view.menu.findItem(R.id.nav_home).isChecked = false
             SelectMenu(R.id.nav_orderbeer, drawer_layout, activity).change()
         }
 
         btn_devtest1.setOnClickListener {
-            activity!!.title = "aaaa"
 
         }
         btn_devtest2.setOnClickListener {
-            var a = "    aaaaaaaaaa   aa a aaa      "
-            val b = "bbbbb"
-            val c = "ccccc"
-            println(c + a + b)
-            a = a.trim()
-            println(c + a + b)
+
         }
     }
-
-
-
 }
